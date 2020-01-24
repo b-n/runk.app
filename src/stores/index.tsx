@@ -1,11 +1,17 @@
 import React from 'react'
 import { UserProvider, useUser } from './user'
+import { LeaguesProvider, useLeagues } from './leagues'
+import { DiscoverProvider, useDiscover } from './discover'
 import { AuthProvider, useAuth } from './auth'
 
 const GlobalProvider: React.FC = ({ children }) => (
   <AuthProvider>
     <UserProvider>
-      {children}
+      <LeaguesProvider>
+        <DiscoverProvider>
+          {children}
+        </DiscoverProvider>
+      </LeaguesProvider>
     </UserProvider>
   </AuthProvider>
 )
@@ -13,6 +19,10 @@ const GlobalProvider: React.FC = ({ children }) => (
 export {
   useUser,
   UserProvider,
+  useLeagues,
+  LeaguesProvider,
+  useDiscover,
+  DiscoverProvider,
   useAuth,
   AuthProvider,
   GlobalProvider,

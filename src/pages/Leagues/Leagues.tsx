@@ -1,0 +1,51 @@
+import React from 'react';
+import { makeStyles } from '@material-ui/core/styles';
+import { Typography } from '@material-ui/core';
+import IconButton from '@material-ui/core/IconButton';
+import Visibility from '@material-ui/icons/Visibility';
+import Add from '@material-ui/icons/Add';
+
+// Utils
+import { useLeagues } from '../../stores';
+
+// Components
+import LeagueCard from './LeagueCard';
+
+
+const useStyles = makeStyles({
+  title: {
+    flex: 1,
+    padding: '10px 20px',
+    margin: 0,
+    color: 'white',
+  },
+});
+
+const Leagues: React.FC = () => {
+  const classes = useStyles();
+  const { leagues } = useLeagues();
+
+  return (
+    <div>
+      <Typography component="h4" variant="h4" className={classes.title}>
+        Your leagues
+      </Typography>
+      <section>
+        {
+          leagues.map(league => (
+            <LeagueCard league={league} key={league.id}>
+              <IconButton aria-label="View">
+                <Visibility />
+              </IconButton>
+              <IconButton aria-label="New match">
+                <Add />
+              </IconButton>
+            </LeagueCard>
+          ))
+        }
+      </section>
+    </div>
+  )
+};
+
+export default React.memo(Leagues);

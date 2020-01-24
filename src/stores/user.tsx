@@ -5,7 +5,7 @@ interface UserStore {
   setUser: Dispatch<SetStateAction<User>>
 }
 
-const UserContext = createContext({} as UserStore)
+const UserContext = createContext({} as UserStore);
 
 export const UserProvider: React.FC = ({ children }) => {
   const [ user, setUser ] = useState({ name: '' });
@@ -21,4 +21,4 @@ export const UserProvider: React.FC = ({ children }) => {
   )
 }
 
-export const useUser = () => useContext(UserContext)
+export const useUser = () => useContext(UserContext);

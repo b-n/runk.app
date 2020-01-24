@@ -5,7 +5,7 @@ interface AuthStore {
   setAuth: Dispatch<SetStateAction<Auth>>
 }
 
-const context = createContext({} as AuthStore)
+const context = createContext({} as AuthStore);
 
 export const AuthProvider: React.FC = ({ children }) => {
   const [ auth, setAuth ] = useState({
@@ -23,4 +23,4 @@ export const AuthProvider: React.FC = ({ children }) => {
   )
 }
 
-export const useAuth = () => useContext(context)
+export const useAuth = () => useContext(context);
