@@ -12,6 +12,7 @@ import AccountCircle from '@material-ui/icons/AccountCircle';
 // Components
 import { Leagues } from '../Leagues';
 import { Discover } from '../Discover';
+import { Profile } from '../Profile';
 
 const useStyles = makeStyles({
   bottomNavigation: {
@@ -50,7 +51,7 @@ const showComponent = (value: string) => {
     case 'discover':
       return <Discover />;
     case 'profile':
-      return <Discover />;
+      return <Profile />;
     default:
       return <Leagues />;
   }
