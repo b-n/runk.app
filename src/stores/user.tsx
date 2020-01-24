@@ -1,9 +1,11 @@
-import React, { Dispatch, SetStateAction, createContext, useContext, useState } from 'react'
+import React, { createContext, Dispatch, SetStateAction, useContext, useState } from 'react';
+
+import { User } from '../interfaces/User';
 
 interface UserStore {
-  user: User
-  setUser: Dispatch<SetStateAction<User>>
-}
+  user: User;
+  setUser: Dispatch<SetStateAction<User>>;
+};
 
 const UserContext = createContext({} as UserStore);
 
@@ -19,6 +21,6 @@ export const UserProvider: React.FC = ({ children }) => {
       children={children}
     />
   )
-}
+};
 
 export const useUser = () => useContext(UserContext);

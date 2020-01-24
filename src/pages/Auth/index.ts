@@ -1,2 +1,3 @@
-import AuthCallback from './Callback'
-export { AuthCallback }
+import AuthCallback from './Callback';
+
+export { AuthCallback };

@@ -7,7 +7,7 @@ import Search from '@material-ui/icons/Search';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 
 // Utils
-import { useAuth } from '../../stores';
+// import { useAuth } from '../../stores';
 
 // Components
 import { Leagues } from '../Leagues';
@@ -15,14 +15,14 @@ import { Discover } from '../Discover';
 
 const useStyles = makeStyles({
   bottomNavigation: {
-    width: '100%',
-    position: 'fixed',
     bottom: 0,
+    position: 'fixed',
+    width: '100%',
   },
 });
 
 const Home: React.FC = () => {
-  const { auth } = useAuth();
+  // const { auth } = useAuth();
   const classes = useStyles();
   const [value, setValue] = React.useState('leagues');
 

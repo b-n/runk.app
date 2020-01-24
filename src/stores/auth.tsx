@@ -1,9 +1,11 @@
-import React, { Dispatch, SetStateAction, createContext, useContext, useState } from 'react'
+import React, { createContext, Dispatch, SetStateAction, useContext, useState } from 'react';
+
+import { Auth } from '../interfaces/Auth';
 
 interface AuthStore {
-  auth: Auth
-  setAuth: Dispatch<SetStateAction<Auth>>
-}
+  auth: Auth;
+  setAuth: Dispatch<SetStateAction<Auth>>;
+};
 
 const context = createContext({} as AuthStore);
 
@@ -21,6 +23,6 @@ export const AuthProvider: React.FC = ({ children }) => {
       children={children}
     />
   )
-}
+};
 
 export const useAuth = () => useContext(context);

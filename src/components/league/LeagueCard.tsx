@@ -6,6 +6,7 @@ import Typography from '@material-ui/core/Typography';
 import CardMedia from '@material-ui/core/CardMedia';
 
 // Utils
+import { League } from '../../interfaces/League';
 
 // Components
 

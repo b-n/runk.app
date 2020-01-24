@@ -1,8 +1,10 @@
-import React, { createContext, useContext } from 'react'
+import React, { createContext, useContext } from 'react';
+
+import { League } from '../interfaces/League';
 
 interface LeaguesStore {
-  leagues: League[]
-}
+  leagues: League[];
+};
 
 const LeaguesContext = createContext({} as LeaguesStore);
 
@@ -30,6 +32,6 @@ export const LeaguesProvider: React.FC = ({ children }) => {
       children={children}
     />
   )
-}
+};
 
 export const useLeagues = () => useContext(LeaguesContext);

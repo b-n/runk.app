@@ -1,14 +1,14 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react';
 
-import queryString from 'query-string'
+import queryString from 'query-string';
 
 import {
   useLocation,
   useHistory,
   Link,
-} from 'react-router-dom'
+} from 'react-router-dom';
 
-import { useAuth } from '../../stores'
+import { useAuth } from '../../stores';
 
 const Callback: React.FC = () => {
   const location = useLocation();
@@ -17,7 +17,7 @@ const Callback: React.FC = () => {
 
   const [status, setStatus] = useState('Waiting');
 
-  const { auth, setAuth } = useAuth();
+  const { setAuth } = useAuth();
 
   useEffect(() => {
     fetch(
@@ -32,7 +32,7 @@ const Callback: React.FC = () => {
         setStatus('Done')
         history.push('/')
       });
-  }, [code, state])
+  }, [code, state]);
 
   return (
     <div>
@@ -40,6 +40,6 @@ const Callback: React.FC = () => {
       <Link to="/login">Login</Link>
     </div>
   )
-}
+};
 
 export default React.memo(Callback);

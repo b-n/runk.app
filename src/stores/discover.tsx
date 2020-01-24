@@ -1,7 +1,9 @@
-import React, { createContext, useContext } from 'react'
+import React, { createContext, useContext } from 'react';
+
+import { League } from '../interfaces/League';
 
 interface DiscoverStore {
-  leagues: League[]
+  leagues: League[];
 }
 
 const DiscoverContext = createContext({} as DiscoverStore);
@@ -32,6 +34,6 @@ export const DiscoverProvider: React.FC = ({ children }) => {
       children={children}
     />
   )
-}
+};
 
 export const useDiscover = () => useContext(DiscoverContext);

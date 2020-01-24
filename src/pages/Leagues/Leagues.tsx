@@ -9,15 +9,15 @@ import Add from '@material-ui/icons/Add';
 import { useLeagues } from '../../stores';
 
 // Components
-import LeagueCard from './LeagueCard';
+import { LeagueCard } from '../../components/league';
 
 
 const useStyles = makeStyles({
   title: {
-    flex: 1,
-    padding: '10px 20px',
-    margin: 0,
     color: 'white',
+    flex: 1,
+    margin: 0,
+    padding: '10px 20px',
   },
 });
 
