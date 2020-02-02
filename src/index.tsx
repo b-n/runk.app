@@ -4,6 +4,7 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
+  Redirect,
 } from 'react-router-dom'
 
 import './index.css';
@@ -17,13 +18,16 @@ import {
 import { GlobalProvider } from './stores'
 
 import * as serviceWorker from './serviceWorker';
+import { Discover } from './pages/Discover';
+import { Leagues } from './pages/Leagues';
+import { Profile } from './pages/Profile';
 
 ReactDOM.render(
   <GlobalProvider>
     <Router>
       <Switch>
         <Route exact path="/">
-          <Home />
+          <Leagues />
         </Route>
         <Route exact path="/login">
           <Login />
@@ -31,7 +35,17 @@ ReactDOM.render(
         <Route exact path="/auth/callback">
           <AuthCallback />
         </Route>
+        <Route exact path="/discover">
+          <Discover />
+        </Route>
+        <Route exact path="/leagues">
+          <Redirect to={'/'} />
+        </Route>
+        <Route exact path="/profile">
+          <Profile />
+        </Route>
       </Switch>
+      <Home />
     </Router>
   </GlobalProvider>,
   document.getElementById('root')

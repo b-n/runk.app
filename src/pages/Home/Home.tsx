@@ -1,18 +1,16 @@
-import React from 'react';
+import * as React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import BottomNavigation from '@material-ui/core/BottomNavigation';
 import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
 import SupervisedUserCircle from '@material-ui/icons/SupervisedUserCircle';
 import Search from '@material-ui/icons/Search';
 import AccountCircle from '@material-ui/icons/AccountCircle';
+import { withRouter } from 'react-router';
 
 // Utils
 // import { useAuth } from '../../stores';
 
 // Components
-import { Leagues } from '../Leagues';
-import { Discover } from '../Discover';
-import { Profile } from '../Profile';
 
 const useStyles = makeStyles({
   bottomNavigation: {
@@ -22,20 +20,18 @@ const useStyles = makeStyles({
   },
 });
 
-const Home: React.FC = () => {
+const Home = ({ history }: { history: any }): JSX.Element => {
   // const { auth } = useAuth();
   const classes = useStyles();
-  const [value, setValue] = React.useState('leagues');
+  const [ value, setValue ] = React.useState<string>('leagues');
 
   const handleChange = (event: React.ChangeEvent<{}>, newValue: string) => {
     setValue(newValue);
+    history.push(newValue);
   };
 
   return (
     <div>
-      {
-        showComponent(value)
-      }
       <BottomNavigation value={value} onChange={handleChange} className={classes.bottomNavigation}>
         <BottomNavigationAction label="Leagues" value="leagues" icon={<SupervisedUserCircle />} />
         <BottomNavigationAction label="Discover" value="discover" icon={<Search />} />
@@ -46,15 +42,4 @@ const Home: React.FC = () => {
   )
 };
 
-const showComponent = (value: string) => {
-  switch(value) {
-    case 'discover':
-      return <Discover />;
-    case 'profile':
-      return <Profile />;
-    default:
-      return <Leagues />;
-  }
-};
-
-export default React.memo(Home);
+export default withRouter(Home);
