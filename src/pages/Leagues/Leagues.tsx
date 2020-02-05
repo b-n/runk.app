@@ -23,13 +23,18 @@ const useStyles = makeStyles({
 
 const Leagues: React.FC = () => {
   const classes = useStyles();
-  const { leagues } = useLeagues();
+  const { leagues, loadUserLeagues } = useLeagues();
 
   return (
     <div>
       <Typography component="h4" variant="h4" className={classes.title}>
         Your leagues
+        {/* Just a testing button to make sure the callouts work*/}
+        <IconButton aria-label="View" onClick={() => loadUserLeagues()}>
+          <Visibility />
+        </IconButton>
       </Typography>
+
       <section>
         {
           leagues.map(league => (
