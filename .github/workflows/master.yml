@@ -15,7 +15,8 @@ jobs:
         node-version: [12.x]
 
     steps:
-      - uses: actions/checkout@master
+      - name: checkout
+        uses: actions/checkout@master
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v1
         with:
@@ -23,8 +24,9 @@ jobs:
       - name: npm install, and build
         run: |
           npm ci
-          npm run build
-      - uses: jakejarvis/s3-sync-action@master
+          REACT_APP_SERVER=${{ secrets.API_MASTER }} npm run build
+      - name: upload
+        uses: jakejarvis/s3-sync-action@master
         with:
           args: --follow-symlinks --delete
         env:
@@ -32,3 +34,11 @@ jobs:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           SOURCE_DIR: 'build'
+      - name: invalidate
+        uses: chetan/invalidate-cloudfront-action@master
+        env:
+          DISTRIBUTION: ${{ secrets.CF_DISTRIBUTION_MASTER }}
+        PATHS: '/index.html'
+        AWS_REGION: 'us-east-1'
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
