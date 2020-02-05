@@ -17,21 +17,18 @@ const Callback: React.FC = () => {
 
   const [status, setStatus] = useState('Waiting');
 
-  const { setAuth } = useAuth();
+  const { doAuth } = useAuth();
 
   useEffect(() => {
-    fetch(
-      `http://localhost:3001/auth/token?grant_type=authorization_code&code=${code}&state=${state}`,
-      {
-        method: 'GET',
-      }
-    )
-      .then(result => result.json())
+    doAuth(code as string, state as string)
       .then(result => {
-        setAuth({ isAuthed: true, ...result })
-        setStatus('Done')
-        history.push('/')
-      });
+        if (!result) {
+          setStatus('Failed');
+          return;
+        }
+        setStatus('Success');
+        history.push('/');
+      })
   }, [code, state]);
 
   return (
