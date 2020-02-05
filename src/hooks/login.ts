@@ -17,7 +17,7 @@ const useLoginLinks = () => {
 
   useEffect(() => {
     fetch(
-      'http://localhost:3001/auth/token',
+      `${process.env.REACT_APP_SERVER}/auth/token`,
       {
         method: 'GET'
       }

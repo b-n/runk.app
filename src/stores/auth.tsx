@@ -18,14 +18,13 @@ const context = createContext({} as AuthStore);
 
 const getAuthToken = async (code: string, state: string): Promise<AuthToken> => {
   return fetch(
-    `http://localhost:3001/auth/token?grant_type=authorization_code&code=${code}&state=${state}`,
+    `${process.env.REACT_APP_SERVER}/auth/token?grant_type=authorization_code&code=${code}&state=${state}`,
     {
       method: 'GET',
     }
   )
     .then(result => result.json())
     .then(result => {
-      console.log(result)
       if (!result.access_token) {
         throw new Error('Could not auth')
       }
@@ -35,7 +34,7 @@ const getAuthToken = async (code: string, state: string): Promise<AuthToken> => 
 
 const getRefreshedToken = async(refreshToken: string): Promise<AuthToken> => {
   return fetch(
-    `http://localhost:3001/auth/token?grant_type=refresh_token&refresh_token=${refreshToken}`,
+    `${process.env.REACT_APP_SERVER}/auth/token?grant_type=refresh_token&refresh_token=${refreshToken}`,
     {
       method: 'GET',
     }

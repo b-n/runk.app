@@ -24,7 +24,7 @@ interface UserLeague {
 }
 const getUserLeagues = async (auth: AuthenticationHeader): Promise<Array<League>> => {
   return fetch(
-    `http://localhost:3001/user`,
+    `${process.env.REACT_APP_SERVER}/user`,
     {
       method: 'GET',
       headers: {
