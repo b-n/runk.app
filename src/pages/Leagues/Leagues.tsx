@@ -9,6 +9,7 @@ import Add from '@material-ui/icons/Add';
 import { useLeagues } from '../../stores';
 
 // Components
+import { Logo } from '../../components/Logo'
 import { LeagueCard } from '../../components/league';
 
 
@@ -19,6 +20,9 @@ const useStyles = makeStyles({
     margin: 0,
     padding: '10px 20px',
   },
+  logo: {
+    paddingRight: '10px',
+  }
 });
 
 const Leagues: React.FC = () => {
@@ -28,6 +32,7 @@ const Leagues: React.FC = () => {
   return (
     <div>
       <Typography component="h4" variant="h4" className={classes.title}>
+        <Logo width={35} height={35} className={classes.logo}/>
         Your leagues
         {/* Just a testing button to make sure the callouts work*/}
         <IconButton aria-label="View" onClick={() => loadUserLeagues()}>
