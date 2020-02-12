@@ -18,7 +18,7 @@ const context = createContext({} as AuthStore);
 
 const getAuthToken = async (code: string, state: string): Promise<AuthToken> => {
   return fetch(
-    `${process.env.REACT_APP_SERVER}/auth/token?grant_type=authorization_code&code=${code}&state=${state}`,
+    `${process.env.REACT_APP_SERVER}/auth/token?grant_type=authorization_code&code=${code}&state=${state}&redirect_uri=${window.location.origin}/auth/callback`,
     {
       method: 'GET',
     }
