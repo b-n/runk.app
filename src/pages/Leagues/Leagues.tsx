@@ -11,6 +11,7 @@ import { useLeagues } from '../../stores';
 // Components
 import { Logo } from '../../components/Logo'
 import { LeagueCard } from '../../components/league';
+import { useUpdateLeagues } from '../../stores/leagues';
 
 
 const useStyles = makeStyles({
@@ -30,7 +31,8 @@ const useStyles = makeStyles({
 
 const Leagues: React.FC = () => {
   const classes = useStyles();
-  const { leagues, loadUserLeagues, isLoading } = useLeagues();
+  const { leagues, isLoading } = useLeagues();
+  const { loadUserLeagues } = useUpdateLeagues();
 
   useEffect(() => {
     loadUserLeagues()
