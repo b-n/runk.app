@@ -1,9 +1,8 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 
 import { useAuth } from './auth'
-
 import { League } from '../interfaces/League';
-import { AuthenticationHeader } from '../interfaces/Auth';
+import LeaguesService from '../services/leagues';
 
 interface LeaguesState {
   league: League | undefined
@@ -16,41 +15,6 @@ interface LeaguesStore extends LeaguesState {
   loadUserLeagues: () => void
 }
 
-interface UserLeague {
-  id: string
-  displayName: string
-  description: string
-  pictureURL: string
-}
-const getUserLeagues = async (auth: AuthenticationHeader): Promise<Array<League>> => {
-  return fetch(
-    `${process.env.REACT_APP_SERVER}/user`,
-    {
-      method: 'GET',
-      headers: {
-        ...auth,
-      },
-    }
-  )
-    .then(result => result.json())
-    .then(result => {
-      return Object.values(result.leagues).map(league => {
-        const {
-          id,
-          description,
-          displayName,
-          pictureURL,
-        } = league as UserLeague
-        return {
-          id,
-          name: displayName,
-          image_url: pictureURL,
-          description,
-        }
-      })
-    })
-}
-
 const defaultState: LeaguesState = {
   league: undefined,
   isLoading: false,
@@ -60,24 +24,23 @@ const defaultState: LeaguesState = {
 const LeaguesContext = createContext({} as LeaguesStore);
 
 export const LeaguesProvider: React.FC = ({ children }) => {
-  const { isAuthed, isAuthing, authenticationHeader } = useAuth()
+  const { isAuthed, isAuthing, authenticationHeader } = useAuth();
 
-  const [ state, setState ] = useState(defaultState)
+  const [ state, setState ] = useState(defaultState);
 
   const getLeague = async (id: string) => {
     setState({
       ...state
-    })
-  }
+    });
+  };
 
   const loadUserLeagues = () => {
     setState({
       ...state,
       isLoading: true,
       leagues: [],
-    })
-  
-  }
+    });
+  };
 
   useEffect(() => {
     if (state.isLoading && !isAuthing) {
@@ -86,17 +49,17 @@ export const LeaguesProvider: React.FC = ({ children }) => {
           ...state,
           isLoading: false,
           leagues: [],
-        })
-        return
+        });
+        return;
       }
-      getUserLeagues(authenticationHeader)
-        .then(result => {
-          setState({
-            ...state,
-            isLoading: false,
-            leagues: result
-          })
+
+      LeaguesService.getUserLeagues(authenticationHeader).then(result => {
+        setState({
+          ...state,
+          isLoading: false,
+          leagues: result
         })
+      });
     }
   }, [ state.isLoading, isAuthing ])
   
@@ -109,7 +72,7 @@ export const LeaguesProvider: React.FC = ({ children }) => {
       }}
       children={children}
     />
-  )
+  );
 };
 
 export const useLeagues = () => useContext(LeaguesContext);
