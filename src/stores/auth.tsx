@@ -1,17 +1,17 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import addSeconds from 'date-fns/addSeconds'
-import isBefore from 'date-fns/isBefore'
 
 import { AuthToken, AuthenticationHeader } from '../interfaces/Auth';
 
 interface AuthState {
-  isAuthed: boolean;
-  token?: AuthToken;
+  isAuthed: boolean
+  isAuthing: boolean
+  token?: AuthToken
+  authenticationHeader?: AuthenticationHeader
 }
 
 interface AuthStore extends AuthState {
-  doAuth: (code: string, authState: string) => Promise<boolean>;
-  getAuthenticationHeader: () => Promise<AuthenticationHeader>;
+  doAuth: (code: string, authState: string) => Promise<boolean>
 };
 
 const context = createContext({} as AuthStore);
@@ -51,6 +51,7 @@ const getRefreshedToken = async(refreshToken: string): Promise<AuthToken> => {
 export const AuthProvider: React.FC = ({ children }) => {
   const [ state, setState ] = useState({
     isAuthed: false,
+    isAuthing: true,
     token: undefined
   } as AuthState)
 
@@ -61,7 +62,11 @@ export const AuthProvider: React.FC = ({ children }) => {
         ...token,
         expires: addSeconds(new Date(), token.expires_in),
       },
+      isAuthing: false,
       isAuthed: true,
+      authenticationHeader: {
+        Authorization: `${token.token_type} ${token.access_token}`,
+      }
     })
     localStorage.setItem('AuthToken', JSON.stringify(token))
   }
@@ -70,17 +75,23 @@ export const AuthProvider: React.FC = ({ children }) => {
     setState({
       ...state,
       token: undefined,
+      isAuthing: false,
       isAuthed: false,
+      authenticationHeader: undefined,
     })
+  }
+
+  const doRefresh = (token: AuthToken) => {
+    getRefreshedToken(token.refresh_token)
+      .then(result => setToken(result))
+      .catch(e => deAuth())
   }
 
   useEffect(() => {
     try {
       const token = localStorage.getItem('AuthToken')
       if (token) {
-        getRefreshedToken(JSON.parse(token).refresh_token)
-          .then(result => setToken(result))
-          .catch(e => deAuth())
+        doRefresh(JSON.parse(token))
       } else {
         deAuth()
       }
@@ -88,6 +99,13 @@ export const AuthProvider: React.FC = ({ children }) => {
       deAuth()
     }
   }, [])
+
+  useEffect(() => {
+    if (state.isAuthed && state.token) {
+      const refreshTimer = state.token.expires_in - 30
+      setTimeout(() => doRefresh(state.token as AuthToken), refreshTimer * 1000)
+    }
+  }, [ state.isAuthed ])
 
   const doAuth = async (code: string, authState: string): Promise<boolean> => {
     return getAuthToken(code, authState)
@@ -101,34 +119,11 @@ export const AuthProvider: React.FC = ({ children }) => {
       })
   }
 
-  const getAuthenticationHeader = async(): Promise<AuthenticationHeader> => {
-    const { isAuthed, token } = state
-    if (!isAuthed || !token) {
-      throw new Error('Not authed')
-    }
-    const { expires, refresh_token } = token
-
-    if (isBefore(expires.getTime(), new Date().getTime())) {
-      await getRefreshedToken(refresh_token)
-        .then(result => setToken(result))
-        .catch(e => deAuth()) 
-    }
-
-    if (!state.token) {
-      throw new Error('Not Authed')
-    }
-    
-    return {
-      Authorization: `${state.token.token_type} ${state.token.access_token}`,
-    }
-  }
-
   return (
     <context.Provider
       value= {{
         ...state,
         doAuth,
-        getAuthenticationHeader,
       }}
       children={children}
     />
