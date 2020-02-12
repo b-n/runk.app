@@ -74,6 +74,7 @@ export const LeaguesProvider: React.FC = ({ children }) => {
     setState({
       ...state,
       isLoading: true,
+      leagues: [],
     })
   
   }
@@ -83,7 +84,7 @@ export const LeaguesProvider: React.FC = ({ children }) => {
       if (!isAuthed || !authenticationHeader) {
         setState({
           ...state,
-          isLoading: true,
+          isLoading: false,
           leagues: [],
         })
         return
