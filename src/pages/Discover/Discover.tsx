@@ -13,7 +13,6 @@ import { LeagueCard } from '../../components/league';
 
 const useStyles = makeStyles({
   title: {
-    color: 'white',
     flex: 1,
     margin: 0,
     padding: '10px 20px',
@@ -26,7 +25,7 @@ const Discover: React.FC = () => {
 
   return (
     <div>
-      <Typography component="h4" variant="h4" className={classes.title}>
+      <Typography component="h4" variant="h4" className={classes.title} color={'primary'}>
         Discover
       </Typography>
       <section>

@@ -15,7 +15,6 @@ import { LeagueCard } from '../../components/league';
 
 const useStyles = makeStyles({
   title: {
-    color: 'white',
     flex: 1,
     margin: 0,
     padding: '10px 20px',
@@ -39,7 +38,7 @@ const Leagues: React.FC = () => {
 
   return (
     <div>
-      <Typography component="h4" variant="h4" className={classes.title}>
+      <Typography component="h4" variant="h4" className={classes.title} color={'primary'}>
         <Logo width={26} height={26} className={classes.logo}/>
         Your leagues
       </Typography>

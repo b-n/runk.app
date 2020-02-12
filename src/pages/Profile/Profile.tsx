@@ -1,6 +1,6 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import { Avatar } from '@material-ui/core';
+import { Avatar, Typography, TextField } from '@material-ui/core';
 
 // Utils
 import { useUser } from '../../stores';
@@ -15,7 +15,6 @@ const useStyles = makeStyles({
     alignItems: 'center',
   },
   title: {
-    color: 'white',
     flex: 1,
     margin: 0,
     padding: '10px 20px',
@@ -24,7 +23,7 @@ const useStyles = makeStyles({
     width: 200,
     height: 200,
     margin: 30,
-  },
+  }
 });
 
 const Profile: React.FC = () => {
@@ -32,8 +31,20 @@ const Profile: React.FC = () => {
   const { user } = useUser();
 
   return (
-    <div className={classes.container}>
-      <Avatar alt={user.name} src={user.img} className={classes.large} />
+    <div>
+      <Typography component="h4" variant="h4" className={classes.title} color={'primary'}>
+        Profile
+      </Typography>
+      <div className={classes.container}>
+        <Avatar alt={user.name} src={user.img} className={classes.large} variant="circle" />
+        <TextField
+          error={false}
+          // id="standard-error-helper-text"
+          label="Display name"
+          defaultValue="Hello World"
+          // helperText="Not allowed"
+        />
+      </div>
     </div>
   )
 };
