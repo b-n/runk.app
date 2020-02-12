@@ -8,7 +8,6 @@ import AccountCircle from '@material-ui/icons/AccountCircle';
 import { withRouter } from 'react-router';
 
 // Utils
-// import { useAuth } from '../../stores';
 
 // Components
 
@@ -21,7 +20,6 @@ const useStyles = makeStyles({
 });
 
 const Home = ({ history }: { history: any }): JSX.Element => {
-  // const { auth } = useAuth();
   const classes = useStyles();
   const [ value, setValue ] = React.useState<string>('leagues');
 
@@ -37,7 +35,6 @@ const Home = ({ history }: { history: any }): JSX.Element => {
         <BottomNavigationAction label="Discover" value="discover" icon={<Search />} />
         <BottomNavigationAction label="Profile" value="profile" icon={<AccountCircle />} />
       </BottomNavigation>
-      {/* { auth.isAuthed && 'Authed' } */}
     </div>
   )
 };

@@ -1,7 +1,11 @@
 import React from 'react'
 
-import logo from './../../static/logo.svg';
+import { Logo } from '../../components/Logo'
 
+//Components
+import { GoogleSignIn } from '../../components/LoginButton'
+
+//Utils
 import { useLoginLinks } from '../../hooks/login'
 
 const Login: React.FC = () => {
@@ -10,12 +14,17 @@ const Login: React.FC = () => {
   return (
     <div className="Login">
       <header className="Login-header">
-        <img src={logo} className="Login-logo" alt="logo" />
+        <Logo
+          className="logo"
+          animateTail={true}
+          width={180}
+          height={180}
+        />
       </header>
       <section>
-      {loginLinks && loginLinks.map(({provider, url}) => (
-        <a href={url}>{provider}</a>
-      ))}
+      {loginLinks && loginLinks.length === 1 && (
+        <GoogleSignIn href={loginLinks[0].url}/>
+      )}
       </section>
     </div>
   );
