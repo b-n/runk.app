@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { Typography } from '@material-ui/core';
 import IconButton from '@material-ui/core/IconButton';
@@ -21,22 +21,26 @@ const useStyles = makeStyles({
   },
   logo: {
     paddingRight: '10px',
+  },
+  loading: {
+    display: 'block',
+    margin: '50px auto',
   }
 });
 
 const Leagues: React.FC = () => {
   const classes = useStyles();
-  const { leagues, loadUserLeagues } = useLeagues();
+  const { leagues, loadUserLeagues, isLoading } = useLeagues();
+
+  useEffect(() => {
+    loadUserLeagues()
+  }, [])
 
   return (
     <div>
       <Typography component="h4" variant="h4" className={classes.title} color={'primary'}>
-        <Logo width={35} height={35} className={classes.logo}/>
+        <Logo width={26} height={26} className={classes.logo}/>
         Your leagues
-        {/* Just a testing button to make sure the callouts work*/}
-        <IconButton aria-label="View" onClick={() => loadUserLeagues()}>
-          <Visibility />
-        </IconButton>
       </Typography>
 
       <section>
@@ -51,6 +55,11 @@ const Leagues: React.FC = () => {
               </IconButton>
             </LeagueCard>
           ))
+        }
+        {
+          isLoading && (
+            <Logo width={120} height={120} className={classes.loading} animateTail/>
+          )
         }
       </section>
     </div>

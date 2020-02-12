@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useEffect, useState } from 'react';
 
 import { useAuth } from './auth'
 
@@ -6,21 +6,21 @@ import { League } from '../interfaces/League';
 import { AuthenticationHeader } from '../interfaces/Auth';
 
 interface LeaguesState {
-  league: League | undefined;
-  leagues: League[];
-  hasUserLeagues: boolean;
+  league: League | undefined
+  leagues: League[]
+  isLoading: boolean
 }
 
 interface LeaguesStore extends LeaguesState {
-  getLeague: (id: string) => void;
-  loadUserLeagues: () => void;
+  getLeague: (id: string) => void
+  loadUserLeagues: () => void
 }
 
 interface UserLeague {
-  id: string;
-  displayName: string;
-  description: string;
-  pictureURL: string;
+  id: string
+  displayName: string
+  description: string
+  pictureURL: string
 }
 const getUserLeagues = async (auth: AuthenticationHeader): Promise<Array<League>> => {
   return fetch(
@@ -53,46 +53,53 @@ const getUserLeagues = async (auth: AuthenticationHeader): Promise<Array<League>
 
 const defaultState: LeaguesState = {
   league: undefined,
-  hasUserLeagues: false,
-  leagues: [
-    {
-      id: '123456789',
-      name: 'Guidion Ping Pong',
-      description: 'Guidion Ping Pong league for all those that kick ass',
-      image_url: 'https://freepngimg.com/download/ping_pong/2-2-ping-pong-download-png.png',
-    },
-    {
-      id: '987654321',
-      name: 'Guidion Foosball',
-      description: 'Foosball league for super serious people. Meets every friday.',
-      image_url: 'http://timenerdworld.files.wordpress.com/2013/08/foosball.jpg?w=720&h=480&crop=1',
-    },
-  ],
+  isLoading: false,
+  leagues: [],
 }
 
 const LeaguesContext = createContext({} as LeaguesStore);
 
 export const LeaguesProvider: React.FC = ({ children }) => {
-  const { getAuthenticationHeader } = useAuth()
+  const { isAuthed, isAuthing, authenticationHeader } = useAuth()
+
   const [ state, setState ] = useState(defaultState)
 
   const getLeague = async (id: string) => {
-    const authHeader = await getAuthenticationHeader()
-    console.log(authHeader)
     setState({
       ...state
     })
   }
 
   const loadUserLeagues = () => {
-    getAuthenticationHeader()
-      .then(getUserLeagues)
-      .then(result => setState({
-        ...state,
-        leagues: result
-      }))
+    setState({
+      ...state,
+      isLoading: true,
+      leagues: [],
+    })
+  
   }
 
+  useEffect(() => {
+    if (state.isLoading && !isAuthing) {
+      if (!isAuthed || !authenticationHeader) {
+        setState({
+          ...state,
+          isLoading: false,
+          leagues: [],
+        })
+        return
+      }
+      getUserLeagues(authenticationHeader)
+        .then(result => {
+          setState({
+            ...state,
+            isLoading: false,
+            leagues: result
+          })
+        })
+    }
+  }, [ state.isLoading, isAuthing ])
+  
   return (
     <LeaguesContext.Provider
       value= {{
