@@ -6,12 +6,11 @@ import Visibility from '@material-ui/icons/Visibility';
 import Add from '@material-ui/icons/Add';
 
 // Utils
-import { useLeagues } from '../../stores';
+import { useLeagues, useLeaguesMutations } from '../../stores/leagues';
 
 // Components
 import { Logo } from '../../components/Logo'
 import { LeagueCard } from '../../components/league';
-import { useUpdateLeagues } from '../../stores/leagues';
 
 
 const useStyles = makeStyles({
@@ -32,7 +31,7 @@ const useStyles = makeStyles({
 const Leagues: React.FC = () => {
   const classes = useStyles();
   const { leagues, isLoading } = useLeagues();
-  const { loadUserLeagues } = useUpdateLeagues();
+  const { loadUserLeagues } = useLeaguesMutations();
 
   useEffect(() => {
     loadUserLeagues()
