@@ -1,11 +1,11 @@
-import * as React from 'react';
+import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import BottomNavigation from '@material-ui/core/BottomNavigation';
 import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
 import SupervisedUserCircle from '@material-ui/icons/SupervisedUserCircle';
 import Search from '@material-ui/icons/Search';
 import AccountCircle from '@material-ui/icons/AccountCircle';
-import { withRouter } from 'react-router';
+import { useLocation, useHistory } from 'react-router';
 
 // Utils
 
@@ -19,18 +19,26 @@ const useStyles = makeStyles({
   },
 });
 
-const Navigation = ({ history }: { history: any }): JSX.Element => {
+const Navigation: React.FC = () => {
   const classes = useStyles();
-  const [ value, setValue ] = React.useState<string>('leagues');
+  const [ currentTab, setCurrentTab ] = useState<string>('leagues');
+
+  const location = useLocation()
+  const history = useHistory()
+
+  useEffect(() => {
+    const [ _, path ]= location.pathname.split('/')
+    setCurrentTab(path || 'leagues')
+  }, [location.pathname])
 
   const handleChange = (event: React.ChangeEvent<{}>, newValue: string) => {
-    setValue(newValue);
+    setCurrentTab(newValue);
     history.push(newValue);
   };
 
   return (
     <div>
-      <BottomNavigation value={value} onChange={handleChange} className={classes.bottomNavigation}>
+      <BottomNavigation value={currentTab} onChange={handleChange} className={classes.bottomNavigation}>
         <BottomNavigationAction label="Leagues" value="leagues" icon={<SupervisedUserCircle />} />
         <BottomNavigationAction label="Discover" value="discover" icon={<Search />} />
         <BottomNavigationAction label="Profile" value="profile" icon={<AccountCircle />} />
@@ -39,4 +47,4 @@ const Navigation = ({ history }: { history: any }): JSX.Element => {
   )
 };
 
-export default withRouter(Navigation);
+export { Navigation }

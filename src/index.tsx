@@ -18,7 +18,7 @@ import {
   AuthCallback,
 } from './pages'
 
-import Navigation from './pages/common/Navigation'
+import { Navigation } from './pages/common/Navigation'
 
 import { GlobalProvider, useAuth } from './stores'
 
