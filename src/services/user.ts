@@ -9,6 +9,7 @@ const getUser = async (authenticationHeader: AuthenticationHeader): Promise<User
       return {
         name: result.displayName,
         img: result.pictureURL,
+        id: result.id,
       }
     })
 }
