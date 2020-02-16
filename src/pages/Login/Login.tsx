@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { Logo } from '../../components/Logo'
+import { Logo } from '../common/Logo'
 
 //Components
 import { GoogleSignIn } from '../../components/LoginButton'

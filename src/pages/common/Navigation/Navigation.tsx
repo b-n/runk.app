@@ -19,7 +19,7 @@ const useStyles = makeStyles({
   },
 });
 
-const Home = ({ history }: { history: any }): JSX.Element => {
+const Navigation = ({ history }: { history: any }): JSX.Element => {
   const classes = useStyles();
   const [ value, setValue ] = React.useState<string>('leagues');
 
@@ -39,4 +39,4 @@ const Home = ({ history }: { history: any }): JSX.Element => {
   )
 };
 
-export default withRouter(Home);
+export default withRouter(Navigation);

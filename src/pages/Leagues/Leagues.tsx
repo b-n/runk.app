@@ -9,7 +9,7 @@ import Add from '@material-ui/icons/Add';
 import { useLeagues, useLeaguesMutations } from '../../stores/leagues';
 
 // Components
-import { Logo } from '../../components/Logo'
+import { Logo } from '../common/Logo'
 import { LeagueCard } from '../../components/league';
 
 
