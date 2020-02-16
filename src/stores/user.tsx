@@ -12,7 +12,6 @@ interface UserStore {
 };
 
 interface UserMutations {
-  setName: (name: string) => void;
   loadUser: () => void;
 }
 
@@ -31,16 +30,6 @@ export const UserProvider: React.FC = ({ children }) => {
     setState({
       ...state,
       isLoading: true,
-    })
-  }
-
-  const setName = (name: string) => {
-    setState({
-      ...state,
-      user: {
-        ...state.user,
-        name,
-      }
     })
   }
 
@@ -67,7 +56,6 @@ export const UserProvider: React.FC = ({ children }) => {
     <UserContext.Provider value={state} >
       <UserMutationContext.Provider
         value={{
-          setName,
           loadUser,
         }}
       >
