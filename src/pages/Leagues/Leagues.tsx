@@ -6,7 +6,7 @@ import Visibility from '@material-ui/icons/Visibility';
 import Add from '@material-ui/icons/Add';
 
 // Utils
-import { useLeagues, useLeaguesMutations } from '../../stores/leagues';
+import { useLeagues, useLeaguesMutations } from '../../stores';
 
 // Components
 import { Logo } from '../common/Logo'

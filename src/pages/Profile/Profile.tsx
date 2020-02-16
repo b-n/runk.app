@@ -1,12 +1,11 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { Avatar, Typography, TextField } from '@material-ui/core';
 
 // Utils
-import { useUser } from '../../stores';
+import { useUser, useUserMutations } from '../../stores';
 
 // Components
-
 
 const useStyles = makeStyles({
   container: {
@@ -28,23 +27,26 @@ const useStyles = makeStyles({
 
 const Profile: React.FC = () => {
   const classes = useStyles();
+  const { loadUser } = useUserMutations();
   const { user } = useUser();
+
+  useEffect(() => {
+    loadUser();
+  }, [])
 
   return (
     <div>
       <Typography component="h4" variant="h4" className={classes.title} color={'primary'}>
         Profile
       </Typography>
-      <div className={classes.container}>
+      {user && <div className={classes.container}>
         <Avatar alt={user.name} src={user.img} className={classes.large} variant="circle" />
         <TextField
           error={false}
-          // id="standard-error-helper-text"
           label="Display name"
-          defaultValue="Hello World"
-          // helperText="Not allowed"
+          defaultValue={user.name}
         />
-      </div>
+      </div>}
     </div>
   )
 };

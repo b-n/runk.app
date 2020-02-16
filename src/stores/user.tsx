@@ -1,26 +1,81 @@
-import React, { createContext, Dispatch, SetStateAction, useContext, useState } from 'react';
+import React, { createContext, useContext, useState, useEffect } from 'react';
+
+import UserService from '../services/user';
 
 import { User } from '../interfaces/User';
 
+import { useAuth } from './auth'
+
 interface UserStore {
-  user: User;
-  setUser: Dispatch<SetStateAction<User>>;
+  user?: User;
+  isLoading: boolean;
 };
 
+interface UserMutations {
+  setName: (name: string) => void;
+  loadUser: () => void;
+}
+
 const UserContext = createContext({} as UserStore);
+const UserMutationContext = createContext({} as UserMutations);
 
 export const UserProvider: React.FC = ({ children }) => {
-  const [ user, setUser ] = useState<User>({ name: 'testing_name', img: 'https://cdn.shopify.com/s/files/1/0739/6727/products/reflective-motorcycle-sticker-fuck-you-2-pack_2000x.png?v=1499661563' });
+  const { isAuthed, isAuthing, authenticationHeader } = useAuth();
+
+
+  const [ state, setState ] = useState<UserStore>({
+    isLoading: false,
+  })
+
+  const loadUser = () => {
+    setState({
+      ...state,
+      isLoading: true,
+    })
+  }
+
+  const setName = (name: string) => {
+    setState({
+      ...state,
+      user: {
+        ...state.user,
+        name,
+      }
+    })
+  }
+
+  useEffect(() => {
+    if (state.isLoading && !isAuthing) {
+      if (!isAuthed || !authenticationHeader) {
+        setState({
+          ...state,
+          user: undefined,
+          isLoading: false,
+        })
+        return
+      }
+
+      UserService.getUser(authenticationHeader)
+        .then(user => setState({
+          ...state,
+          user,
+        }))
+    }
+  }, [state.isLoading, isAuthing])
 
   return (
-    <UserContext.Provider
-      value= {{
-        user,
-        setUser
-      }}
-      children={children}
-    />
+    <UserContext.Provider value={state} >
+      <UserMutationContext.Provider
+        value={{
+          setName,
+          loadUser,
+        }}
+      >
+        {children}
+      </UserMutationContext.Provider>
+    </UserContext.Provider>
   )
 };
 
 export const useUser = () => useContext(UserContext);
+export const useUserMutations = () => useContext(UserMutationContext);

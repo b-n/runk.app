@@ -10,7 +10,7 @@ interface LeaguesState {
   isLoading: boolean
 }
 
-interface LeaguesMutationStore {
+interface LeaguesMutations {
   getLeague: (id: string) => void
   loadUserLeagues: () => void
 }
@@ -22,7 +22,7 @@ const defaultState: LeaguesState = {
 };
 
 export const LeaguesContext = createContext({} as LeaguesState);
-export const LeaguesMutationContext = createContext({} as LeaguesMutationStore);
+export const LeaguesMutationContext = createContext({} as LeaguesMutations);
 
 const LeaguesProvider: React.FC = ({ children }) => {
   const { isAuthed, isAuthing, authenticationHeader } = useAuth();
