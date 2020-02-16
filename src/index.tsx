@@ -5,47 +5,63 @@ import {
   Switch,
   Route,
   Redirect,
+  RouteProps,
 } from 'react-router-dom'
 
 import './index.css';
 
 import {
-  Home,
   Login,
+  Discover,
+  Leagues,
+  Profile,
   AuthCallback,
 } from './pages'
 
-import { GlobalProvider } from './stores'
+import Navigation from './pages/common/Navigation'
+
+import { GlobalProvider, useAuth } from './stores'
 
 import * as serviceWorker from './serviceWorker';
-import { Discover } from './pages/Discover';
-import { Leagues } from './pages/Leagues';
-import { Profile } from './pages/Profile';
+
+const PrivateRoute: React.FC<RouteProps> = ({ children, ...rest }) => {
+  const { isAuthing, isAuthed } = useAuth()
+  return (
+    <Route {...rest} render={(props) => (
+      !isAuthing && !isAuthed
+        ? <Redirect to={{
+            pathname: '/login',
+            state: { from: props.location }
+        }} />
+        : <>{ children }</>
+    )} />
+  )
+}
 
 ReactDOM.render(
   <GlobalProvider>
     <Router>
       <Switch>
-        <Route exact path="/">
+        <PrivateRoute exact path="/">
           <Leagues />
-        </Route>
+        </PrivateRoute>
         <Route exact path="/login">
           <Login />
         </Route>
         <Route exact path="/auth/callback">
           <AuthCallback />
         </Route>
-        <Route exact path="/discover">
+        <PrivateRoute exact path="/discover">
           <Discover />
-        </Route>
-        <Route exact path="/leagues">
-          <Redirect to={'/'} />
-        </Route>
-        <Route exact path="/profile">
+        </PrivateRoute>
+        <PrivateRoute exact path="/leagues">
+          <Leagues />
+        </PrivateRoute>
+        <PrivateRoute exact path="/profile">
           <Profile />
-        </Route>
+        </PrivateRoute>
       </Switch>
-      <Home />
+      <Navigation />
     </Router>
   </GlobalProvider>,
   document.getElementById('root')
