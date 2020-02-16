@@ -10,6 +10,8 @@ interface SVGIdProps {
 
 const SVGId: React.FC<SVGIdProps> = ({ id, width, height, className }: SVGIdProps) => {
   const startHue = hsl('#' + id.substring(0,6))
+  startHue.s = 0.75;
+  startHue.l = 0.6;
 
   return (
     <svg width={width} height={height} className={className} viewBox="0 0 200 200">
