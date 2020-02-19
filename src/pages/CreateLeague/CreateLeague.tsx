@@ -1,0 +1,122 @@
+import React, { useState } from 'react';
+import { makeStyles } from '@material-ui/core/styles';
+import { Typography } from '@material-ui/core';
+import Paper from '@material-ui/core/Paper';
+import Button from '@material-ui/core/Button';
+import Avatar from '@material-ui/core/Avatar';
+import TextField from '@material-ui/core/TextField';
+import { useHistory } from 'react-router-dom';
+
+// Utils
+import { NewLeague } from '../../interfaces/League'
+import { useLeagueService } from '../../services/leagues'
+
+// Components
+
+const useStyles = makeStyles({
+  root: {
+    display: 'flex',
+    flexDirection: 'column',
+    margin: 10,
+    padding: 20,
+  },
+  title: {
+    flex: 1,
+    margin: 0,
+    padding: '10px 20px',
+  },
+  avatar: {
+    width: '120px',
+    height: '120px',
+    alignSelf: 'center',
+  },
+  buttons: {
+    marginTop: '1em',
+    alignSelf: 'flex-end',
+  },
+  save: {
+    marginLeft: '1em',
+  }
+});
+
+const CreateLeague: React.FC = () => {
+  const classes = useStyles();
+  const LeagueService = useLeagueService();
+  const history = useHistory();
+  const [ newLeague, setNewLeague ] = useState({
+    name: '',
+    description: '',
+  } as NewLeague);
+
+  const handleChange = (field: string) => (event: React.ChangeEvent<HTMLInputElement>) => {
+    setNewLeague({
+      ...newLeague,
+      [field]: event.target.value,
+    })
+  }
+
+  const saveLeague = async () => {
+    LeagueService.createLeague(newLeague)
+      .then(league => {
+        console.log(league);
+        history.push('/leagues');
+      })
+  }
+
+  return (
+    <div>
+      <Typography component="h4" variant="h4" className={classes.title} color={'primary'}>
+        New League
+      </Typography>
+      <Paper className={classes.root}>
+        <Avatar
+          src={newLeague.image_url}
+          alt={newLeague.name.substring(1)}
+          variant="rounded"
+          className={classes.avatar}
+        />
+        <TextField
+          error={false}
+          label={'Avatar URL'}
+          value={newLeague.image_url}
+          margin="normal"
+          onChange={handleChange('image_url')}
+        />
+        <TextField
+          error={false}
+          label={'League Name'}
+          margin="normal"
+          value={newLeague.name}
+          onChange={handleChange('name')}
+        />
+        <TextField
+          error={false}
+          label={'Description'}
+          margin="normal"
+          value={newLeague.description}
+          onChange={handleChange('description')}
+          multiline
+        />
+        <section className={classes.buttons}>
+          <Button 
+            color="default"
+            onClick={() => history.push('/leagues')}
+          >
+            Cancel
+          </Button>
+          <Button
+            variant="contained"
+            color="primary"
+            className={classes.save}
+            disableElevation
+            onClick={() => saveLeague()}
+          >
+            Create
+          </Button>
+        </section>
+      </Paper>
+    </div>
+  )
+};
+
+export default React.memo(CreateLeague);

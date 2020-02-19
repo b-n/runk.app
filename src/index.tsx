@@ -14,6 +14,7 @@ import {
   Login,
   Discover,
   Leagues,
+  CreateLeague,
   Profile,
   AuthCallback,
 } from './pages'
@@ -56,6 +57,9 @@ ReactDOM.render(
         </PrivateRoute>
         <PrivateRoute exact path="/leagues">
           <Leagues />
+        </PrivateRoute>
+        <PrivateRoute exact path="/leagues/create">
+          <CreateLeague />
         </PrivateRoute>
         <PrivateRoute exact path="/profile">
           <Profile />

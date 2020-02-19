@@ -3,6 +3,7 @@ import { AuthCallback } from './Auth';
 import { Leagues } from './Leagues';
 import { Discover } from './Discover';
 import { Profile } from './Profile';
+import { CreateLeague } from './CreateLeague';
 
 export {
   AuthCallback,
@@ -10,4 +11,5 @@ export {
   Leagues,
   Discover,
   Profile,
+  CreateLeague,
 };

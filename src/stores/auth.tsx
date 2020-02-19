@@ -3,7 +3,7 @@ import addSeconds from 'date-fns/addSeconds'
 
 import { AuthToken, AuthenticationHeader } from '../interfaces/Auth';
 
-interface AuthState {
+export interface AuthState {
   isAuthed: boolean
   isAuthing: boolean
   token?: AuthToken
