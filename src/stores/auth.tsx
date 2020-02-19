@@ -10,11 +10,13 @@ export interface AuthState {
   authenticationHeader?: AuthenticationHeader
 }
 
-interface AuthStore extends AuthState {
+interface AuthMutations {
   doAuth: (code: string, authState: string) => Promise<boolean>
-};
+  logout: () => void
+}
 
-const context = createContext({} as AuthStore);
+const AuthContext = createContext({} as AuthState);
+const AuthMutationContext = createContext({} as AuthMutations)
 
 const getAuthToken = async (code: string, state: string): Promise<AuthToken> => {
   return fetch(
@@ -107,6 +109,15 @@ export const AuthProvider: React.FC = ({ children }) => {
     }
   }, [ state.isAuthed ])
 
+  const logout = () => {
+    localStorage.removeItem('AuthToken')
+    setState({
+      token: undefined,
+      isAuthed: false,
+      isAuthing: false,
+    })
+  }
+
   const doAuth = async (code: string, authState: string): Promise<boolean> => {
     return getAuthToken(code, authState)
       .then(result => {
@@ -120,14 +131,16 @@ export const AuthProvider: React.FC = ({ children }) => {
   }
 
   return (
-    <context.Provider
-      value= {{
-        ...state,
+    <AuthContext.Provider value= {state}>
+      <AuthMutationContext.Provider value={{
         doAuth,
-      }}
-      children={children}
-    />
+        logout,
+      }}>
+        {children}
+      </AuthMutationContext.Provider>
+    </AuthContext.Provider>
   )
 };
 
-export const useAuth = () => useContext(context);
+export const useAuth = () => useContext(AuthContext);
+export const useAuthMutations = () => useContext(AuthMutationContext)

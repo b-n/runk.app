@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 
 import { Logo } from '../common/Logo'
 
@@ -6,10 +6,16 @@ import { Logo } from '../common/Logo'
 import { GoogleSignIn } from '../../components/LoginButton'
 
 //Utils
+import { useAuthMutations } from '../../stores'
 import { useLoginLinks } from '../../hooks/login'
 
 const Login: React.FC = () => {
   const loginLinks = useLoginLinks();
+  const { logout } = useAuthMutations();
+
+  useEffect(() => {
+    logout();
+  }, [])
 
   return (
     <div className="Login">

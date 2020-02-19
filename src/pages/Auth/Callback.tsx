@@ -8,7 +8,7 @@ import {
   Link,
 } from 'react-router-dom';
 
-import { useAuth } from '../../stores';
+import { useAuthMutations } from '../../stores';
 
 const Callback: React.FC = () => {
   const location = useLocation();
@@ -17,7 +17,7 @@ const Callback: React.FC = () => {
 
   const [status, setStatus] = useState('Waiting');
 
-  const { doAuth } = useAuth();
+  const { doAuth } = useAuthMutations();
 
   useEffect(() => {
     doAuth(code as string, state as string)

@@ -1,8 +1,12 @@
 import { AuthenticationHeader } from '../interfaces/Auth'
 import { User } from '../interfaces/User'
 import { getUserInfo } from '../api/user'
+import { useAuth, AuthState } from '../stores/auth'
 
-const getUser = async (authenticationHeader: AuthenticationHeader): Promise<User> => {
+const getUser = ({ authenticationHeader, isAuthed}: AuthState) => async (): Promise<User> => {
+  if (!isAuthed || !authenticationHeader) {
+    throw new Error('Need to be authenticated')
+  }
   return getUserInfo(authenticationHeader)
     .then(result => result.json())
     .then(result => {
@@ -14,6 +18,10 @@ const getUser = async (authenticationHeader: AuthenticationHeader): Promise<User
     })
 }
 
-export default {
-  getUser
+export const useUserService = () => {
+  const auth = useAuth()
+
+  return {
+    getUser: getUser(auth),
+  }
 }

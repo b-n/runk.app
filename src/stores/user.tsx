@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 
-import UserService from '../services/user';
+import { useUserService } from '../services/user';
 
 import { User } from '../interfaces/User';
 
@@ -20,7 +20,7 @@ const UserMutationContext = createContext({} as UserMutations);
 
 export const UserProvider: React.FC = ({ children }) => {
   const { isAuthed, isAuthing, authenticationHeader } = useAuth();
-
+  const UserService = useUserService();
 
   const [ state, setState ] = useState<UserStore>({
     isLoading: false,
@@ -44,7 +44,7 @@ export const UserProvider: React.FC = ({ children }) => {
         return
       }
 
-      UserService.getUser(authenticationHeader)
+      UserService.getUser()
         .then(user => setState({
           ...state,
           user,
