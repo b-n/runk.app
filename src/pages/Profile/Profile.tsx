@@ -1,11 +1,13 @@
 import React, { useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import { Avatar, Typography, TextField } from '@material-ui/core';
+import Avatar from '@material-ui/core/Avatar'
+import TextField from '@material-ui/core/TextField'
 
 // Utils
 import { useUser, useUserMutations } from '../../stores';
 
 // Components
+import Title from '../../components/Title'
 import { SVGId } from '../common/SVGId'
 
 const useStyles = makeStyles({
@@ -13,11 +15,6 @@ const useStyles = makeStyles({
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
-  },
-  title: {
-    flex: 1,
-    margin: 0,
-    padding: '10px 20px',
   },
   large: {
     width: 200,
@@ -40,10 +37,10 @@ const Profile: React.FC = () => {
 
   return (
     <div>
-      <Typography component="h4" variant="h4" className={classes.title} color={'primary'}>
+      <Title>
         {user && <SVGId id={user.id} width={26} height={26} className={classes.icon}/>}
         Profile
-      </Typography>
+      </Title>
       {user && <div className={classes.container}>
         <Avatar alt={user.name} src={user.img} className={classes.large} variant="circle" />
         <TextField

@@ -12,17 +12,13 @@ import { useHistory } from 'react-router-dom';
 import { useLeagues, useLeaguesMutations } from '../../stores';
 
 // Components
+import Title from '../../components/Title'
 import { Logo } from '../common/Logo'
 import { LeagueCard } from '../../components/league';
 import { InformationBox } from '../../components/InformationBox'
 
 
 const useStyles = makeStyles({
-  title: {
-    flex: 1,
-    margin: 0,
-    padding: '10px 20px',
-  },
   logo: {
     paddingRight: '10px',
   },
@@ -49,10 +45,10 @@ const Leagues: React.FC = () => {
 
   return (
     <div>
-      <Typography component="h4" variant="h4" className={classes.title} color={'primary'}>
+      <Title>
         <Logo width={26} height={26} className={classes.logo}/>
         Your leagues
-      </Typography>
+      </Title>
 
       <section>
         {

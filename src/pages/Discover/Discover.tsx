@@ -1,5 +1,4 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
 import { Typography } from '@material-ui/core';
 import IconButton from '@material-ui/core/IconButton';
 import Visibility from '@material-ui/icons/Visibility';
@@ -8,26 +7,15 @@ import Visibility from '@material-ui/icons/Visibility';
 import { useDiscover } from '../../stores';
 
 // Components
+import Title from '../../components/Title'
 import { LeagueCard } from '../../components/league';
 
-
-const useStyles = makeStyles({
-  title: {
-    flex: 1,
-    margin: 0,
-    padding: '10px 20px',
-  },
-});
-
 const Discover: React.FC = () => {
-  const classes = useStyles();
   const { leagues } = useDiscover();
 
   return (
     <div>
-      <Typography component="h4" variant="h4" className={classes.title} color={'primary'}>
-        Discover
-      </Typography>
+      <Title>Discover</Title>
       <section>
         {
           leagues.map(league => (

@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import { Typography } from '@material-ui/core';
 import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
 import Avatar from '@material-ui/core/Avatar';
@@ -12,6 +11,7 @@ import { NewLeague } from '../../interfaces/League'
 import { useLeagueService } from '../../services/leagues'
 
 // Components
+import Title from '../../components/Title'
 
 const useStyles = makeStyles({
   root: {
@@ -19,11 +19,6 @@ const useStyles = makeStyles({
     flexDirection: 'column',
     margin: 10,
     padding: 20,
-  },
-  title: {
-    flex: 1,
-    margin: 0,
-    padding: '10px 20px',
   },
   avatar: {
     width: '120px',
@@ -65,9 +60,7 @@ const CreateLeague: React.FC = () => {
 
   return (
     <div>
-      <Typography component="h4" variant="h4" className={classes.title} color={'primary'}>
-        New League
-      </Typography>
+      <Title>New League</Title>
       <Paper className={classes.root}>
         <Avatar
           src={newLeague.image_url}
