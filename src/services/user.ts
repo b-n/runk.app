@@ -1,4 +1,3 @@
-import { AuthenticationHeader } from '../interfaces/Auth'
 import { User } from '../interfaces/User'
 import { getUserInfo } from '../api/user'
 import { useAuth, AuthState } from '../stores/auth'
