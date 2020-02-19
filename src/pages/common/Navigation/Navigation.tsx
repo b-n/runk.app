@@ -33,7 +33,7 @@ const Navigation: React.FC = () => {
 
   const handleChange = (event: React.ChangeEvent<{}>, newValue: string) => {
     setCurrentTab(newValue);
-    history.push(newValue);
+    history.push(`/${newValue}`);
   };
 
   return (
