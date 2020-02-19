@@ -13,6 +13,7 @@ import './index.css';
 import {
   Login,
   Discover,
+  League,
   Leagues,
   CreateLeague,
   Profile,
@@ -57,6 +58,9 @@ ReactDOM.render(
         </PrivateRoute>
         <PrivateRoute exact path="/leagues">
           <Leagues />
+        </PrivateRoute>
+        <PrivateRoute exact path="/league/:id">
+          <League />
         </PrivateRoute>
         <PrivateRoute exact path="/leagues/create">
           <CreateLeague />

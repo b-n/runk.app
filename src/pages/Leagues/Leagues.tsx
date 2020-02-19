@@ -73,7 +73,7 @@ const Leagues: React.FC = () => {
         {
           leagues.map(league => (
             <LeagueCard league={league} key={league.id}>
-              <IconButton aria-label="View">
+              <IconButton aria-label="View" onClick={() => history.push(`/league/${league.id}`)}>
                 <Visibility />
               </IconButton>
               <IconButton aria-label="New match">

@@ -1,6 +1,6 @@
 import { League, NewLeague } from '../interfaces/League';
 import { getUserInfo } from '../api/user';
-import { putLeague } from '../api/league';
+import { putLeague, query } from '../api/league';
 import { useAuth, AuthState } from '../stores/auth';
 
 interface UserLeague {
@@ -46,11 +46,37 @@ const createLeague = ({ isAuthed, authenticationHeader }: AuthState) => async (l
     })
 }
 
+const getById = ({ isAuthed, authenticationHeader }: AuthState) => async (id: string): Promise<League> => {
+  if (!isAuthed || !authenticationHeader) {
+    throw new Error('Need to be authenticated')
+  }
+
+  return query({ id }, authenticationHeader)
+    .then(result => result.json())
+    .then(result => {
+      return {
+        id: result.id,
+        name: result.displayName,
+        description: result.description,
+        image_url: result.pictureURL,
+        players_amount: result.users.length,
+        players: Object.values(result.users).map((user: any) => ({
+          name: user.displayName,
+          score: user.score,
+          id: user.id,
+          role: user.role,
+          image_url: user.pictureURL,
+        })),
+      }
+    })
+}
+
 export const useLeagueService = () => {
   const auth = useAuth()
 
   return {
     createLeague: createLeague(auth),
     getUserLeagues: getUserLeagues(auth),
+    getById: getById(auth),
   }
 }

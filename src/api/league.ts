@@ -17,3 +17,23 @@ export const putLeague = async (league: NewLeague, auth: AuthenticationHeader): 
     }
   );
 };
+
+interface QueryOptions {
+  id?: string
+}
+
+export const query = async({ id }: QueryOptions, auth: AuthenticationHeader): Promise<Response> => {
+  if (id) {
+    return fetch(
+      `${process.env.REACT_APP_SERVER}/league/${id}`,
+      {
+        method: 'GET',
+        headers: {
+          ...auth,
+        },
+      }
+    );
+  }
+
+  throw new Error('Unsupported Query')
+}
