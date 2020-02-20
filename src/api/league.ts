@@ -37,3 +37,20 @@ export const query = async({ id }: QueryOptions, auth: AuthenticationHeader): Pr
 
   throw new Error('Unsupported Query')
 }
+
+interface ActionProps {
+  id: string
+  action: string
+}
+
+export const doAction = async({id, action}: ActionProps, auth: AuthenticationHeader): Promise<Response> => {
+  return fetch(
+    `${process.env.REACT_APP_SERVER}/league/${id}/${action}`,
+    {
+      method: 'POST',
+      headers: {
+        ...auth,
+      },
+    }
+  );
+}

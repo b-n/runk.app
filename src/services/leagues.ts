@@ -1,6 +1,6 @@
 import { League, NewLeague } from '../interfaces/League';
 import { getUserInfo } from '../api/user';
-import { putLeague, query } from '../api/league';
+import { putLeague, query, doAction } from '../api/league';
 import { useAuth, AuthState } from '../stores/auth';
 
 interface UserLeague {
@@ -71,6 +71,24 @@ const getById = ({ isAuthed, authenticationHeader }: AuthState) => async (id: st
     })
 }
 
+const join = ({ isAuthed, authenticationHeader }: AuthState) => async (id: string): Promise<void> => {
+  if (!isAuthed || !authenticationHeader) {
+    throw new Error('Need to be authenticated')
+  }
+
+  return doAction({ id, action: 'join' }, authenticationHeader)
+    .then(() => undefined)
+}
+
+const leave = ({ isAuthed, authenticationHeader }: AuthState) => async (id: string): Promise<void> => {
+  if (!isAuthed || !authenticationHeader) {
+    throw new Error('Need to be authenticated')
+  }
+
+  return doAction({ id, action: 'leave' }, authenticationHeader)
+    .then(() => undefined)
+}
+
 export const useLeagueService = () => {
   const auth = useAuth()
 
@@ -78,5 +96,7 @@ export const useLeagueService = () => {
     createLeague: createLeague(auth),
     getUserLeagues: getUserLeagues(auth),
     getById: getById(auth),
+    join: join(auth),
+    leave: leave(auth),
   }
 }
