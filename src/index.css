@@ -10,5 +10,6 @@ body {
 
 body .container {
   max-height: calc(100vh - 56px);
-  overflow: scroll;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
