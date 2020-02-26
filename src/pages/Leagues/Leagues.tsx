@@ -41,7 +41,7 @@ const Leagues: React.FC = () => {
 
   useEffect(() => {
     loadUserLeagues()
-  }, [])
+  }, [ loadUserLeagues ])
 
   return (
     <div>

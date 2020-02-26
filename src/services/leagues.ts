@@ -1,6 +1,7 @@
+import { AuthenticationHeader } from '../interfaces/Auth'
 import { League, NewLeague } from '../interfaces/League';
 import { getUserInfo } from '../api/user';
-import { putLeague, query, doAction } from '../api/league';
+import { putLeague, query, doAction, getDiscover } from '../api/league';
 import { useAuth, AuthState } from '../stores/auth';
 
 interface UserLeague {
@@ -10,30 +11,27 @@ interface UserLeague {
   pictureURL: string
 }
 
-const getUserLeagues = ({ isAuthed, authenticationHeader }: AuthState) => async (): Promise<Array<League>> => {
-  if (!isAuthed || !authenticationHeader) {
-    throw new Error('Need to be authenticated')
-  }
+const getUserLeagues = async (authenticationHeader: AuthenticationHeader): Promise<Array<League>> => {
   return getUserInfo(authenticationHeader)
     .then(result => result.json())
     .then(result => {
       return Object.values(result.leagues).map(league => {
-        const {
-          id,
-          description,
-          displayName,
-          pictureURL,
-        } = league as UserLeague
-
+        const { id, description, displayName, pictureURL } = league as UserLeague
         return {
           id,
-          name: displayName,
-          image_url: pictureURL,
+          displayName,
           description,
+          pictureURL,
         }
       })
     });
 };
+
+const getDiscoverLeagues = async (): Promise<Array<League>> => {
+  return getDiscover()
+    .then(result => result.json())
+    .then(result => result as Array<League>)
+}
 
 const createLeague = ({ isAuthed, authenticationHeader }: AuthState) => async (league: NewLeague): Promise<League> => {
   if (!isAuthed || !authenticationHeader) {
@@ -46,27 +44,18 @@ const createLeague = ({ isAuthed, authenticationHeader }: AuthState) => async (l
     })
 }
 
-const getById = ({ isAuthed, authenticationHeader }: AuthState) => async (id: string): Promise<League> => {
-  if (!isAuthed || !authenticationHeader) {
-    throw new Error('Need to be authenticated')
-  }
-
+const getById = async (authenticationHeader: AuthenticationHeader, id: string): Promise<League> => {
   return query({ id }, authenticationHeader)
     .then(result => result.json())
     .then(result => {
+      const { id, displayName, description, pictureURL, users } = result
       return {
-        id: result.id,
-        name: result.displayName,
-        description: result.description,
-        image_url: result.pictureURL,
-        players_amount: result.users.length,
-        players: Object.values(result.users).map((user: any) => ({
-          name: user.displayName,
-          score: user.score,
-          id: user.id,
-          role: user.role,
-          image_url: user.pictureURL,
-        })),
+        id,
+        displayName,
+        description,
+        pictureURL,
+        userAmount: users.length, 
+        users,
       }
     })
 }
@@ -76,7 +65,7 @@ const join = ({ isAuthed, authenticationHeader }: AuthState) => async (id: strin
     throw new Error('Need to be authenticated')
   }
 
-  return doAction({ id, action: 'join' }, authenticationHeader)
+  return doAction({ id, action: 'join', body: { inviteCode:  null } }, authenticationHeader)
     .then(() => undefined)
 }
 
@@ -94,9 +83,10 @@ export const useLeagueService = () => {
 
   return {
     createLeague: createLeague(auth),
-    getUserLeagues: getUserLeagues(auth),
-    getById: getById(auth),
+    getUserLeagues,
+    getById,
     join: join(auth),
     leave: leave(auth),
+    getDiscoverLeagues,
   }
 }

@@ -7,21 +7,26 @@ import { League } from '../../../interfaces/League'
 
 interface RunkingProps {
   league: League
+  onClick: (id: string) => void
 }
 
-const Runking: React.FC<RunkingProps>  = ({ league }) => (
-  <>
-    {
-      league.players && 
-      <RunkeeList>
-        {
-          league.players.map(player => (
-            <Runkee key={player.id} {...player} />
-            ))
-        }
-      </RunkeeList>
-    }
-  </>
-)
+const Runking: React.FC<RunkingProps>  = ({ league, onClick }) => {
+  return (
+    <>
+      {
+        league.users && 
+        <RunkeeList>
+          {
+            Object.values(league.users)
+            .filter(player => player.isActive)
+            .map(player => (
+              <Runkee onClick={onClick} key={player.id} {...player} />
+              ))
+          }
+        </RunkeeList>
+      }
+    </>
+  )
+}
 
 export default React.memo(Runking)

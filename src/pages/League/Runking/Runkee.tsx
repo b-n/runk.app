@@ -22,21 +22,23 @@ const useStyles = makeStyles(() => ({
   }
 }));
 
-interface RunkeeProps extends LeagueUser {}
+interface RunkeeProps extends LeagueUser {
+  onClick: (id: string) => void
+}
 
-const Runkee: React.FC<RunkeeProps> = ({ name, score, id, image_url }) => {
+const Runkee: React.FC<RunkeeProps> = ({ displayName, score, id, pictureURL, onClick }) => {
   const classes = useStyles();
 
   return (
     <>
-      <ListItem button>
+      <ListItem button onClick={() => onClick(id)}>
         <ListItemAvatar>
-          <Avatar src={image_url} alt={name.substring(1)} />
+          <Avatar src={pictureURL} alt={displayName.substring(1)} />
         </ListItemAvatar>
         <ListItemText
           primary={
             <Box component="div" className={classes.content}>
-              <Typography className={classes.name}>{name}</Typography> 
+              <Typography className={classes.name}>{displayName}</Typography> 
               <Typography variant="button" className={classes.score}>{score}</Typography> 
             </Box>
           }

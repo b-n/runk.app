@@ -1,10 +1,10 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Avatar from '@material-ui/core/Avatar'
 import TextField from '@material-ui/core/TextField'
 
 // Utils
-import { useUser, useUserMutations } from '../../stores';
+import { useUser } from '../../stores';
 
 // Components
 import Title from '../../components/Title'
@@ -28,28 +28,28 @@ const useStyles = makeStyles({
 
 const Profile: React.FC = () => {
   const classes = useStyles();
-  const { loadUser } = useUserMutations();
   const { user } = useUser();
 
-  useEffect(() => {
-    loadUser();
-  }, [])
-
   return (
-    <div>
-      <Title>
-        {user && <SVGId id={user.id} width={26} height={26} className={classes.icon}/>}
-        Profile
-      </Title>
-      {user && <div className={classes.container}>
-        <Avatar alt={user.name} src={user.img} className={classes.large} variant="circle" />
-        <TextField
-          error={false}
-          label="Display name"
-          defaultValue={user.name}
-        />
-      </div>}
-    </div>
+    <>
+      {
+        user &&
+        <div>
+          <Title>
+            <SVGId id={user.id} width={26} height={26} className={classes.icon}/>
+            Profile
+          </Title>
+          <div className={classes.container}>
+            <Avatar alt={user.name} src={user.img} className={classes.large} variant="circle" />
+            <TextField
+              error={false}
+              label="Display name"
+              defaultValue={user.name}
+            />
+          </div>
+        </div>
+      }
+    </>
   )
 };
 

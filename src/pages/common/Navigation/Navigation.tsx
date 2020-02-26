@@ -27,7 +27,7 @@ const Navigation: React.FC = () => {
   const history = useHistory()
 
   useEffect(() => {
-    const [ _, path ]= location.pathname.split('/')
+    const path = location.pathname.split('/')[1]
     setCurrentTab(path || 'leagues')
   }, [location.pathname])
 
@@ -37,13 +37,11 @@ const Navigation: React.FC = () => {
   };
 
   return (
-    <div>
-      <BottomNavigation value={currentTab} onChange={handleChange} className={classes.bottomNavigation}>
-        <BottomNavigationAction label="Leagues" value="leagues" icon={<SupervisedUserCircle />} />
-        <BottomNavigationAction label="Discover" value="discover" icon={<Search />} />
-        <BottomNavigationAction label="Profile" value="profile" icon={<AccountCircle />} />
-      </BottomNavigation>
-    </div>
+    <BottomNavigation value={currentTab} onChange={handleChange} className={classes.bottomNavigation}>
+      <BottomNavigationAction label="Leagues" value="leagues" icon={<SupervisedUserCircle />} />
+      <BottomNavigationAction label="Discover" value="discover" icon={<Search />} />
+      <BottomNavigationAction label="Profile" value="profile" icon={<AccountCircle />} />
+    </BottomNavigation>
   )
 };
 

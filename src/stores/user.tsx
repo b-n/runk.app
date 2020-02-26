@@ -19,8 +19,9 @@ const UserContext = createContext({} as UserStore);
 const UserMutationContext = createContext({} as UserMutations);
 
 export const UserProvider: React.FC = ({ children }) => {
-  const { isAuthed, isAuthing, authenticationHeader } = useAuth();
-  const UserService = useUserService();
+  const authState = useAuth();
+  const { isAuthed, initing, authenticationHeader } = authState;
+  const { getUser } = useUserService();
 
   const [ state, setState ] = useState<UserStore>({
     isLoading: false,
@@ -34,23 +35,22 @@ export const UserProvider: React.FC = ({ children }) => {
   }
 
   useEffect(() => {
-    if (state.isLoading && !isAuthing) {
-      if (!isAuthed || !authenticationHeader) {
+    if (!initing) {
+      if (!isAuthed) {
         setState({
-          ...state,
           user: undefined,
           isLoading: false,
         })
         return
       }
 
-      UserService.getUser()
+      getUser(authenticationHeader!)
         .then(user => setState({
-          ...state,
+          isLoading: false,
           user,
         }))
     }
-  }, [state.isLoading, isAuthing])
+  }, [initing, isAuthed, getUser, authenticationHeader])
 
   return (
     <UserContext.Provider value={state} >

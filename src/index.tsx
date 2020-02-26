@@ -43,32 +43,34 @@ const PrivateRoute: React.FC<RouteProps> = ({ children, ...rest }) => {
 ReactDOM.render(
   <GlobalProvider>
     <Router>
-      <Switch>
-        <PrivateRoute exact path="/">
-          <Leagues />
-        </PrivateRoute>
-        <Route exact path="/login">
-          <Login />
-        </Route>
-        <Route exact path="/auth/callback">
-          <AuthCallback />
-        </Route>
-        <PrivateRoute exact path="/discover">
-          <Discover />
-        </PrivateRoute>
-        <PrivateRoute exact path="/leagues">
-          <Leagues />
-        </PrivateRoute>
-        <PrivateRoute exact path="/league/:id">
-          <League />
-        </PrivateRoute>
-        <PrivateRoute exact path="/leagues/create">
-          <CreateLeague />
-        </PrivateRoute>
-        <PrivateRoute exact path="/profile">
-          <Profile />
-        </PrivateRoute>
-      </Switch>
+      <section className="container">
+        <Switch>
+          <PrivateRoute exact path="/">
+            <Leagues />
+          </PrivateRoute>
+          <Route exact path="/login">
+            <Login />
+          </Route>
+          <Route exact path="/auth/callback">
+            <AuthCallback />
+          </Route>
+          <Route exact path="/discover">
+            <Discover />
+          </Route>
+          <PrivateRoute exact path="/leagues">
+            <Leagues />
+          </PrivateRoute>
+          <PrivateRoute exact path="/league/:id">
+            <League />
+          </PrivateRoute>
+          <PrivateRoute exact path="/leagues/create">
+            <CreateLeague />
+          </PrivateRoute>
+          <PrivateRoute exact path="/profile">
+            <Profile />
+          </PrivateRoute>
+        </Switch>
+      </section>
       <Navigation />
     </Router>
   </GlobalProvider>,

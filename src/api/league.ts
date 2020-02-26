@@ -2,6 +2,7 @@ import { AuthenticationHeader } from '../interfaces/Auth';
 import { NewLeague } from '../interfaces/League'
 
 export const putLeague = async (league: NewLeague, auth: AuthenticationHeader): Promise<Response> => {
+  const { displayName, pictureURL, description } = league
   return fetch(
     `${process.env.REACT_APP_SERVER}/league`,
     {
@@ -10,9 +11,9 @@ export const putLeague = async (league: NewLeague, auth: AuthenticationHeader): 
         ...auth,
       },
       body: JSON.stringify({
-        displayName: league.name,
-        pictureURL: league.image_url,
-        description: league.description,
+        displayName,
+        pictureURL,
+        description,
       })
     }
   );
@@ -41,9 +42,10 @@ export const query = async({ id }: QueryOptions, auth: AuthenticationHeader): Pr
 interface ActionProps {
   id: string
   action: string
+  body?: any
 }
 
-export const doAction = async({id, action}: ActionProps, auth: AuthenticationHeader): Promise<Response> => {
+export const doAction = async({ id, action, body }: ActionProps, auth: AuthenticationHeader): Promise<Response> => {
   return fetch(
     `${process.env.REACT_APP_SERVER}/league/${id}/${action}`,
     {
@@ -51,6 +53,16 @@ export const doAction = async({id, action}: ActionProps, auth: AuthenticationHea
       headers: {
         ...auth,
       },
+      body: body ? JSON.stringify(body) : null,
+    }
+  );
+}
+
+export const getDiscover = async(): Promise<Response> => {
+  return fetch(
+    `${process.env.REACT_APP_SERVER}/discover`,
+    {
+      method: 'GET',
     }
   );
 }

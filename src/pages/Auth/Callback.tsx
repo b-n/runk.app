@@ -29,7 +29,7 @@ const Callback: React.FC = () => {
         setStatus('Success');
         history.push('/');
       })
-  }, [code, state]);
+  }, [code, state, doAuth, history]);
 
   return (
     <div>

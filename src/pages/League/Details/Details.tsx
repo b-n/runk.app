@@ -49,14 +49,14 @@ const Details: React.FC<DetailsProps>  = ({ league }) => {
 
   useEffect(() => {
     loadUserLeagues()
-  }, [])
+  }, [ loadUserLeagues ])
 
   useEffect(() => {
     if (!isLoading) {
       const userLeague = leagues.filter(ul => ul.id === league.id)
       setCtaType(userLeague.length > 0 ? 'Leave' : 'Join')
     }
-  }, [ isLoading ])
+  }, [ leagues, league.id, isLoading ])
 
   const handleShare = () => {
     setShareOpen(!shareOpen)
@@ -76,7 +76,7 @@ const Details: React.FC<DetailsProps>  = ({ league }) => {
     <Box m={4} className={classes.root}>
       <Card className={classes.card}>
         <CardMedia
-          image={league.image_url}
+          image={league.pictureURL}
           className={classes.media}
         />
         <CardContent>

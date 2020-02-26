@@ -1,11 +1,10 @@
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import React, { createContext, useContext, useCallback, useEffect, useState } from 'react';
 
 import { useAuth } from './auth'
 import { League } from '../interfaces/League';
 import { useLeagueService } from '../services/leagues';
 
 interface LeaguesState {
-  league: League | undefined
   leagues: League[]
   isLoading: boolean
 }
@@ -16,7 +15,6 @@ interface LeaguesMutations {
 }
 
 const defaultState: LeaguesState = {
-  league: undefined,
   isLoading: false,
   leagues: [],
 };
@@ -25,8 +23,8 @@ export const LeaguesContext = createContext({} as LeaguesState);
 export const LeaguesMutationContext = createContext({} as LeaguesMutations);
 
 const LeaguesProvider: React.FC = ({ children }) => {
-  const LeagueService = useLeagueService();
-  const { isAuthed, isAuthing, authenticationHeader } = useAuth();
+  const { getUserLeagues } = useLeagueService();
+  const { initing, authenticationHeader } = useAuth();
 
   const [ state, setState ] = useState(defaultState);
 
@@ -36,35 +34,25 @@ const LeaguesProvider: React.FC = ({ children }) => {
     });
   };
 
-  const loadUserLeagues = () => {
+  const loadUserLeagues = useCallback(() => {
     setState({
-      ...state,
       isLoading: true,
       leagues: [],
     });
-  };
+  }, [])
 
   useEffect(() => {
-    if (state.isLoading && !isAuthing) {
-      if (!isAuthed || !authenticationHeader) {
-        setState({
-          ...state,
-          isLoading: false,
-          leagues: [],
-        });
-        return;
-      }
+    if (!initing && state.isLoading && authenticationHeader) {
 
-      LeagueService.getUserLeagues()
+      getUserLeagues(authenticationHeader)
         .then(result => {
           setState({
-            ...state,
             isLoading: false,
             leagues: result
           })
         });
     }
-  }, [ state.isLoading, isAuthing ])
+  }, [ initing, state.isLoading, authenticationHeader, getUserLeagues ])
 
   return (
     <LeaguesContext.Provider

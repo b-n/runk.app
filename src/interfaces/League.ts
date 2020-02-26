@@ -1,22 +1,23 @@
 export interface League {
   id?: string;
-  name: string;
+  displayName: string;
   description?: string;
-  image_url?: string;
-  players_amount?: number;
-  players?: Array<LeagueUser>
+  pictureURL?: string;
+  userCount?: number;
+  users?: Record<string, LeagueUser>
 };
 
 export interface LeagueUser {
   id: string
   score: number
-  name: string
-  image_url: string
+  displayName: string
+  pictureURL: string
   role: string
+  isActive: boolean
 }
 
 export interface NewLeague {
-  name: string
+  displayName: string
   description: string
-  image_url: string
+  pictureURL: string
 }

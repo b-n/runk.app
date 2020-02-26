@@ -1,9 +1,10 @@
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import React, { createContext, useContext, useCallback, useEffect, useState } from 'react';
 import addSeconds from 'date-fns/addSeconds'
 
 import { AuthToken, AuthenticationHeader } from '../interfaces/Auth';
 
 export interface AuthState {
+  initing: boolean
   isAuthed: boolean
   isAuthing: boolean
   token?: AuthToken
@@ -52,14 +53,15 @@ const getRefreshedToken = async(refreshToken: string): Promise<AuthToken> => {
 
 export const AuthProvider: React.FC = ({ children }) => {
   const [ state, setState ] = useState({
+    initing: true,
     isAuthed: false,
     isAuthing: true,
     token: undefined
   } as AuthState)
 
-  const setToken = (token: AuthToken) => {
+  const setToken = useCallback((token: AuthToken) => {
     setState({
-      ...state,
+      initing: false,
       token: {
         ...token,
         expires: addSeconds(new Date(), token.expires_in),
@@ -71,25 +73,29 @@ export const AuthProvider: React.FC = ({ children }) => {
       }
     })
     localStorage.setItem('AuthToken', JSON.stringify(token))
-  }
+  }, [])
 
-  const deAuth = () => {
+  const deAuth = useCallback(() => {
     setState({
-      ...state,
+      initing: false,
       token: undefined,
       isAuthing: false,
       isAuthed: false,
       authenticationHeader: undefined,
     })
-  }
+  }, [])
 
-  const doRefresh = (token: AuthToken) => {
+  const doRefresh = useCallback((token: AuthToken) => {
     getRefreshedToken(token.refresh_token)
       .then(result => setToken(result))
       .catch(e => deAuth())
-  }
+  }, [ deAuth, setToken ])
 
   useEffect(() => {
+    if (!state.initing) {
+      return
+    }
+
     try {
       const token = localStorage.getItem('AuthToken')
       if (token) {
@@ -100,25 +106,26 @@ export const AuthProvider: React.FC = ({ children }) => {
     } catch (e) {
       deAuth()
     }
-  }, [])
+  }, [ state.initing, deAuth, doRefresh ])
 
   useEffect(() => {
     if (state.isAuthed && state.token) {
       const refreshTimer = state.token.expires_in - 30
       setTimeout(() => doRefresh(state.token as AuthToken), refreshTimer * 1000)
     }
-  }, [ state.isAuthed ])
+  }, [ state.isAuthed, state.token, doRefresh ])
 
-  const logout = () => {
+  const logout = useCallback(() => {
     localStorage.removeItem('AuthToken')
     setState({
+      initing: false,
       token: undefined,
       isAuthed: false,
       isAuthing: false,
     })
-  }
+  }, [])
 
-  const doAuth = async (code: string, authState: string): Promise<boolean> => {
+  const doAuth = useCallback((code: string, authState: string): Promise<boolean> => {
     return getAuthToken(code, authState)
       .then(result => {
         setToken(result)
@@ -128,7 +135,7 @@ export const AuthProvider: React.FC = ({ children }) => {
         deAuth()
         return false
       })
-  }
+  }, [ setToken, deAuth ])
 
   return (
     <AuthContext.Provider value= {state}>

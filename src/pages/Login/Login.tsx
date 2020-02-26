@@ -15,7 +15,7 @@ const Login: React.FC = () => {
 
   useEffect(() => {
     logout();
-  }, [])
+  }, [ logout ])
 
   return (
     <div className="Login">
