@@ -21,6 +21,15 @@ import { useAuth } from '../../stores/auth'
 import { useUser } from '../../stores/user'
 
 const useStyles = makeStyles({
+  root: {
+    display: 'flex',
+    flexDirection: 'column',
+    height: 'calc(100vh - 56px)',
+  },
+  content: {
+    flexShrink: 1,
+    overflowY: 'auto',
+  },
   newMatch: {
     position: 'absolute',
     bottom: '80px',
@@ -50,6 +59,11 @@ const LeagueComponent: React.FC = () => {
 
   const handleTabChange = (event: React.ChangeEvent<{}>, newValue: number) => {
     setCurrentTab(newValue)
+  }
+
+  const handleAction = () => {
+    getById(authenticationHeader!, id!)
+      .then(result => setLeague(result))
   }
 
   const handleMatchEditorClose = () => {
@@ -82,30 +96,34 @@ const LeagueComponent: React.FC = () => {
   }
 
   return (
-    <div>
-      <Title>
-        {
-          league
-          ? league.displayName
-          : 'League'
-        }
-      </Title>
-      <AppBar position="static">
-        <Tabs value={currentTab} onChange={handleTabChange}>
-          <Tab label="Runking" id="0"/>
-          <Tab label="History" id="1"/>
-          <Tab label="Details" id="2"/>
-        </Tabs>
-      </AppBar>
-      <TabPanel currentTab={currentTab} index={0}>
-        {league && <Runking league={league} onClick={handleNewMatch}/>}
-      </TabPanel>
-      <TabPanel currentTab={currentTab} index={1}>
-        {league && <History league={league} />}
-      </TabPanel>
-      <TabPanel currentTab={currentTab} index={2}>
-        {league && <Details league={league} />}
-      </TabPanel>
+    <div className={classes.root}>
+      <section>
+        <Title>
+          {
+            league
+            ? league.displayName
+            : 'League'
+          }
+        </Title>
+        <AppBar position="static">
+          <Tabs value={currentTab} onChange={handleTabChange}>
+            <Tab label="Runking" id="0"/>
+            <Tab label="History" id="1"/>
+            <Tab label="Details" id="2"/>
+          </Tabs>
+        </AppBar>
+      </section>
+      <section className={classes.content}>
+        <TabPanel currentTab={currentTab} index={0}>
+          {league && <Runking league={league} onClick={handleNewMatch}/>}
+        </TabPanel>
+        <TabPanel currentTab={currentTab} index={1}>
+          {league && <History league={league} />}
+        </TabPanel>
+        <TabPanel currentTab={currentTab} index={2}>
+          {league && <Details league={league} onAction={handleAction}/>}
+        </TabPanel>
+      </section>
       <Fab
         color="primary"
         className={classes.newMatch}
