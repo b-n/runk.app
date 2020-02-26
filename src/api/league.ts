@@ -1,8 +1,8 @@
 import { AuthenticationHeader } from '../interfaces/Auth';
-import { NewLeague } from '../interfaces/League'
+import { NewLeague } from '../interfaces/League';
 
 export const putLeague = async (league: NewLeague, auth: AuthenticationHeader): Promise<Response> => {
-  const { displayName, pictureURL, description } = league
+  const { displayName, pictureURL, description } = league;
   return fetch(
     `${process.env.REACT_APP_SERVER}/league`,
     {
@@ -14,16 +14,16 @@ export const putLeague = async (league: NewLeague, auth: AuthenticationHeader): 
         displayName,
         pictureURL,
         description,
-      })
+      }),
     }
   );
 };
 
 interface QueryOptions {
-  id?: string
+  id?: string;
 }
 
-export const query = async({ id }: QueryOptions, auth: AuthenticationHeader): Promise<Response> => {
+export const query = async ({ id }: QueryOptions, auth: AuthenticationHeader): Promise<Response> => {
   if (id) {
     return fetch(
       `${process.env.REACT_APP_SERVER}/league/${id}`,
@@ -36,16 +36,16 @@ export const query = async({ id }: QueryOptions, auth: AuthenticationHeader): Pr
     );
   }
 
-  throw new Error('Unsupported Query')
-}
+  throw new Error('Unsupported Query');
+};
 
 interface ActionProps {
-  id: string
-  action: string
-  body?: any
+  id: string;
+  action: string;
+  body?: any;
 }
 
-export const doAction = async({ id, action, body }: ActionProps, auth: AuthenticationHeader): Promise<Response> => {
+export const doAction = async ({ id, action, body }: ActionProps, auth: AuthenticationHeader): Promise<Response> => {
   return fetch(
     `${process.env.REACT_APP_SERVER}/league/${id}/${action}`,
     {
@@ -56,13 +56,13 @@ export const doAction = async({ id, action, body }: ActionProps, auth: Authentic
       body: body ? JSON.stringify(body) : null,
     }
   );
-}
+};
 
-export const getDiscover = async(): Promise<Response> => {
+export const getDiscover = async (): Promise<Response> => {
   return fetch(
     `${process.env.REACT_APP_SERVER}/discover`,
     {
       method: 'GET',
     }
   );
-}
+};

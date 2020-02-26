@@ -1,2 +1,2 @@
-import { SVGId } from './SVGId'
-export { SVGId }
+import { SVGId } from './SVGId';
+export { SVGId };

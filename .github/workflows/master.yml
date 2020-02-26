@@ -1,4 +1,4 @@
-name: Upload Website
+name: Upload to Production
 
 on:
   push:
@@ -21,9 +21,10 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
-      - name: npm install, and build
+      - name: npm install, lint, and build
         run: |
           npm ci
+          npm run lint
           REACT_APP_SERVER=${{ secrets.API_MASTER }} npm run build
       - name: upload
         uses: jakejarvis/s3-sync-action@master

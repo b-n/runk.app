@@ -10,8 +10,8 @@ export const getByLeagueId = async (leagueId: string, auth: AuthenticationHeader
         ...auth,
       },
     }
-  )
-}
+  );
+};
 
 export const postMatch = async (leagueId: string, match: Match, auth: AuthenticationHeader): Promise<Response> => {
   return fetch(
@@ -23,5 +23,5 @@ export const postMatch = async (leagueId: string, match: Match, auth: Authentica
       },
       body: JSON.stringify(match),
     }
-  )
-}
+  );
+};

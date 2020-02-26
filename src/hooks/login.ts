@@ -1,26 +1,26 @@
-import { useEffect, useState } from 'react'
-import flatMap from 'lodash/flatMap'
+import { useEffect, useState } from 'react';
+import flatMap from 'lodash/flatMap';
 
 interface NoTokenResponse {
-  message: string
+  message: string;
   loginUrls: {
-    [key: string]: Login
-  }
+    [key: string]: Login;
+  };
 }
 
 interface LoginProvider {
-  provider: string
-  url: string
+  provider: string;
+  url: string;
 }
 
 const useLoginLinks = () => {
-  const [ loginLinks, setLoginLinks ] = useState([] as Array<LoginProvider>);
+  const [loginLinks, setLoginLinks] = useState([] as Array<LoginProvider>);
 
   useEffect(() => {
     fetch(
       `${process.env.REACT_APP_SERVER}/auth/token`,
       {
-        method: 'GET'
+        method: 'GET',
       }
     )
       .then(result => result.json())
@@ -29,15 +29,15 @@ const useLoginLinks = () => {
           provider,
           url: generateLoginLink(result.loginUrls[provider]),
         }))
-      ))
+      ));
   }, []);
 
   return loginLinks;
-}
+};
 
 interface Login {
-  url: string
-  parameters: Record<string, string>
+  url: string;
+  parameters: Record<string, string>;
 }
 const generateLoginLink = ({ url, parameters }: Login): string => {
   return [
@@ -49,9 +49,9 @@ const generateLoginLink = ({ url, parameters }: Login): string => {
       },
       (value: string, key: string) => `${key}=${value}`
     ).join('&'),
-  ].join('?')
-}
+  ].join('?');
+};
 
 export {
   useLoginLinks,
-}
+};

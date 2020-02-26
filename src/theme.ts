@@ -1,5 +1,5 @@
-import { ThemeOptions } from "@material-ui/core/styles/createMuiTheme";
-import { lighten, darken } from "@material-ui/core";
+import { ThemeOptions } from '@material-ui/core/styles/createMuiTheme';
+import { lighten, darken } from '@material-ui/core';
 
 const primaryColor = '#1976d2';
 const secondaryColor = '#333';
@@ -15,32 +15,32 @@ const Theme: ThemeOptions = {
     primary: {
       light: lighten(primaryColor, coef),
       main: primaryColor,
-      dark: darken(primaryColor, coef)
+      dark: darken(primaryColor, coef),
     },
     secondary: {
       light: lighten(secondaryColor, coef),
       main: secondaryColor,
-      dark: darken(secondaryColor, coef)
+      dark: darken(secondaryColor, coef),
     },
     error: {
       light: lighten(errorColor, coef),
       main: errorColor,
-      dark: darken(errorColor, coef)
+      dark: darken(errorColor, coef),
     },
     warning: {
       light: lighten(warningColor, coef),
       main: warningColor,
-      dark: darken(warningColor, coef)
+      dark: darken(warningColor, coef),
     },
     info: {
       light: lighten(infoColor, coef),
       main: infoColor,
-      dark: darken(infoColor, coef)
+      dark: darken(infoColor, coef),
     },
     success: {
       light: lighten(successColor, coef),
       main: successColor,
-      dark: darken(successColor, coef)
+      dark: darken(successColor, coef),
     },
     contrastThreshold: 3,
     tonalOffset: 0.2,
