@@ -1,12 +1,14 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import { Avatar } from '@material-ui/core';
+import Avatar from '@material-ui/core/Avatar'
+import TextField from '@material-ui/core/TextField'
 
 // Utils
 import { useUser } from '../../stores';
 
 // Components
-
+import Title from '../../components/Title'
+import { SVGId } from '../common/SVGId'
 
 const useStyles = makeStyles({
   container: {
@@ -14,17 +16,14 @@ const useStyles = makeStyles({
     flexDirection: 'column',
     alignItems: 'center',
   },
-  title: {
-    color: 'white',
-    flex: 1,
-    margin: 0,
-    padding: '10px 20px',
-  },
   large: {
     width: 200,
     height: 200,
     margin: 30,
   },
+  icon: {
+    paddingRight: '10px',
+  }
 });
 
 const Profile: React.FC = () => {
@@ -32,9 +31,25 @@ const Profile: React.FC = () => {
   const { user } = useUser();
 
   return (
-    <div className={classes.container}>
-      <Avatar alt={user.name} src={user.img} className={classes.large} />
-    </div>
+    <>
+      {
+        user &&
+        <div>
+          <Title>
+            <SVGId id={user.id} width={26} height={26} className={classes.icon}/>
+            Profile
+          </Title>
+          <div className={classes.container}>
+            <Avatar alt={user.name} src={user.img} className={classes.large} variant="circle" />
+            <TextField
+              error={false}
+              label="Display name"
+              defaultValue={user.name}
+            />
+          </div>
+        </div>
+      }
+    </>
   )
 };
 

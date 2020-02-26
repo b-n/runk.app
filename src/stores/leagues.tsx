@@ -1,37 +1,78 @@
-import React, { createContext, useContext } from 'react';
+import React, { createContext, useContext, useCallback, useEffect, useState } from 'react';
 
+import { useAuth } from './auth'
 import { League } from '../interfaces/League';
+import { useLeagueService } from '../services/leagues';
 
-interface LeaguesStore {
-  leagues: League[];
+interface LeaguesState {
+  leagues: League[]
+  isLoading: boolean
+}
+
+interface LeaguesMutations {
+  getLeague: (id: string) => void
+  loadUserLeagues: () => void
+}
+
+const defaultState: LeaguesState = {
+  isLoading: false,
+  leagues: [],
 };
 
-const LeaguesContext = createContext({} as LeaguesStore);
+export const LeaguesContext = createContext({} as LeaguesState);
+export const LeaguesMutationContext = createContext({} as LeaguesMutations);
 
-export const LeaguesProvider: React.FC = ({ children }) => {
+const LeaguesProvider: React.FC = ({ children }) => {
+  const { getUserLeagues } = useLeagueService();
+  const { initing, authenticationHeader } = useAuth();
+
+  const [ state, setState ] = useState(defaultState);
+
+  const getLeague = async (id: string) => {
+    setState({
+      ...state
+    });
+  };
+
+  const loadUserLeagues = useCallback(() => {
+    setState({
+      isLoading: true,
+      leagues: [],
+    });
+  }, [])
+
+  useEffect(() => {
+    if (!initing && state.isLoading && authenticationHeader) {
+
+      getUserLeagues(authenticationHeader)
+        .then(result => {
+          setState({
+            isLoading: false,
+            leagues: result
+          })
+        });
+    }
+  }, [ initing, state.isLoading, authenticationHeader, getUserLeagues ])
+
   return (
     <LeaguesContext.Provider
       value= {{
-        leagues: [
-          {
-            id: '123456789',
-            name: 'Guidion Ping Pong',
-            description: 'Guidion Ping Pong league for all those that kick ass',
-            image_url: 'https://freepngimg.com/download/ping_pong/2-2-ping-pong-download-png.png',
-            invite_code: 'guidion_ping_pong',
-          },
-          {
-            id: '987654321',
-            name: 'Guidion Foosball',
-            description: 'Foosball league for super serious people. Meets every friday.',
-            image_url: 'http://timenerdworld.files.wordpress.com/2013/08/foosball.jpg?w=720&h=480&crop=1',
-            invite_code: 'guidion_foosball',
-          },
-        ]
+        ...state,
       }}
-      children={children}
-    />
-  )
+    >
+      <LeaguesMutationContext.Provider
+        value={{
+          getLeague,
+          loadUserLeagues,
+        }}
+      >
+        {children}
+      </LeaguesMutationContext.Provider>
+    </LeaguesContext.Provider>
+  );
 };
 
+export { LeaguesProvider };
+
 export const useLeagues = () => useContext(LeaguesContext);
+export const useLeaguesMutations= () => useContext(LeaguesMutationContext);

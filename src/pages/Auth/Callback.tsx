@@ -8,7 +8,7 @@ import {
   Link,
 } from 'react-router-dom';
 
-import { useAuth } from '../../stores';
+import { useAuthMutations } from '../../stores';
 
 const Callback: React.FC = () => {
   const location = useLocation();
@@ -17,22 +17,19 @@ const Callback: React.FC = () => {
 
   const [status, setStatus] = useState('Waiting');
 
-  const { setAuth } = useAuth();
+  const { doAuth } = useAuthMutations();
 
   useEffect(() => {
-    fetch(
-      `http://localhost:3001/auth/token?grant_type=authorization_code&code=${code}&state=${state}`,
-      {
-        method: 'GET',
-      }
-    )
-      .then(result => result.json())
+    doAuth(code as string, state as string)
       .then(result => {
-        setAuth({ isAuthed: true, ...result })
-        setStatus('Done')
-        history.push('/')
-      });
-  }, [code, state]);
+        if (!result) {
+          setStatus('Failed');
+          return;
+        }
+        setStatus('Success');
+        history.push('/');
+      })
+  }, [code, state, doAuth, history]);
 
   return (
     <div>

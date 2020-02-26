@@ -1,9 +1,17 @@
-import { Home } from './Home';
 import { Login } from './Login';
 import { AuthCallback } from './Auth';
+import { League } from './League';
+import { Leagues } from './Leagues';
+import { Discover } from './Discover';
+import { Profile } from './Profile';
+import { CreateLeague } from './CreateLeague';
 
 export {
   AuthCallback,
-  Home,
   Login,
+  League,
+  Leagues,
+  Discover,
+  Profile,
+  CreateLeague,
 };

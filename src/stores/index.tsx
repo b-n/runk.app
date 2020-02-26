@@ -1,30 +1,29 @@
 import React from 'react';
+import { ThemeProvider, createMuiTheme } from '@material-ui/core';
 
-import { UserProvider, useUser } from './user';
-import { LeaguesProvider, useLeagues } from './leagues';
-import { DiscoverProvider, useDiscover } from './discover';
-import { AuthProvider, useAuth } from './auth';
+import { UserProvider, useUser, useUserMutations } from './user';
+import { LeaguesProvider, useLeagues, useLeaguesMutations } from './leagues';
+import { AuthProvider, useAuth, useAuthMutations } from './auth';
+import Theme from '../theme';
 
 const GlobalProvider: React.FC = ({ children }) => (
-  <AuthProvider>
-    <UserProvider>
-      <LeaguesProvider>
-        <DiscoverProvider>
+  <ThemeProvider theme={createMuiTheme(Theme)}>
+    <AuthProvider>
+      <UserProvider>
+        <LeaguesProvider>
           {children}
-        </DiscoverProvider>
-      </LeaguesProvider>
-    </UserProvider>
-  </AuthProvider>
+        </LeaguesProvider>
+      </UserProvider>
+    </AuthProvider>
+  </ThemeProvider>
 );
 
 export {
-  AuthProvider,
-  DiscoverProvider,
   GlobalProvider,
-  LeaguesProvider,
   useAuth,
-  useDiscover,
+  useAuthMutations,
   useLeagues,
-  UserProvider,
+  useLeaguesMutations,
   useUser,
+  useUserMutations,
 };

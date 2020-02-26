@@ -50,7 +50,7 @@ const LeagueCard = (props: LeagueCardProps) => {
       <div className={classes.details}>
         <CardContent className={classes.content}>
           <Typography component="h5" variant="h5">
-            {league.name}
+            {league.displayName}
           </Typography>
           <Typography variant="subtitle1" color="textSecondary" >
             {league.description}
@@ -63,8 +63,8 @@ const LeagueCard = (props: LeagueCardProps) => {
       <CardMedia
         component="img"
         className={classes.cover}
-        image={league.image_url}
-        title={league.name}
+        image={league.pictureURL}
+        title={league.displayName}
       />
     </Card>
   )

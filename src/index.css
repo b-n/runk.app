@@ -5,5 +5,11 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: #162140;
+  background-color: #eee;
+}
+
+body .container {
+  max-height: calc(100vh - 56px);
+  overflow-y: auto;
+  overflow-x: hidden;
 }

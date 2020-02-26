@@ -1,21 +1,36 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 
-import logo from './../../static/logo.svg';
+import { Logo } from '../common/Logo'
 
+//Components
+import { GoogleSignIn } from '../../components/LoginButton'
+
+//Utils
+import { useAuthMutations } from '../../stores'
 import { useLoginLinks } from '../../hooks/login'
 
 const Login: React.FC = () => {
   const loginLinks = useLoginLinks();
+  const { logout } = useAuthMutations();
+
+  useEffect(() => {
+    logout();
+  }, [ logout ])
 
   return (
     <div className="Login">
       <header className="Login-header">
-        <img src={logo} className="Login-logo" alt="logo" />
+        <Logo
+          className="logo"
+          animateTail={true}
+          width={180}
+          height={180}
+        />
       </header>
       <section>
-      {loginLinks && loginLinks.map(({provider, url}) => (
-        <a href={url}>{provider}</a>
-      ))}
+      {loginLinks && loginLinks.length === 1 && (
+        <GoogleSignIn href={loginLinks[0].url}/>
+      )}
       </section>
     </div>
   );

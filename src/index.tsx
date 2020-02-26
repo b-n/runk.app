@@ -5,47 +5,73 @@ import {
   Switch,
   Route,
   Redirect,
+  RouteProps,
 } from 'react-router-dom'
 
 import './index.css';
 
 import {
-  Home,
   Login,
+  Discover,
+  League,
+  Leagues,
+  CreateLeague,
+  Profile,
   AuthCallback,
 } from './pages'
 
-import { GlobalProvider } from './stores'
+import { Navigation } from './pages/common/Navigation'
+
+import { GlobalProvider, useAuth } from './stores'
 
 import * as serviceWorker from './serviceWorker';
-import { Discover } from './pages/Discover';
-import { Leagues } from './pages/Leagues';
-import { Profile } from './pages/Profile';
+
+const PrivateRoute: React.FC<RouteProps> = ({ children, ...rest }) => {
+  const { isAuthing, isAuthed } = useAuth()
+  return (
+    <Route {...rest} render={(props) => (
+      !isAuthing && !isAuthed
+        ? <Redirect to={{
+            pathname: '/login',
+            state: { from: props.location }
+        }} />
+        : <>{ children }</>
+    )} />
+  )
+}
 
 ReactDOM.render(
   <GlobalProvider>
     <Router>
-      <Switch>
-        <Route exact path="/">
-          <Leagues />
-        </Route>
-        <Route exact path="/login">
-          <Login />
-        </Route>
-        <Route exact path="/auth/callback">
-          <AuthCallback />
-        </Route>
-        <Route exact path="/discover">
-          <Discover />
-        </Route>
-        <Route exact path="/leagues">
-          <Redirect to={'/'} />
-        </Route>
-        <Route exact path="/profile">
-          <Profile />
-        </Route>
-      </Switch>
-      <Home />
+      <section className="container">
+        <Switch>
+          <PrivateRoute exact path="/">
+            <Leagues />
+          </PrivateRoute>
+          <Route exact path="/login">
+            <Login />
+          </Route>
+          <Route exact path="/auth/callback">
+            <AuthCallback />
+          </Route>
+          <Route exact path="/discover">
+            <Discover />
+          </Route>
+          <PrivateRoute exact path="/leagues">
+            <Leagues />
+          </PrivateRoute>
+          <PrivateRoute exact path="/league/:id">
+            <League />
+          </PrivateRoute>
+          <PrivateRoute exact path="/leagues/create">
+            <CreateLeague />
+          </PrivateRoute>
+          <PrivateRoute exact path="/profile">
+            <Profile />
+          </PrivateRoute>
+        </Switch>
+      </section>
+      <Navigation />
     </Router>
   </GlobalProvider>,
   document.getElementById('root')
