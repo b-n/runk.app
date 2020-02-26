@@ -1,2 +1,2 @@
-import League from './League'
-export { League }
+import League from './League';
+export { League };

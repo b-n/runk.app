@@ -1,2 +1,2 @@
-import MatchEditor from './MatchEditor'
-export default MatchEditor
+import MatchEditor from './MatchEditor';
+export default MatchEditor;

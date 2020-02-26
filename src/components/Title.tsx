@@ -7,12 +7,13 @@ const useStyles = makeStyles({
     flex: 1,
     margin: 0,
     padding: '10px 20px',
+    overflowX: 'auto',
+    whiteSpace: 'nowrap',
+    flexShrink: 0,
   },
 });
 
-interface TitleProps {
-  
-}
+interface TitleProps {}
 
 const Title: React.FC<TitleProps> = ({ children }) => {
   const classes = useStyles()

@@ -1,2 +1,2 @@
-import Details from './Details'
-export default Details
+import Details from './Details';
+export default Details;

@@ -1,2 +1,2 @@
-import CreateLeague from './CreateLeague'
-export { CreateLeague }
+import CreateLeague from './CreateLeague';
+export { CreateLeague };

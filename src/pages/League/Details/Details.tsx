@@ -24,8 +24,7 @@ const useStyles = makeStyles({
     width: '100vw',
   },
   media: {
-    height: '100vh',
-    maxHeight: '80vw',
+    height: 345,
   },
   cta: {
     marginTop: '20px',
@@ -37,9 +36,10 @@ const useStyles = makeStyles({
 
 interface DetailsProps {
   league: League
+  onAction: () => void
 }
 
-const Details: React.FC<DetailsProps>  = ({ league }) => {
+const Details: React.FC<DetailsProps>  = ({ league, onAction }) => {
   const { leagues, isLoading } = useLeagues()
   const { loadUserLeagues } = useLeaguesMutations()
   const LeagueService = useLeagueService()
@@ -65,11 +65,13 @@ const Details: React.FC<DetailsProps>  = ({ league }) => {
   const handleJoin = () => {
     LeagueService.join(league!.id!)
       .then(() => loadUserLeagues())
+      .then(() => onAction())
   }
 
   const handleLeave = () => {
     LeagueService.leave(league!.id!)
       .then(() => loadUserLeagues())
+      .then(() => onAction())
   }
 
   return (
