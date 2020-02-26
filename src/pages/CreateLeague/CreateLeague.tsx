@@ -39,6 +39,7 @@ const CreateLeague: React.FC = () => {
   const LeagueService = useLeagueService();
   const history = useHistory();
   const [ newLeague, setNewLeague ] = useState({
+    pictureURL: '',
     displayName: '',
     description: '',
   } as NewLeague);
@@ -53,7 +54,6 @@ const CreateLeague: React.FC = () => {
   const saveLeague = async () => {
     LeagueService.createLeague(newLeague)
       .then(league => {
-        console.log(league);
         history.push('/leagues');
       })
   }
@@ -73,14 +73,14 @@ const CreateLeague: React.FC = () => {
           label={'Avatar URL'}
           value={newLeague.pictureURL}
           margin="normal"
-          onChange={handleChange('image_url')}
+          onChange={handleChange('pictureURL')}
         />
         <TextField
           error={false}
           label={'League Name'}
           margin="normal"
           value={newLeague.displayName}
-          onChange={handleChange('name')}
+          onChange={handleChange('displayName')}
         />
         <TextField
           error={false}
