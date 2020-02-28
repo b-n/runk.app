@@ -20,21 +20,13 @@ const useStyles = makeStyles({
     maxHeight: 140,
     alignItems: 'flex-start',
   },
-  details: {
-    display: 'flex',
-    flexDirection: 'column',
-  },
   content: {
-    flex: '1 0 auto',
+    flexShrink: 1,
+    wordBreak: 'break-word',
   },
   cover: {
-    width: 150,
-  },
-  controls: {
-    display: 'flex',
-    alignItems: 'center',
-    paddingLeft: 10,
-    paddingBottom: 10,
+    width: 130,
+    flexShrink: 0,
   },
 });
 
@@ -49,18 +41,16 @@ const LeagueCard = ({ children, league, onClick }: LeagueCardProps) => {
 
   return (
     <Card className={classes.card}>
-      <CardActionArea className={classes.details} onClick={onClick}>
-        <CardContent className={classes.content}>
+      <CardActionArea onClick={onClick} className={classes.content}>
+        <CardContent>
           <Typography component="h5" variant="h5">
             {league.displayName}
           </Typography>
           <Typography variant="subtitle1" color="textSecondary" >
             {league.description}
           </Typography>
-        </CardContent>
-        <div className={classes.controls}>
           {children}
-        </div>
+        </CardContent>
       </CardActionArea>
       <CardMedia
         component="img"
