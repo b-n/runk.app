@@ -1,6 +1,7 @@
 import React, { ReactNode } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
+import CardActionArea from '@material-ui/core/CardActionArea';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import CardMedia from '@material-ui/core/CardMedia';
@@ -16,6 +17,8 @@ const useStyles = makeStyles({
     margin: 10,
     flexDirection: 'row',
     justifyContent: 'space-between',
+    maxHeight: 140,
+    alignItems: 'flex-start',
   },
   details: {
     display: 'flex',
@@ -38,15 +41,15 @@ const useStyles = makeStyles({
 interface LeagueCardProps {
   league: League;
   children?: ReactNode;
+  onClick: () => void;
 };
 
-const LeagueCard = (props: LeagueCardProps) => {
+const LeagueCard = ({ children, league, onClick }: LeagueCardProps) => {
   const classes = useStyles();
-  const { league } = props;
 
   return (
     <Card className={classes.card}>
-      <div className={classes.details}>
+      <CardActionArea className={classes.details} onClick={onClick}>
         <CardContent className={classes.content}>
           <Typography component="h5" variant="h5">
             {league.displayName}
@@ -56,9 +59,9 @@ const LeagueCard = (props: LeagueCardProps) => {
           </Typography>
         </CardContent>
         <div className={classes.controls}>
-          {props.children}
+          {children}
         </div>
-      </div>
+      </CardActionArea>
       <CardMedia
         component="img"
         className={classes.cover}
