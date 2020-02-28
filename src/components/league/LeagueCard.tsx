@@ -10,13 +10,12 @@ import { League } from '../../interfaces/League';
 
 // Components
 
-
 const useStyles = makeStyles({
   card: {
     display: 'flex',
     margin: 10,
     flexDirection: 'row',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
   },
   details: {
     display: 'flex',
@@ -67,7 +66,7 @@ const LeagueCard = (props: LeagueCardProps) => {
         title={league.displayName}
       />
     </Card>
-  )
+  );
 };
 
 export default React.memo(LeagueCard);

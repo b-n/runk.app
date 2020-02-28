@@ -5,8 +5,14 @@ module.exports = {
   },
   extends: [
     'standard',
-    'plugin:@typescript-eslint/recommended'
+    'plugin:@typescript-eslint/recommended',
+    'plugin:react/recommended'
   ],
+  settings: {
+    react: {
+        version: "detect"
+    }
+  },
   globals: {
     Atomics: 'readonly',
     SharedArrayBuffer: 'readonly'
@@ -18,7 +24,8 @@ module.exports = {
     project: './tsconfig.json',
   },
   plugins: [
-    '@typescript-eslint'
+    '@typescript-eslint',
+    'react'
   ],
   rules: {
     'no-undef': 'off',
@@ -45,6 +52,7 @@ module.exports = {
     }],
     '@typescript-eslint/no-empty-function': [1],
     '@typescript-eslint/no-explicit-any': [0],
+    'react/prop-types': [0],
     'comma-dangle': [2, {
       'objects': 'always-multiline',
       'arrays': 'always-multiline',

@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 
@@ -13,10 +13,8 @@ const useStyles = makeStyles({
   },
 });
 
-interface TitleProps {}
-
-const Title: React.FC<TitleProps> = ({ children }) => {
-  const classes = useStyles()
+const Title = ({ children }: { children: React.ReactNode }) => {
+  const classes = useStyles();
   return (
     <Typography
       component="h4"
@@ -26,7 +24,7 @@ const Title: React.FC<TitleProps> = ({ children }) => {
     >
       {children}
     </Typography>
-  )
-}
+  );
+};
 
-export default React.memo(Title)
+export default React.memo(Title);

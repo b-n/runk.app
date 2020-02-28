@@ -2,8 +2,8 @@ import React from 'react';
 
 interface TabPanelProps {
   children: React.ReactNode;
-  currentTab: number
-  index: number
+  currentTab: number;
+  index: number;
 }
 
 const TabPanel: React.FC<TabPanelProps> = ({ currentTab, index, children }) => (
@@ -12,4 +12,4 @@ const TabPanel: React.FC<TabPanelProps> = ({ currentTab, index, children }) => (
   </>
 );
 
-export default React.memo(TabPanel)
+export default React.memo(TabPanel);

@@ -1,23 +1,23 @@
 import React, { createContext, useContext, useCallback, useEffect, useState } from 'react';
-import addSeconds from 'date-fns/addSeconds'
+import addSeconds from 'date-fns/addSeconds';
 
 import { AuthToken, AuthenticationHeader } from '../interfaces/Auth';
 
 export interface AuthState {
-  initing: boolean
-  isAuthed: boolean
-  isAuthing: boolean
-  token?: AuthToken
-  authenticationHeader?: AuthenticationHeader
+  initing: boolean;
+  isAuthed: boolean;
+  isAuthing: boolean;
+  token?: AuthToken;
+  authenticationHeader?: AuthenticationHeader;
 }
 
 interface AuthMutations {
-  doAuth: (code: string, authState: string) => Promise<boolean>
-  logout: () => void
+  doAuth: (code: string, authState: string) => Promise<boolean>;
+  logout: () => void;
 }
 
 const AuthContext = createContext({} as AuthState);
-const AuthMutationContext = createContext({} as AuthMutations)
+const AuthMutationContext = createContext({} as AuthMutations);
 
 const getAuthToken = async (code: string, state: string): Promise<AuthToken> => {
   return fetch(
@@ -29,13 +29,13 @@ const getAuthToken = async (code: string, state: string): Promise<AuthToken> => 
     .then(result => result.json())
     .then(result => {
       if (!result.access_token) {
-        throw new Error('Could not auth')
+        throw new Error('Could not auth');
       }
-      return result
-    })
-}
+      return result;
+    });
+};
 
-const getRefreshedToken = async(refreshToken: string): Promise<AuthToken> => {
+const getRefreshedToken = async (refreshToken: string): Promise<AuthToken> => {
   return fetch(
     `${process.env.REACT_APP_SERVER}/auth/token?grant_type=refresh_token&refresh_token=${refreshToken}`,
     {
@@ -45,19 +45,19 @@ const getRefreshedToken = async(refreshToken: string): Promise<AuthToken> => {
     .then(result => result.json())
     .then(result => {
       if (!result.access_token) {
-        throw new Error('Could not auth')
+        throw new Error('Could not auth');
       }
-      return result
-    })
-}
+      return result;
+    });
+};
 
 export const AuthProvider: React.FC = ({ children }) => {
-  const [ state, setState ] = useState({
+  const [state, setState] = useState({
     initing: true,
     isAuthed: false,
     isAuthing: true,
-    token: undefined
-  } as AuthState)
+    token: undefined,
+  } as AuthState);
 
   const setToken = useCallback((token: AuthToken) => {
     setState({
@@ -70,10 +70,10 @@ export const AuthProvider: React.FC = ({ children }) => {
       isAuthed: true,
       authenticationHeader: {
         Authorization: `${token.token_type} ${token.access_token}`,
-      }
-    })
-    localStorage.setItem('AuthToken', JSON.stringify(token))
-  }, [])
+      },
+    });
+    localStorage.setItem('AuthToken', JSON.stringify(token));
+  }, []);
 
   const deAuth = useCallback(() => {
     setState({
@@ -82,60 +82,60 @@ export const AuthProvider: React.FC = ({ children }) => {
       isAuthing: false,
       isAuthed: false,
       authenticationHeader: undefined,
-    })
-  }, [])
+    });
+  }, []);
 
   const doRefresh = useCallback((token: AuthToken) => {
     getRefreshedToken(token.refresh_token)
       .then(result => setToken(result))
-      .catch(e => deAuth())
-  }, [ deAuth, setToken ])
+      .catch(() => deAuth());
+  }, [deAuth, setToken]);
 
   useEffect(() => {
     if (!state.initing) {
-      return
+      return;
     }
 
     try {
-      const token = localStorage.getItem('AuthToken')
+      const token = localStorage.getItem('AuthToken');
       if (token) {
-        doRefresh(JSON.parse(token))
+        doRefresh(JSON.parse(token));
       } else {
-        deAuth()
+        deAuth();
       }
     } catch (e) {
-      deAuth()
+      deAuth();
     }
-  }, [ state.initing, deAuth, doRefresh ])
+  }, [state.initing, deAuth, doRefresh]);
 
   useEffect(() => {
     if (state.isAuthed && state.token) {
-      const refreshTimer = state.token.expires_in - 30
-      setTimeout(() => doRefresh(state.token as AuthToken), refreshTimer * 1000)
+      const refreshTimer = state.token.expires_in - 30;
+      setTimeout(() => doRefresh(state.token as AuthToken), refreshTimer * 1000);
     }
-  }, [ state.isAuthed, state.token, doRefresh ])
+  }, [state.isAuthed, state.token, doRefresh]);
 
   const logout = useCallback(() => {
-    localStorage.removeItem('AuthToken')
+    localStorage.removeItem('AuthToken');
     setState({
       initing: false,
       token: undefined,
       isAuthed: false,
       isAuthing: false,
-    })
-  }, [])
+    });
+  }, []);
 
   const doAuth = useCallback((code: string, authState: string): Promise<boolean> => {
     return getAuthToken(code, authState)
       .then(result => {
-        setToken(result)
-        return true
+        setToken(result);
+        return true;
       })
-      .catch(e => {
-        deAuth()
-        return false
-      })
-  }, [ setToken, deAuth ])
+      .catch(() => {
+        deAuth();
+        return false;
+      });
+  }, [setToken, deAuth]);
 
   return (
     <AuthContext.Provider value= {state}>
@@ -146,8 +146,8 @@ export const AuthProvider: React.FC = ({ children }) => {
         {children}
       </AuthMutationContext.Provider>
     </AuthContext.Provider>
-  )
+  );
 };
 
 export const useAuth = () => useContext(AuthContext);
-export const useAuthMutations = () => useContext(AuthMutationContext)
+export const useAuthMutations = () => useContext(AuthMutationContext);

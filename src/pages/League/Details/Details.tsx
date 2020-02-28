@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Box from '@material-ui/core/Box';
 import Card from '@material-ui/core/Card';
@@ -6,12 +6,12 @@ import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
-import Share from '@material-ui/icons/Share'
+import Share from '@material-ui/icons/Share';
 import Typography from '@material-ui/core/Typography';
 
-import { useLeagues, useLeaguesMutations } from '../../../stores'
-import { useLeagueService } from '../../../services/leagues'
-import { League } from '../../../interfaces/League'
+import { useLeagues, useLeaguesMutations } from '../../../stores';
+import { useLeagueService } from '../../../services/leagues';
+import { League } from '../../../interfaces/League';
 
 const useStyles = makeStyles({
   root: {
@@ -30,49 +30,48 @@ const useStyles = makeStyles({
     marginTop: '20px',
     width: '100vw',
     maxWidth: 345,
-  }
+  },
 });
 
-
 interface DetailsProps {
-  league: League
-  onAction: () => void
+  league: League;
+  onAction: () => void;
 }
 
-const Details: React.FC<DetailsProps>  = ({ league, onAction }) => {
-  const { leagues, isLoading } = useLeagues()
-  const { loadUserLeagues } = useLeaguesMutations()
-  const LeagueService = useLeagueService()
-  const classes = useStyles()
-  const [ shareOpen, setShareOpen ] = useState(false)
-  const [ ctaType, setCtaType ] = useState('')
+const Details: React.FC<DetailsProps> = ({ league, onAction }) => {
+  const { leagues, isLoading } = useLeagues();
+  const { loadUserLeagues } = useLeaguesMutations();
+  const LeagueService = useLeagueService();
+  const classes = useStyles();
+  const [shareOpen, setShareOpen] = useState(false);
+  const [ctaType, setCtaType] = useState('');
 
   useEffect(() => {
-    loadUserLeagues()
-  }, [ loadUserLeagues ])
+    loadUserLeagues();
+  }, [loadUserLeagues]);
 
   useEffect(() => {
     if (!isLoading) {
-      const userLeague = leagues.filter(ul => ul.id === league.id)
-      setCtaType(userLeague.length > 0 ? 'Leave' : 'Join')
+      const userLeague = leagues.filter(ul => ul.id === league.id);
+      setCtaType(userLeague.length > 0 ? 'Leave' : 'Join');
     }
-  }, [ leagues, league.id, isLoading ])
+  }, [leagues, league.id, isLoading]);
 
   const handleShare = () => {
-    setShareOpen(!shareOpen)
-  }
+    setShareOpen(!shareOpen);
+  };
 
   const handleJoin = () => {
     LeagueService.join(league!.id!)
       .then(() => loadUserLeagues())
-      .then(() => onAction())
-  }
+      .then(() => onAction());
+  };
 
   const handleLeave = () => {
     LeagueService.leave(league!.id!)
       .then(() => loadUserLeagues())
-      .then(() => onAction())
-  }
+      .then(() => onAction());
+  };
 
   return (
     <Box m={4} className={classes.root}>
@@ -87,7 +86,7 @@ const Details: React.FC<DetailsProps>  = ({ league, onAction }) => {
           </Typography>
         </CardContent>
         <CardActions>
-          <Button 
+          <Button
             startIcon={<Share />}
             onClick={(() => handleShare())}
           >
@@ -118,7 +117,7 @@ const Details: React.FC<DetailsProps>  = ({ league, onAction }) => {
         </Button>
       }
     </Box>
-  )
-}
+  );
+};
 
-export default React.memo(Details)
+export default React.memo(Details);

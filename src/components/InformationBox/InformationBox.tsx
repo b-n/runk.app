@@ -13,23 +13,23 @@ const useStyles = makeStyles({
   title: {},
   icon: {
     paddingRight: '0.4rem',
-  }
+  },
 });
 
 interface InformationBoxProps {
-  title?: string
-  actions?: JSX.Element
+  title?: string;
+  actions?: JSX.Element;
 }
 
-const InformationBox:React.FC<InformationBoxProps> = ({ title = 'Info', actions, children }) => {
+const InformationBox: React.FC<InformationBoxProps> = ({ title = 'Info', actions, children }) => {
   const classes = useStyles();
 
   return (
     <Card className={classes.card}>
       <CardContent>
         <Typography className={classes.title} color="textSecondary" gutterBottom>
-          <InfoIcon fontSize="small" className={classes.icon} /> 
-          {title} 
+          <InfoIcon fontSize="small" className={classes.icon} />
+          {title}
         </Typography>
         {children}
       </CardContent>
@@ -41,6 +41,6 @@ const InformationBox:React.FC<InformationBoxProps> = ({ title = 'Info', actions,
       }
     </Card>
   );
-}
+};
 
-export { InformationBox }
+export { InformationBox };

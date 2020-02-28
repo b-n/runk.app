@@ -12,11 +12,10 @@ import { useHistory } from 'react-router-dom';
 import { useLeagues, useLeaguesMutations } from '../../stores';
 
 // Components
-import Title from '../../components/Title'
-import { Logo } from '../common/Logo'
+import Title from '../../components/Title';
+import { Logo } from '../common/Logo';
 import { LeagueCard } from '../../components/league';
-import { InformationBox } from '../../components/InformationBox'
-
+import { InformationBox } from '../../components/InformationBox';
 
 const useStyles = makeStyles({
   logo: {
@@ -30,7 +29,7 @@ const useStyles = makeStyles({
     position: 'absolute',
     bottom: '80px',
     right: '20px',
-  }
+  },
 });
 
 const Leagues: React.FC = () => {
@@ -40,8 +39,8 @@ const Leagues: React.FC = () => {
   const history = useHistory();
 
   useEffect(() => {
-    loadUserLeagues()
-  }, [ loadUserLeagues ])
+    loadUserLeagues();
+  }, [loadUserLeagues]);
 
   return (
     <div>
@@ -65,7 +64,7 @@ const Leagues: React.FC = () => {
               </>
             )}>
             <Typography variant="body2">
-              You don't belong any leagues.<br/>
+              You don&apos;t belong any leagues.<br/>
               Try to discover new leagues, or create your own
             </Typography>
           </InformationBox>
@@ -96,7 +95,7 @@ const Leagues: React.FC = () => {
         <Add />
       </Fab>
     </div>
-  )
+  );
 };
 
 export default React.memo(Leagues);

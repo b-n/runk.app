@@ -1,20 +1,20 @@
-import React from 'react'
-import { makeStyles } from '@material-ui/core/styles'
+import React from 'react';
+import { makeStyles } from '@material-ui/core/styles';
 
-import Google1x from '../static/btn_google_signin_dark_normal_web.png'
-import Google2x from '../static/btn_google_signin_dark_normal_web@2x.png'
+import Google1x from '../static/btn_google_signin_dark_normal_web.png';
+import Google2x from '../static/btn_google_signin_dark_normal_web@2x.png';
 
 interface LoginButtonProps {
-  href: string
+  href: string;
 }
 
 const useStyles = makeStyles(() => ({
   google: {
   },
-}))
+}));
 
 const GoogleSignIn: React.FC<LoginButtonProps> = ({ href }: LoginButtonProps) => {
-  const classes = useStyles()
+  const classes = useStyles();
 
   return (
     <a href={href} className={classes.google}>
@@ -27,9 +27,9 @@ const GoogleSignIn: React.FC<LoginButtonProps> = ({ href }: LoginButtonProps) =>
         alt="Google"
       />
     </a>
-  )
-}
+  );
+};
 
 export {
-  GoogleSignIn
-}
+  GoogleSignIn,
+};

@@ -2,25 +2,25 @@ import React, { useState, useEffect } from 'react';
 import { Typography } from '@material-ui/core';
 import IconButton from '@material-ui/core/IconButton';
 import Visibility from '@material-ui/icons/Visibility';
-import { useHistory } from 'react-router-dom'
+import { useHistory } from 'react-router-dom';
 
 // Utils
-import { League } from '../../interfaces/League'
-import { useLeagueService } from '../../services/leagues'
+import { League } from '../../interfaces/League';
+import { useLeagueService } from '../../services/leagues';
 
 // Components
-import Title from '../../components/Title'
+import Title from '../../components/Title';
 import { LeagueCard } from '../../components/league';
 
 const Discover: React.FC = () => {
-  const history = useHistory()
+  const history = useHistory();
   const { getDiscoverLeagues } = useLeagueService();
-  const [ leagues, setLeagues ] = useState<Array<League>>([])
+  const [leagues, setLeagues] = useState<Array<League>>([]);
 
   useEffect(() => {
     getDiscoverLeagues()
-      .then(leagues => setLeagues(leagues))
-  }, [getDiscoverLeagues])
+      .then(leagues => setLeagues(leagues));
+  }, [getDiscoverLeagues]);
 
   return (
     <>
@@ -40,7 +40,7 @@ const Discover: React.FC = () => {
         }
       </section>
     </>
-  )
+  );
 };
 
 export default React.memo(Discover);

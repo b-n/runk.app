@@ -1,13 +1,13 @@
-import React, { useEffect } from 'react'
+import React, { useEffect } from 'react';
 
-import { Logo } from '../common/Logo'
+import { Logo } from '../common/Logo';
 
-//Components
-import { GoogleSignIn } from '../../components/LoginButton'
+// Components
+import { GoogleSignIn } from '../../components/LoginButton';
 
-//Utils
-import { useAuthMutations } from '../../stores'
-import { useLoginLinks } from '../../hooks/login'
+// Utils
+import { useAuthMutations } from '../../stores';
+import { useLoginLinks } from '../../hooks/login';
 
 const Login: React.FC = () => {
   const loginLinks = useLoginLinks();
@@ -15,7 +15,7 @@ const Login: React.FC = () => {
 
   useEffect(() => {
     logout();
-  }, [ logout ])
+  }, [logout]);
 
   return (
     <div className="Login">
@@ -28,12 +28,12 @@ const Login: React.FC = () => {
         />
       </header>
       <section>
-      {loginLinks && loginLinks.length === 1 && (
-        <GoogleSignIn href={loginLinks[0].url}/>
-      )}
+        {loginLinks && loginLinks.length === 1 && (
+          <GoogleSignIn href={loginLinks[0].url}/>
+        )}
       </section>
     </div>
   );
-}
+};
 
 export default React.memo(Login);

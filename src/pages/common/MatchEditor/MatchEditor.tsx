@@ -12,13 +12,13 @@ import Autocomplete from '@material-ui/lab/Autocomplete';
 import TextField from '@material-ui/core/TextField';
 import Slider from '@material-ui/core/Slider';
 
-import { Match } from '../../../interfaces/Match'
-import { League, LeagueUser } from '../../../interfaces/League'
+import { Match } from '../../../interfaces/Match';
+import { League, LeagueUser } from '../../../interfaces/League';
 
-import { useAuth } from '../../../stores'
-import { useMatchService } from '../../../services/match'
+import { useAuth } from '../../../stores';
+import { useMatchService } from '../../../services/match';
 
-import Outcomes from './Outcomes'
+import Outcomes from './Outcomes';
 
 const useStyles = makeStyles({
   root: {
@@ -37,7 +37,7 @@ const useStyles = makeStyles({
   },
   optionScore: {},
   user: {
-    marginBottom: 16, 
+    marginBottom: 16,
   },
   slider: {
     width: '60%',
@@ -47,14 +47,14 @@ const useStyles = makeStyles({
     width: '200px',
     alignSelf: 'center',
     marginTop: '16px',
-  }
+  },
 });
 
 interface MatchEditorProps {
-  match: Match
-  league: League
-  open: boolean
-  onClose: (match?: Match) => void
+  match: Match;
+  league: League;
+  open: boolean;
+  onClose: (match?: Match) => void;
 }
 
 const MatchEditor: React.FC<MatchEditorProps> = ({ onClose, open, match, league }) => {
@@ -62,56 +62,56 @@ const MatchEditor: React.FC<MatchEditorProps> = ({ onClose, open, match, league 
   const { createMatch } = useMatchService();
   const { authenticationHeader } = useAuth();
 
-  const [ isLoading, setIsLoading ] = useState(false)
-  const [ user1, setUser1 ] = useState<LeagueUser | null>(null)
-  const [ user2, setUser2 ] = useState<LeagueUser | null>(null)
-  const [ winner, setWinner ] = useState(1)
+  const [isLoading, setIsLoading] = useState(false);
+  const [user1, setUser1] = useState<LeagueUser | null>(null);
+  const [user2, setUser2] = useState<LeagueUser | null>(null);
+  const [winner, setWinner] = useState(1);
 
   useEffect(() => {
-    const u1 = Object.values(match.users).find(user => user.team === 1)
-    const u2 = Object.values(match.users).find(user => user.team === 2)
+    const u1 = Object.values(match.users).find(user => user.team === 1);
+    const u2 = Object.values(match.users).find(user => user.team === 2);
 
-    setUser1(u1 ? league.users![u1.id] : null)
-    setUser2(u2 ? league.users![u2.id] : null)
-  }, [ match.users, league.users ])
+    setUser1(u1 ? league.users![u1.id] : null);
+    setUser2(u2 ? league.users![u2.id] : null);
+  }, [match.users, league.users]);
 
   const handleClose = () => {
-    onClose()
-  }
+    onClose();
+  };
 
   const handleSave = () => {
     if (!user1 || !user2 || !league.id) {
-      return
+      return;
     }
-    setIsLoading(true)
-    const toSave: Match = { 
+    setIsLoading(true);
+    const toSave: Match = {
       date: new Date(),
       winner: winner === 0 ? 1 : (winner === 1 ? 0 : 2),
       users: {
         [user1.id]: {
           id: user1.id,
-          team: 1
+          team: 1,
         },
         [user2.id]: {
           id: user2.id,
           team: 2,
-        }
-      }
-    }
+        },
+      },
+    };
 
     createMatch(authenticationHeader!, league.id, toSave)
       .then(() => {
-        onClose()
-      })
-  }
+        onClose();
+      });
+  };
 
   const handleChange = (setter: Dispatch<SetStateAction<LeagueUser | null>>) => (_: React.ChangeEvent<{}>, value: LeagueUser | null) => {
-    setter(value) 
-  }
+    setter(value);
+  };
 
   const handleWinnerChange = (_: React.ChangeEvent<{}>, value: number | number[]) => {
-    setWinner(value as number)
-  }
+    setWinner(value as number);
+  };
 
   const renderOption = (option: any) => (
     <Box className={classes.option}>
@@ -123,7 +123,7 @@ const MatchEditor: React.FC<MatchEditorProps> = ({ onClose, open, match, league 
         {option.score}
       </Typography>
     </Box>
-  )
+  );
 
   const renderInput = (label: string) => (params: any) => (
     <TextField
@@ -133,7 +133,7 @@ const MatchEditor: React.FC<MatchEditorProps> = ({ onClose, open, match, league 
       required={true}
       {...params}
     />
-  )
+  );
 
   return (
     <Dialog onClose={handleClose} open={open}>
@@ -202,6 +202,6 @@ const MatchEditor: React.FC<MatchEditorProps> = ({ onClose, open, match, league 
       }
     </Dialog>
   );
-}
+};
 
-export default React.memo(MatchEditor)
+export default React.memo(MatchEditor);
