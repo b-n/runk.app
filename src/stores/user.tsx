@@ -4,7 +4,7 @@ import { useUserService } from '../services/user';
 
 import { User } from '../interfaces/User';
 
-import { useAuth } from './auth'
+import { useAuth } from './auth';
 
 interface UserStore {
   user?: User;
@@ -23,16 +23,16 @@ export const UserProvider: React.FC = ({ children }) => {
   const { isAuthed, initing, authenticationHeader } = authState;
   const { getUser } = useUserService();
 
-  const [ state, setState ] = useState<UserStore>({
+  const [state, setState] = useState<UserStore>({
     isLoading: false,
-  })
+  });
 
   const loadUser = () => {
     setState({
       ...state,
       isLoading: true,
-    })
-  }
+    });
+  };
 
   useEffect(() => {
     if (!initing) {
@@ -40,17 +40,17 @@ export const UserProvider: React.FC = ({ children }) => {
         setState({
           user: undefined,
           isLoading: false,
-        })
-        return
+        });
+        return;
       }
 
       getUser(authenticationHeader!)
         .then(user => setState({
           isLoading: false,
           user,
-        }))
+        }));
     }
-  }, [initing, isAuthed, getUser, authenticationHeader])
+  }, [initing, isAuthed, getUser, authenticationHeader]);
 
   return (
     <UserContext.Provider value={state} >
@@ -62,7 +62,7 @@ export const UserProvider: React.FC = ({ children }) => {
         {children}
       </UserMutationContext.Provider>
     </UserContext.Provider>
-  )
+  );
 };
 
 export const useUser = () => useContext(UserContext);

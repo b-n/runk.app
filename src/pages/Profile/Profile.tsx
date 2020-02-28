@@ -1,14 +1,14 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import Avatar from '@material-ui/core/Avatar'
-import TextField from '@material-ui/core/TextField'
+import Avatar from '@material-ui/core/Avatar';
+import TextField from '@material-ui/core/TextField';
 
 // Utils
 import { useUser } from '../../stores';
 
 // Components
-import Title from '../../components/Title'
-import { SVGId } from '../common/SVGId'
+import Title from '../../components/Title';
+import { SVGId } from '../common/SVGId';
 
 const useStyles = makeStyles({
   container: {
@@ -23,7 +23,7 @@ const useStyles = makeStyles({
   },
   icon: {
     paddingRight: '10px',
-  }
+  },
 });
 
 const Profile: React.FC = () => {
@@ -50,7 +50,7 @@ const Profile: React.FC = () => {
         </div>
       }
     </>
-  )
+  );
 };
 
 export default React.memo(Profile);

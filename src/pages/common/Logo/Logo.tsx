@@ -1,9 +1,9 @@
-import React from 'react'
+import React from 'react';
 
 interface EarProps {
-  transform?: string
-  className: string
-  animate: boolean
+  transform?: string;
+  className: string;
+  animate: boolean;
 }
 
 const Ear: React.FC<EarProps> = ({ transform, className, animate }) => (
@@ -14,32 +14,32 @@ const Ear: React.FC<EarProps> = ({ transform, className, animate }) => (
                C 55 85 70 110 85 130
                Z" />
       <rect fill="#363636"
-            x="40"
-            y="105"
-            width="35"
-            height="50"
-            clipPath="url(#inside-ear)" />
+        x="40"
+        y="105"
+        width="35"
+        height="50"
+        clipPath="url(#inside-ear)" />
       <path fill="#555"
-            d="M 53 105
+        d="M 53 105
                Q 50 130 65 155
                L 40 155
                L 40 105"
-            clipPath="url(#inside-ear)" />
+        clipPath="url(#inside-ear)" />
     </g>
   </g>
-)
+);
 
 interface EyeProps {
-  transform?: string
-  className: string
-  animate: boolean
+  transform?: string;
+  className: string;
+  animate: boolean;
 }
 
 const Eye: React.FC<EyeProps> = ({ transform, className, animate }) => (
   <g transform={transform}>
     <g className={`eye ${className} ${animate ? 'animate' : ''}`}>
       <path fill="#363636"
-            d="M 120 230
+        d="M 120 230
                L 40 220
                L 40 200
                L 110 165
@@ -47,7 +47,7 @@ const Eye: React.FC<EyeProps> = ({ transform, className, animate }) => (
                L 120 230
                Z" />
       <path fill="#CDCDCD"
-            d="M 113 190
+        d="M 113 190
                C 113 180 105 175 95 175
                S 55 195 40 210
                L 40 190
@@ -55,25 +55,25 @@ const Eye: React.FC<EyeProps> = ({ transform, className, animate }) => (
                S 115 175 120 190
                Z" />
       <ellipse className="ball"
-               fill="#000"
-               cx="100"
-               cy="190"
-               rx="10"
-               ry="10"/> 
-      <circle className="ball-reflection" 
-              fill="#FFF"
-              cx="102"
-              cy="192"
-              r="3" />
+        fill="#000"
+        cx="100"
+        cy="190"
+        rx="10"
+        ry="10"/>
+      <circle className="ball-reflection"
+        fill="#FFF"
+        cx="102"
+        cy="192"
+        r="3" />
     </g>
   </g>
-)
+);
 
 const Nose = () => (
   <g className="nose"
-     fill="#444">
+    fill="#444">
     <path fill="#CDCDCD"
-          d="M 120 237
+      d="M 120 237
              C 110 237 100 235 100 230
              C 100 220 115 220 113 190
              L 127 190
@@ -81,7 +81,7 @@ const Nose = () => (
              C 140 235 130 237 120 237
              Z"/>
     <path fill="555"
-          d="M 110 233
+      d="M 110 233
              C 120 220 115 220 117 150
              C 117 130 117 130 110 120
              L 130 120
@@ -89,22 +89,22 @@ const Nose = () => (
              C 125 220 120 220 130 233
              Z" />
     <path fill="#333"
-          d="M 110 235
+      d="M 110 235
              C 110 230 110 230 120 230
              S 130 230 130 235
              C 130 237 125 240 120 240
              S 110 237 110 235 Z" />
   </g>
-)
+);
 
 interface TailProps {
-  animate: boolean
+  animate: boolean;
 }
 
 const Tail: React.FC<TailProps> = ({ animate }: TailProps) => (
   <g className={`tail ${animate ? 'animate' : ''}`}>
     <path fill="#000"
-          d="M 120 140
+      d="M 120 140
              S 60 100 60 70
              C 60 45 90 30 115 30
              C 190 30 180 10 180 5
@@ -113,7 +113,7 @@ const Tail: React.FC<TailProps> = ({ animate }: TailProps) => (
              C 85 115 135 140 135 140
              Z" />
     <path fill="#FFF"
-          d="M 135 140
+      d="M 135 140
              S 85 115 85 75
              C 85 50 105 40 125 40
              C 145 40 195 35 180 5
@@ -122,7 +122,7 @@ const Tail: React.FC<TailProps> = ({ animate }: TailProps) => (
              C 115 105 145 140 145 140
              Z" />
     <path fill="#000"
-            d="M 145 140
+      d="M 145 140
              S 115 105 115 85
              C 115 65 135 55 150 55
              C 185 55 205 35 180 5
@@ -131,15 +131,15 @@ const Tail: React.FC<TailProps> = ({ animate }: TailProps) => (
              C 125 105 150 140 150 140
              Z" />
   </g>
-)
+);
 
 interface LogoProps {
-  className?: string
-  width: number
-  height: number
-  animateTail?: boolean
-  animateEye?: boolean
-  animateEar?: boolean
+  className?: string;
+  width: number;
+  height: number;
+  animateTail?: boolean;
+  animateEye?: boolean;
+  animateEar?: boolean;
 }
 const Logo: React.FC<LogoProps> = ({
   className = '',
@@ -179,6 +179,6 @@ const Logo: React.FC<LogoProps> = ({
     <Ear className="ear-right" transform="scale(-1 1) translate(-240 0)" animate={false}/>
     <Nose />
   </svg>
-)
+);
 
-export { Logo }
+export { Logo };

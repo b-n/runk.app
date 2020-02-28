@@ -16,6 +16,6 @@ const RunkeeList: React.FC = ({ children }) => {
       {children}
     </List>
   );
-}
+};
 
-export default RunkeeList
+export default RunkeeList;

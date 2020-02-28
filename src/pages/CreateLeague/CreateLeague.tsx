@@ -7,11 +7,11 @@ import TextField from '@material-ui/core/TextField';
 import { useHistory } from 'react-router-dom';
 
 // Utils
-import { NewLeague } from '../../interfaces/League'
-import { useLeagueService } from '../../services/leagues'
+import { NewLeague } from '../../interfaces/League';
+import { useLeagueService } from '../../services/leagues';
 
 // Components
-import Title from '../../components/Title'
+import Title from '../../components/Title';
 
 const useStyles = makeStyles({
   root: {
@@ -31,14 +31,14 @@ const useStyles = makeStyles({
   },
   save: {
     marginLeft: '1em',
-  }
+  },
 });
 
 const CreateLeague: React.FC = () => {
   const classes = useStyles();
   const LeagueService = useLeagueService();
   const history = useHistory();
-  const [ newLeague, setNewLeague ] = useState({
+  const [newLeague, setNewLeague] = useState({
     pictureURL: '',
     displayName: '',
     description: '',
@@ -48,15 +48,15 @@ const CreateLeague: React.FC = () => {
     setNewLeague({
       ...newLeague,
       [field]: event.target.value,
-    })
-  }
+    });
+  };
 
   const saveLeague = async () => {
     LeagueService.createLeague(newLeague)
-      .then(league => {
+      .then(() => {
         history.push('/leagues');
-      })
-  }
+      });
+  };
 
   return (
     <div>
@@ -91,7 +91,7 @@ const CreateLeague: React.FC = () => {
           multiline
         />
         <section className={classes.buttons}>
-          <Button 
+          <Button
             color="default"
             onClick={() => history.push('/leagues')}
           >
@@ -109,7 +109,7 @@ const CreateLeague: React.FC = () => {
         </section>
       </Paper>
     </div>
-  )
+  );
 };
 
 export default React.memo(CreateLeague);

@@ -21,15 +21,15 @@ const useStyles = makeStyles({
 
 const Navigation: React.FC = () => {
   const classes = useStyles();
-  const [ currentTab, setCurrentTab ] = useState<string>('leagues');
+  const [currentTab, setCurrentTab] = useState<string>('leagues');
 
-  const location = useLocation()
-  const history = useHistory()
+  const location = useLocation();
+  const history = useHistory();
 
   useEffect(() => {
-    const path = location.pathname.split('/')[1]
-    setCurrentTab(path || 'leagues')
-  }, [location.pathname])
+    const path = location.pathname.split('/')[1];
+    setCurrentTab(path || 'leagues');
+  }, [location.pathname]);
 
   const handleChange = (event: React.ChangeEvent<{}>, newValue: string) => {
     setCurrentTab(newValue);
@@ -42,7 +42,7 @@ const Navigation: React.FC = () => {
       <BottomNavigationAction label="Discover" value="discover" icon={<Search />} />
       <BottomNavigationAction label="Profile" value="profile" icon={<AccountCircle />} />
     </BottomNavigation>
-  )
+  );
 };
 
-export { Navigation }
+export { Navigation };

@@ -28,7 +28,7 @@ const Callback: React.FC = () => {
         }
         setStatus('Success');
         history.push('/');
-      })
+      });
   }, [code, state, doAuth, history]);
 
   return (
@@ -36,7 +36,7 @@ const Callback: React.FC = () => {
       {status}
       <Link to="/login">Login</Link>
     </div>
-  )
+  );
 };
 
 export default React.memo(Callback);

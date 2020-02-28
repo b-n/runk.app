@@ -6,7 +6,7 @@ import {
   Route,
   Redirect,
   RouteProps,
-} from 'react-router-dom'
+} from 'react-router-dom';
 
 import './index.css';
 
@@ -18,27 +18,27 @@ import {
   CreateLeague,
   Profile,
   AuthCallback,
-} from './pages'
+} from './pages';
 
-import { Navigation } from './pages/common/Navigation'
+import { Navigation } from './pages/common/Navigation';
 
-import { GlobalProvider, useAuth } from './stores'
+import { GlobalProvider, useAuth } from './stores';
 
 import * as serviceWorker from './serviceWorker';
 
 const PrivateRoute: React.FC<RouteProps> = ({ children, ...rest }) => {
-  const { isAuthing, isAuthed } = useAuth()
+  const { isAuthing, isAuthed } = useAuth();
   return (
     <Route {...rest} render={(props) => (
       !isAuthing && !isAuthed
         ? <Redirect to={{
-            pathname: '/login',
-            state: { from: props.location }
+          pathname: '/login',
+          state: { from: props.location },
         }} />
         : <>{ children }</>
     )} />
-  )
-}
+  );
+};
 
 ReactDOM.render(
   <GlobalProvider>

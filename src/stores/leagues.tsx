@@ -1,17 +1,16 @@
 import React, { createContext, useContext, useCallback, useEffect, useState } from 'react';
 
-import { useAuth } from './auth'
+import { useAuth } from './auth';
 import { League } from '../interfaces/League';
 import { useLeagueService } from '../services/leagues';
 
 interface LeaguesState {
-  leagues: League[]
-  isLoading: boolean
+  leagues: League[];
+  isLoading: boolean;
 }
 
 interface LeaguesMutations {
-  getLeague: (id: string) => void
-  loadUserLeagues: () => void
+  loadUserLeagues: () => void;
 }
 
 const defaultState: LeaguesState = {
@@ -26,33 +25,26 @@ const LeaguesProvider: React.FC = ({ children }) => {
   const { getUserLeagues } = useLeagueService();
   const { initing, authenticationHeader } = useAuth();
 
-  const [ state, setState ] = useState(defaultState);
-
-  const getLeague = async (id: string) => {
-    setState({
-      ...state
-    });
-  };
+  const [state, setState] = useState(defaultState);
 
   const loadUserLeagues = useCallback(() => {
     setState({
       isLoading: true,
       leagues: [],
     });
-  }, [])
+  }, []);
 
   useEffect(() => {
     if (!initing && state.isLoading && authenticationHeader) {
-
       getUserLeagues(authenticationHeader)
         .then(result => {
           setState({
             isLoading: false,
-            leagues: result
-          })
+            leagues: result,
+          });
         });
     }
-  }, [ initing, state.isLoading, authenticationHeader, getUserLeagues ])
+  }, [initing, state.isLoading, authenticationHeader, getUserLeagues]);
 
   return (
     <LeaguesContext.Provider
@@ -62,7 +54,6 @@ const LeaguesProvider: React.FC = ({ children }) => {
     >
       <LeaguesMutationContext.Provider
         value={{
-          getLeague,
           loadUserLeagues,
         }}
       >
@@ -75,4 +66,4 @@ const LeaguesProvider: React.FC = ({ children }) => {
 export { LeaguesProvider };
 
 export const useLeagues = () => useContext(LeaguesContext);
-export const useLeaguesMutations= () => useContext(LeaguesMutationContext);
+export const useLeaguesMutations = () => useContext(LeaguesMutationContext);

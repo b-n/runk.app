@@ -1,32 +1,35 @@
-import React from 'react'
+import React from 'react';
 
-import RunkeeList from './RunkeeList'
-import Runkee from './Runkee'
+import RunkeeList from './RunkeeList';
+import Runkee from './Runkee';
 
-import { League } from '../../../interfaces/League'
+import { League } from '../../../interfaces/League';
 
 interface RunkingProps {
-  league: League
-  onClick: (id: string) => void
+  league: League;
+  onClick: (id: string) => void;
 }
 
-const Runking: React.FC<RunkingProps>  = ({ league, onClick }) => {
+const Runking: React.FC<RunkingProps> = ({ league, onClick }) => {
+  const users = Object.values(league.users!)
+    .filter(player => player.isActive);
+
+  users.sort((a, b) => b.score - a.score);
+
   return (
     <>
       {
-        league.users && 
+        league.users &&
         <RunkeeList>
           {
-            Object.values(league.users)
-            .filter(player => player.isActive)
-            .map(player => (
+            users.map(player => (
               <Runkee onClick={onClick} key={player.id} {...player} />
-              ))
+            ))
           }
         </RunkeeList>
       }
     </>
-  )
-}
+  );
+};
 
-export default React.memo(Runking)
+export default Runking;

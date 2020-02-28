@@ -1,24 +1,24 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import AppBar from '@material-ui/core/AppBar'
-import Fab from '@material-ui/core/Fab'
-import Add from '@material-ui/icons/Add'
-import Tab from '@material-ui/core/Tab'
-import Tabs from '@material-ui/core/Tabs'
-import { useParams } from 'react-router-dom'
+import AppBar from '@material-ui/core/AppBar';
+import Fab from '@material-ui/core/Fab';
+import Add from '@material-ui/icons/Add';
+import Tab from '@material-ui/core/Tab';
+import Tabs from '@material-ui/core/Tabs';
+import { useParams } from 'react-router-dom';
 
-import TabPanel from '../../components/TabPanel'
-import Title from '../../components/Title'
-import Runking from './Runking'
-import Details from './Details'
-import History from './History'
-import MatchEditor from '../common/MatchEditor'
+import TabPanel from '../../components/TabPanel';
+import Title from '../../components/Title';
+import Runking from './Runking';
+import Details from './Details';
+import History from './History';
+import MatchEditor from '../common/MatchEditor';
 
-import { League } from '../../interfaces/League'
-import { Match } from '../../interfaces/Match'
-import { useLeagueService } from '../../services/leagues'
-import { useAuth } from '../../stores/auth'
-import { useUser } from '../../stores/user'
+import { League } from '../../interfaces/League';
+import { Match } from '../../interfaces/Match';
+import { useLeagueService } from '../../services/leagues';
+import { useAuth } from '../../stores/auth';
+import { useUser } from '../../stores/user';
 
 const useStyles = makeStyles({
   root: {
@@ -35,43 +35,43 @@ const useStyles = makeStyles({
     bottom: '80px',
     right: '20px',
   },
-})
+});
 
 const LeagueComponent: React.FC = () => {
-  const classes = useStyles()
-  const  { getById } = useLeagueService();
+  const classes = useStyles();
+  const { getById } = useLeagueService();
 
   const { id } = useParams();
   const { authenticationHeader } = useAuth();
   const { user } = useUser();
 
-  const [ league, setLeague ] = useState<League>();
-  const [ currentTab, setCurrentTab ] = useState(2);
-  const [ currentMatch, setCurrentMatch ] = useState<Match>();
-  const [ matchEditorOpen, setMatchEditorOpen ] = useState(false);
+  const [league, setLeague] = useState<League>();
+  const [currentTab, setCurrentTab] = useState(0);
+  const [currentMatch, setCurrentMatch] = useState<Match>();
+  const [matchEditorOpen, setMatchEditorOpen] = useState(false);
 
   useEffect(() => {
     if (id && authenticationHeader) {
       getById(authenticationHeader!, id)
-        .then(result => setLeague(result))
+        .then(result => setLeague(result));
     }
-  }, [id, authenticationHeader, getById])
+  }, [id, authenticationHeader, getById]);
 
   const handleTabChange = (event: React.ChangeEvent<{}>, newValue: number) => {
-    setCurrentTab(newValue)
-  }
+    setCurrentTab(newValue);
+  };
 
   const handleAction = () => {
     getById(authenticationHeader!, id!)
-      .then(result => setLeague(result))
-  }
+      .then(result => setLeague(result));
+  };
 
   const handleMatchEditorClose = () => {
-    setCurrentMatch(undefined)
-    setMatchEditorOpen(false)
+    setCurrentMatch(undefined);
+    setMatchEditorOpen(false);
     getById(authenticationHeader!, id!)
-      .then(result => setLeague(result))
-  }
+      .then(result => setLeague(result));
+  };
 
   const handleNewMatch = (id: string) => {
     openMatchEditor({
@@ -86,14 +86,14 @@ const LeagueComponent: React.FC = () => {
           id: user!.id,
           team: 1,
         },
-      }
-    })
-  }
+      },
+    });
+  };
 
   const openMatchEditor = (match: Match) => {
-    setCurrentMatch(match)
-    setMatchEditorOpen(true)
-  }
+    setCurrentMatch(match);
+    setMatchEditorOpen(true);
+  };
 
   return (
     <div className={classes.root}>
@@ -101,8 +101,8 @@ const LeagueComponent: React.FC = () => {
         <Title>
           {
             league
-            ? league.displayName
-            : 'League'
+              ? league.displayName
+              : 'League'
           }
         </Title>
         <AppBar position="static">
@@ -132,7 +132,7 @@ const LeagueComponent: React.FC = () => {
         <Add />
       </Fab>
       {
-        currentMatch && league &&  
+        currentMatch && league &&
         <MatchEditor
           open={matchEditorOpen}
           onClose={handleMatchEditorClose}
@@ -141,7 +141,7 @@ const LeagueComponent: React.FC = () => {
         />
       }
     </div>
-  )
-}
+  );
+};
 
-export default LeagueComponent
+export default LeagueComponent;
