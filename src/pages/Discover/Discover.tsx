@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { Typography } from '@material-ui/core';
-import IconButton from '@material-ui/core/IconButton';
-import Visibility from '@material-ui/icons/Visibility';
 import { useHistory } from 'react-router-dom';
 
 // Utils
@@ -28,10 +26,7 @@ const Discover: React.FC = () => {
       <section>
         {
           leagues.map(league => (
-            <LeagueCard league={league} key={league.id}>
-              <IconButton aria-label="View" onClick={() => history.push(`/league/${league.id}`)}>
-                <Visibility />
-              </IconButton>
+            <LeagueCard league={league} key={league.id} onClick={() => history.push(`/league/${league.id}`)}>
               <Typography component="h6" variant="subtitle2">
                 {league.userCount} Player{league.userCount! > 1 ? 's' : ''}
               </Typography>

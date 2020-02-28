@@ -1,10 +1,8 @@
 import React, { useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { Typography } from '@material-ui/core';
-import IconButton from '@material-ui/core/IconButton';
 import Fab from '@material-ui/core/Fab';
 import Button from '@material-ui/core/Button';
-import Visibility from '@material-ui/icons/Visibility';
 import Add from '@material-ui/icons/Add';
 import { useHistory } from 'react-router-dom';
 
@@ -71,14 +69,11 @@ const Leagues: React.FC = () => {
         }
         {
           leagues.map(league => (
-            <LeagueCard league={league} key={league.id}>
-              <IconButton aria-label="View" onClick={() => history.push(`/league/${league.id}`)}>
-                <Visibility />
-              </IconButton>
-              <IconButton aria-label="New match">
-                <Add />
-              </IconButton>
-            </LeagueCard>
+            <LeagueCard
+              league={league}
+              key={league.id}
+              onClick={() => history.push(`/league/${league.id}`)}
+            />
           ))
         }
         {
