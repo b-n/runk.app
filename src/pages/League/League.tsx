@@ -98,7 +98,7 @@ const LeagueComponent: React.FC = () => {
   return (
     <div className={classes.root}>
       <section>
-        <Title>
+        <Title variant={'subtitle'}>
           {
             league
               ? league.displayName

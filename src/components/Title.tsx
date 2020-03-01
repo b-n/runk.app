@@ -13,12 +13,12 @@ const useStyles = makeStyles({
   },
 });
 
-const Title = ({ children }: { children: React.ReactNode }) => {
+const Title = ({ children, variant }: { children: React.ReactNode; variant?: 'title' | 'subtitle' }) => {
   const classes = useStyles();
   return (
     <Typography
-      component="h4"
-      variant="h4"
+      component={ variant && variant === 'subtitle' ? 'h6' : 'h4' }
+      variant={ variant && variant === 'subtitle' ? 'h6' : 'h4' }
       className={classes.title}
       color={'primary'}
     >
