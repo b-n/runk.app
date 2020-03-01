@@ -30,8 +30,8 @@ const useStyles = makeStyles({
     flexShrink: 1,
     overflowY: 'auto',
   },
-  newMatch: {
-    position: 'absolute',
+  fab: {
+    position: 'fixed',
     bottom: '80px',
     right: '20px',
   },
@@ -126,7 +126,7 @@ const LeagueComponent: React.FC = () => {
       </section>
       <Fab
         color="primary"
-        className={classes.newMatch}
+        className={classes.fab}
         onClick={() => handleNewMatch(user!.id)}
       >
         <Add />
