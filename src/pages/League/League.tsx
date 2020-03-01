@@ -74,8 +74,8 @@ const LeagueComponent: React.FC = () => {
 
   const handleAction = async () => {
     getById(authenticationHeader!, id!)
-      .then(() => loadUser());
       .then(result => setLeague(result))
+      .then(() => loadUser());
   };
 
   const handleMatchEditorClose = () => {
