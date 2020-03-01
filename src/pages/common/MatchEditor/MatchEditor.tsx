@@ -21,8 +21,7 @@ import { useMatchService } from '../../../services/match';
 import Outcomes from './Outcomes';
 
 const useStyles = makeStyles({
-  root: {
-    width: '300px',
+  content: {
     display: 'flex',
     flexDirection: 'column',
   },
@@ -136,12 +135,12 @@ const MatchEditor: React.FC<MatchEditorProps> = ({ onClose, open, match, league 
   );
 
   return (
-    <Dialog onClose={handleClose} open={open}>
+    <Dialog onClose={handleClose} open={open} maxWidth="xs" fullWidth={true}>
       {
         match && league &&
         <>
-          <DialogTitle>{match.id ? 'Edit Match' : 'Create a new Match'}</DialogTitle>
-          <DialogContent className={classes.root}>
+          <DialogTitle>{match.id ? 'Edit Match' : 'Submit a match'}</DialogTitle>
+          <DialogContent className={classes.content}>
             <Autocomplete
               className={classes.user}
               options={Object.values(league.users!)}

@@ -20,15 +20,17 @@ const useStyles = makeStyles({
     flexDirection: 'column',
   },
   card: {
+    width: '80vw',
     maxWidth: 345,
-    width: '100vw',
   },
   media: {
     height: 345,
+    maxHeight: '80vw',
+    maxWidth: '80vw',
   },
   cta: {
     marginTop: '20px',
-    width: '100vw',
+    width: '80vw',
     maxWidth: 345,
   },
 });
@@ -61,14 +63,12 @@ const Details: React.FC<DetailsProps> = ({ league, onAction }) => {
     setShareOpen(!shareOpen);
   };
 
-  const handleJoin = () => {
-    LeagueService.join(league!.id!)
-      .then(() => loadUserLeagues())
-      .then(() => onAction());
-  };
+  const handleCTA = () => {
+    const action = ctaType === 'Join'
+      ? LeagueService.join
+      : LeagueService.leave;
 
-  const handleLeave = () => {
-    LeagueService.leave(league!.id!)
+    action(league!.id!)
       .then(() => loadUserLeagues())
       .then(() => onAction());
   };
@@ -95,25 +95,14 @@ const Details: React.FC<DetailsProps> = ({ league, onAction }) => {
         </CardActions>
       </Card>
       {
-        league.id && ctaType === 'Join' &&
+        league.id &&
         <Button
           className={classes.cta}
           variant="contained"
-          color="primary"
-          onClick={() => handleJoin()}
+          color={ctaType === 'Join' ? 'primary' : 'secondary'}
+          onClick={() => handleCTA()}
         >
-          Join
-        </Button>
-      }
-      {
-        league.id && ctaType === 'Leave' &&
-        <Button
-          className={classes.cta}
-          variant="contained"
-          color="secondary"
-          onClick={() => handleLeave()}
-        >
-          Leave
+          {ctaType}
         </Button>
       }
     </Box>

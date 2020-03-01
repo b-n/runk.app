@@ -39,7 +39,7 @@ const Runkee: React.FC<RunkeeProps> = ({ displayName, score, id, pictureURL, onC
           primary={
             <Box component="div" className={classes.content}>
               <Typography className={classes.name}>{displayName}</Typography>
-              <Typography variant="button" className={classes.score}>{score}</Typography>
+              <Typography variant="button" className={classes.score}>{score.toFixed(0)}</Typography>
             </Box>
           }
         />

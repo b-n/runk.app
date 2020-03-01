@@ -15,16 +15,16 @@ interface ValueProps {
 }
 
 const Left = ({ value, highlighted }: ValueProps) => (
-  <td style={{ textAlign: 'right', backgroundColor: `${highlighted ? '#f6f6f6' : 'transparent'}` }}>
-    {value.toFixed(2)}
+  <td style={{ textAlign: 'right', backgroundColor: `${highlighted ? '#eee' : 'transparent'}` }}>
+    {value.toFixed(1)}
   </td>
 );
 const Middle: React.FC = ({ children }) => (
   <td style={{ textAlign: 'center' }}>{children}</td>
 );
 const Right = ({ value, highlighted }: ValueProps) => (
-  <td style={{ textAlign: 'left', backgroundColor: `${highlighted ? '#f6f6f6' : 'transparent'}` }}>
-    {value.toFixed(2)}
+  <td style={{ textAlign: 'left', backgroundColor: `${highlighted ? '#eee' : 'transparent'}` }}>
+    {value.toFixed(1)}
   </td>
 );
 
