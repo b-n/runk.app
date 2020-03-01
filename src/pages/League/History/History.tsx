@@ -13,17 +13,20 @@ import { Match, MatchUser } from '../../../interfaces/Match';
 import { useAuth } from '../../../stores';
 
 const useStyles = makeStyles({
+  container: {
+    maxWidth: '480px',
+    margin: '0px auto',
+  },
   match: {
-    margin: 8,
+    margin: '8px 8px',
   },
   avatars: {
     display: 'flex',
     flexDirection: 'row',
-    justifyContent: 'space-around',
-    marginLeft: '15%',
-    marginRight: '15%',
+    justifyContent: 'space-between',
+    maxWidth: '200px',
+    margin: '2px auto',
     alignItems: 'center',
-    marginBottom: 1,
   },
   image: {
     width: '45px',
@@ -72,7 +75,7 @@ const History: React.FC<HistoryProps> = ({ league }) => {
   }, [league.id, getMatchesByLeague, authenticationHeader]);
 
   return (
-    <div>
+    <div className={classes.container}>
       {
         matches.map(match => {
           const users = Object.keys(match.users).reduce((a, c) => {
