@@ -16,6 +16,12 @@ import { LeagueCard } from '../../components/league';
 import { InformationBox } from '../../components/InformationBox';
 
 const useStyles = makeStyles({
+  cards: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    padding: '0px 10px',
+  },
   logo: {
     paddingRight: '10px',
   },
@@ -46,7 +52,7 @@ const Leagues: React.FC = () => {
         <Logo width={26} height={26} className={classes.logo}/>
         Your leagues
       </Title>
-      <section className="content">
+      <section className={`${classes.cards} content`}>
         {
           !isLoading && leagues.length === 0 &&
           <InformationBox title="No Leagues"

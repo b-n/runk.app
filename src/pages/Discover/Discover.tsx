@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { makeStyles } from '@material-ui/core/styles';
 import { Typography, Button } from '@material-ui/core';
 import { useHistory } from 'react-router-dom';
 
@@ -11,7 +12,17 @@ import { useUser, useUserMutations } from '../../stores/user';
 import Title from '../../components/Title';
 import { LeagueCard } from '../../components/league';
 
+const useStyles = makeStyles({
+  cards: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    padding: '0px 10px',
+  },
+});
+
 const Discover: React.FC = () => {
+  const classes = useStyles();
   const history = useHistory();
   const { user } = useUser();
   const { loadUser } = useUserMutations();
@@ -35,7 +46,7 @@ const Discover: React.FC = () => {
   return (
     <>
       <Title>Discover</Title>
-      <section className="content">
+      <section className={`${classes.cards} content`}>
         {
           leagues
             .filter(league => !user || (user && !user.leagues[league.id!]))

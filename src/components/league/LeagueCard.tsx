@@ -14,7 +14,9 @@ import { League } from '../../interfaces/League';
 
 const useStyles = makeStyles({
   card: {
+    flexShrink: 0,
     maxWidth: 350,
+    width: '100%',
     margin: 10,
   },
   image: {
