@@ -39,7 +39,7 @@ const useStyles = makeStyles({
 
 const LeagueComponent: React.FC = () => {
   const classes = useStyles();
-  const { getById } = useLeagueService();
+  const { getById, getUserLeagues } = useLeagueService();
 
   const { id } = useParams();
   const { authenticationHeader } = useAuth();
@@ -49,13 +49,27 @@ const LeagueComponent: React.FC = () => {
   const [currentTab, setCurrentTab] = useState(0);
   const [currentMatch, setCurrentMatch] = useState<Match>();
   const [matchEditorOpen, setMatchEditorOpen] = useState(false);
+  const [isMyLeague, setIsMyLeague] = useState(false);
 
   useEffect(() => {
     if (id && authenticationHeader) {
       getById(authenticationHeader!, id)
-        .then(result => setLeague(result));
+        .then(result => {
+          setLeague(result);
+          if (result) {
+            getUserLeagues(authenticationHeader!).then(userLeagues => {
+              const isUserLeague = userLeagues.find(userLeague => userLeague.id === result.id);
+              if (!isUserLeague) {
+                setCurrentTab(0);
+              }
+              setIsMyLeague(!!isUserLeague);
+            });
+          } else {
+            setIsMyLeague(false);
+          }
+        });
     }
-  }, [id, authenticationHeader, getById]);
+  }, [id, authenticationHeader, getById, getUserLeagues, league]);
 
   const handleTabChange = (event: React.ChangeEvent<{}>, newValue: number) => {
     setCurrentTab(newValue);
@@ -106,23 +120,37 @@ const LeagueComponent: React.FC = () => {
           }
         </Title>
         <AppBar position="static">
-          <Tabs value={currentTab} onChange={handleTabChange}>
-            <Tab label="Runking" id="0"/>
-            <Tab label="History" id="1"/>
-            <Tab label="Details" id="2"/>
-          </Tabs>
+          {isMyLeague ? (
+            <Tabs value={currentTab} onChange={handleTabChange}>
+              <Tab label="Runking" id="0" key="0"/>
+              <Tab label="History" id="1" key="1"/>
+              <Tab label="Details" id="2" key="2"/>
+            </Tabs>
+          ) : (
+            <Tabs value={currentTab} onChange={handleTabChange}>
+              <Tab label="Details" id="0" key="0"/>
+            </Tabs>
+          )}
         </AppBar>
       </section>
       <section className={classes.content}>
-        <TabPanel currentTab={currentTab} index={0}>
-          {league && <Runking league={league} onClick={handleNewMatch}/>}
-        </TabPanel>
-        <TabPanel currentTab={currentTab} index={1}>
-          {league && <History league={league} />}
-        </TabPanel>
-        <TabPanel currentTab={currentTab} index={2}>
-          {league && <Details league={league} onAction={handleAction}/>}
-        </TabPanel>
+        {isMyLeague ? (
+          <>
+            <TabPanel currentTab={currentTab} index={0}>
+              {league && <Runking league={league} onClick={handleNewMatch}/>}
+            </TabPanel>
+            <TabPanel currentTab={currentTab} index={1}>
+              {league && <History league={league} />}
+            </TabPanel>
+            <TabPanel currentTab={currentTab} index={2}>
+              {league && <Details league={league} onAction={handleAction}/>}
+            </TabPanel>
+          </>
+        ) : (
+          <TabPanel currentTab={currentTab} index={0}>
+            {league && <Details league={league} onAction={handleAction}/>}
+          </TabPanel>
+        )}
       </section>
       <Fab
         color="primary"
