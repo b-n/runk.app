@@ -23,7 +23,7 @@ const Discover: React.FC = () => {
   return (
     <>
       <Title>Discover</Title>
-      <section>
+      <section className="content">
         {
           leagues.map(league => (
             <LeagueCard league={league} key={league.id} onClick={() => history.push(`/league/${league.id}`)}>

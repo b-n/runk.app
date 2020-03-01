@@ -9,7 +9,7 @@ import Button from '@material-ui/core/Button';
 import Share from '@material-ui/icons/Share';
 import Typography from '@material-ui/core/Typography';
 
-import { useLeagues, useLeaguesMutations } from '../../../stores';
+import { useUser } from '../../../stores/user';
 import { useLeagueService } from '../../../services/leagues';
 import { League } from '../../../interfaces/League';
 
@@ -41,23 +41,19 @@ interface DetailsProps {
 }
 
 const Details: React.FC<DetailsProps> = ({ league, onAction }) => {
-  const { leagues, isLoading } = useLeagues();
-  const { loadUserLeagues } = useLeaguesMutations();
+  const { user } = useUser();
   const LeagueService = useLeagueService();
   const classes = useStyles();
   const [shareOpen, setShareOpen] = useState(false);
   const [ctaType, setCtaType] = useState('');
 
   useEffect(() => {
-    loadUserLeagues();
-  }, [loadUserLeagues]);
-
-  useEffect(() => {
-    if (!isLoading) {
-      const userLeague = leagues.filter(ul => ul.id === league.id);
-      setCtaType(userLeague.length > 0 ? 'Leave' : 'Join');
+    if (!user || !league.id) {
+      return;
     }
-  }, [leagues, league.id, isLoading]);
+    const userLeague = user.leagues[league.id];
+    setCtaType(userLeague ? 'Leave' : 'Join');
+  }, [user, league.id]);
 
   const handleShare = () => {
     setShareOpen(!shareOpen);
@@ -69,7 +65,6 @@ const Details: React.FC<DetailsProps> = ({ league, onAction }) => {
       : LeagueService.leave;
 
     action(league!.id!)
-      .then(() => loadUserLeagues())
       .then(() => onAction());
   };
 

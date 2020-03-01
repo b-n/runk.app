@@ -16,20 +16,12 @@ import MatchEditor from '../common/MatchEditor';
 
 import { League } from '../../interfaces/League';
 import { Match } from '../../interfaces/Match';
+import { User } from '../../interfaces/User';
 import { useLeagueService } from '../../services/leagues';
 import { useAuth } from '../../stores/auth';
-import { useUser } from '../../stores/user';
+import { useUser, useUserMutations } from '../../stores/user';
 
 const useStyles = makeStyles({
-  root: {
-    display: 'flex',
-    flexDirection: 'column',
-    height: 'calc(100vh - 56px)',
-  },
-  content: {
-    flexShrink: 1,
-    overflowY: 'auto',
-  },
   fab: {
     position: 'fixed',
     bottom: '80px',
@@ -37,47 +29,53 @@ const useStyles = makeStyles({
   },
 });
 
+const evaluateIsMember = (league: League, user: User): boolean =>
+  !!(user.leagues[league.id!] && league.users![user.id]);
+
 const LeagueComponent: React.FC = () => {
   const classes = useStyles();
-  const { getById, getUserLeagues } = useLeagueService();
+  const { getById } = useLeagueService();
 
   const { id } = useParams();
   const { authenticationHeader } = useAuth();
   const { user } = useUser();
+  const { loadUser } = useUserMutations();
 
   const [league, setLeague] = useState<League>();
-  const [currentTab, setCurrentTab] = useState(0);
+  const [currentTab, setCurrentTab] = useState(2);
   const [currentMatch, setCurrentMatch] = useState<Match>();
   const [matchEditorOpen, setMatchEditorOpen] = useState(false);
   const [isMyLeague, setIsMyLeague] = useState(false);
 
   useEffect(() => {
-    if (id && authenticationHeader) {
+    if (id && authenticationHeader && user) {
       getById(authenticationHeader!, id)
         .then(result => {
+          const isMember = evaluateIsMember(result, user!);
+          setIsMyLeague(isMember);
+          setCurrentTab(isMember ? 0 : 2);
           setLeague(result);
-          if (result) {
-            getUserLeagues(authenticationHeader!).then(userLeagues => {
-              const isUserLeague = userLeagues.find(userLeague => userLeague.id === result.id);
-              if (!isUserLeague) {
-                setCurrentTab(0);
-              }
-              setIsMyLeague(!!isUserLeague);
-            });
-          } else {
-            setIsMyLeague(false);
-          }
         });
     }
-  }, [id, authenticationHeader, getById, getUserLeagues, league]);
+  }, [id, authenticationHeader, getById, user]);
+
+  useEffect(() => {
+    if (!user || !league) {
+      return;
+    }
+    const isMember = evaluateIsMember(league, user);
+    setIsMyLeague(isMember);
+    setCurrentTab(isMember ? 0 : 2);
+  }, [user, league]);
 
   const handleTabChange = (event: React.ChangeEvent<{}>, newValue: number) => {
     setCurrentTab(newValue);
   };
 
-  const handleAction = () => {
+  const handleAction = async () => {
     getById(authenticationHeader!, id!)
-      .then(result => setLeague(result));
+      .then(() => loadUser());
+      .then(result => setLeague(result))
   };
 
   const handleMatchEditorClose = () => {
@@ -110,7 +108,7 @@ const LeagueComponent: React.FC = () => {
   };
 
   return (
-    <div className={classes.root}>
+    <>
       <section>
         <Title variant={'subtitle'}>
           {
@@ -120,45 +118,34 @@ const LeagueComponent: React.FC = () => {
           }
         </Title>
         <AppBar position="static">
-          {isMyLeague ? (
-            <Tabs value={currentTab} onChange={handleTabChange}>
-              <Tab label="Runking" id="0" key="0"/>
-              <Tab label="History" id="1" key="1"/>
-              <Tab label="Details" id="2" key="2"/>
-            </Tabs>
-          ) : (
-            <Tabs value={currentTab} onChange={handleTabChange}>
-              <Tab label="Details" id="0" key="0"/>
-            </Tabs>
-          )}
+          <Tabs value={currentTab} onChange={handleTabChange}>
+            <Tab label="Runking" id="0" key="0" disabled={!isMyLeague}/>
+            <Tab label="History" id="1" key="1" disabled={!isMyLeague}/>
+            <Tab label="Details" id="2" key="2"/>
+          </Tabs>
         </AppBar>
       </section>
-      <section className={classes.content}>
-        {isMyLeague ? (
-          <>
-            <TabPanel currentTab={currentTab} index={0}>
-              {league && <Runking league={league} onClick={handleNewMatch}/>}
-            </TabPanel>
-            <TabPanel currentTab={currentTab} index={1}>
-              {league && <History league={league} />}
-            </TabPanel>
-            <TabPanel currentTab={currentTab} index={2}>
-              {league && <Details league={league} onAction={handleAction}/>}
-            </TabPanel>
-          </>
-        ) : (
-          <TabPanel currentTab={currentTab} index={0}>
-            {league && <Details league={league} onAction={handleAction}/>}
-          </TabPanel>
-        )}
+      <section className="content">
+        <TabPanel currentTab={currentTab} index={0}>
+          {league && <Runking league={league} onClick={handleNewMatch}/>}
+        </TabPanel>
+        <TabPanel currentTab={currentTab} index={1}>
+          {league && <History league={league} />}
+        </TabPanel>
+        <TabPanel currentTab={currentTab} index={2}>
+          {league && <Details league={league} onAction={handleAction}/>}
+        </TabPanel>
       </section>
-      <Fab
-        color="primary"
-        className={classes.fab}
-        onClick={() => handleNewMatch(user!.id)}
-      >
-        <Add />
-      </Fab>
+      {
+        currentTab !== 2 &&
+        <Fab
+          color="primary"
+          className={classes.fab}
+          onClick={() => handleNewMatch(user!.id)}
+        >
+          <Add />
+        </Fab>
+      }
       {
         currentMatch && league &&
         <MatchEditor
@@ -168,7 +155,7 @@ const LeagueComponent: React.FC = () => {
           league={league}
         />
       }
-    </div>
+    </>
   );
 };
 

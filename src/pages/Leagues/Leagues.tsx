@@ -41,13 +41,12 @@ const Leagues: React.FC = () => {
   }, [loadUserLeagues]);
 
   return (
-    <div>
+    <>
       <Title>
         <Logo width={26} height={26} className={classes.logo}/>
         Your leagues
       </Title>
-
-      <section>
+      <section className="content">
         {
           !isLoading && leagues.length === 0 &&
           <InformationBox title="No Leagues"
@@ -89,7 +88,7 @@ const Leagues: React.FC = () => {
       >
         <Add />
       </Fab>
-    </div>
+    </>
   );
 };
 
