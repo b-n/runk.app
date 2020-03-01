@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Typography } from '@material-ui/core';
+import { Typography, Button } from '@material-ui/core';
 import { useHistory } from 'react-router-dom';
 
 // Utils
@@ -12,7 +12,7 @@ import { LeagueCard } from '../../components/league';
 
 const Discover: React.FC = () => {
   const history = useHistory();
-  const { getDiscoverLeagues } = useLeagueService();
+  const { getDiscoverLeagues, join } = useLeagueService();
   const [leagues, setLeagues] = useState<Array<League>>([]);
 
   useEffect(() => {
@@ -27,9 +27,12 @@ const Discover: React.FC = () => {
         {
           leagues.map(league => (
             <LeagueCard league={league} key={league.id} onClick={() => history.push(`/league/${league.id}`)}>
-              <Typography component="h6" variant="subtitle2">
-                {league.userCount} Player{league.userCount! > 1 ? 's' : ''}
-              </Typography>
+              <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+                <Button variant="contained" color="primary" style={{ margin: 8 }} onClick={() => join(league.id!).then(() => getDiscoverLeagues().then(leagues => setLeagues(leagues)))}>Join</Button>
+                <Typography component="h6" variant="subtitle2">
+                  {league.userCount} Player{league.userCount! > 1 ? 's' : ''}
+                </Typography>
+              </div>
             </LeagueCard>
           ))
         }

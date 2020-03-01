@@ -2,6 +2,7 @@ import React, { ReactNode } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
+import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import CardMedia from '@material-ui/core/CardMedia';
@@ -13,37 +14,32 @@ import { League } from '../../interfaces/League';
 
 const useStyles = makeStyles({
   card: {
-    display: 'flex',
+    maxWidth: 350,
     margin: 10,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    maxHeight: 130,
-    alignItems: 'flex-start',
   },
-  wrapper: {
-    flexShrink: 1,
-    wordBreak: 'break-word',
-    minWidth: 0,
-  },
-  content: {
-    minWidth: 0,
-    display: 'flex',
-    flexDirection: 'column',
-    maxHeight: '98px',
-  },
-  cover: {
-    width: 130,
+  image: {
+    height: 200,
     flexShrink: 0,
   },
-  title: {
+  content: {
+    opacity: 0.8,
+    position: 'absolute',
+    bottom: 0,
+    backgroundColor: 'white',
+    flex: 1,
+    padding: 0,
+    width: '100%',
+  },
+  text: {
     whiteSpace: 'nowrap',
     textOverflow: 'ellipsis',
     overflow: 'hidden',
     flexShrink: 0,
+    maxWidth: 350,
   },
-  description: {
-    overflow: 'hidden',
-    flexShrink: 1,
+  bottom: {
+    position: 'absolute',
+    bottom: 0,
   },
 });
 
@@ -58,23 +54,28 @@ const LeagueCard = ({ children, league, onClick }: LeagueCardProps) => {
 
   return (
     <Card className={classes.card}>
-      <CardActionArea onClick={onClick} className={classes.wrapper}>
+      <CardActionArea onClick={onClick}>
+        <CardMedia
+          className={classes.image}
+          image={league.pictureURL}
+          title={league.displayName}
+        />
         <CardContent className={classes.content}>
-          <Typography className={classes.title} component="h5" variant="h5">
-            {league.displayName}
-          </Typography>
-          <Typography className={classes.description} variant="subtitle1" color="textSecondary" >
-            {league.description}
-          </Typography>
-          {children}
+          <div style={{ margin: 8 }}>
+            <Typography gutterBottom variant="h6" component="h2" className={classes.text}>
+              {league.displayName}
+            </Typography>
+            <Typography variant="body2" color="textSecondary" component="p" className={classes.text}>
+              {league.description}
+            </Typography>
+          </div>
         </CardContent>
       </CardActionArea>
-      <CardMedia
-        component="img"
-        className={classes.cover}
-        image={league.pictureURL}
-        title={league.displayName}
-      />
+      {children && (
+        <CardActions>
+          {children}
+        </CardActions>
+      )}
     </Card>
   );
 };
