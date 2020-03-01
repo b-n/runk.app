@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useCallback, useState, useEffect } from 'react';
 
 import { useUserService } from '../services/user';
 
@@ -27,12 +27,21 @@ export const UserProvider: React.FC = ({ children }) => {
     isLoading: false,
   });
 
-  const loadUser = () => {
+  const getUserDetails = useCallback(() => {
+    getUser(authenticationHeader!)
+      .then(user => setState({
+        isLoading: false,
+        user,
+      }));
+  }, [getUser, authenticationHeader]);
+
+  const loadUser = useCallback(() => {
     setState({
       ...state,
       isLoading: true,
     });
-  };
+    getUserDetails();
+  }, [state, getUserDetails]);
 
   useEffect(() => {
     if (!initing) {
@@ -44,13 +53,9 @@ export const UserProvider: React.FC = ({ children }) => {
         return;
       }
 
-      getUser(authenticationHeader!)
-        .then(user => setState({
-          isLoading: false,
-          user,
-        }));
+      getUserDetails();
     }
-  }, [initing, isAuthed, getUser, authenticationHeader]);
+  }, [initing, isAuthed, getUser, authenticationHeader, getUserDetails]);
 
   return (
     <UserContext.Provider value={state} >

@@ -10,6 +10,14 @@ body {
 
 body .container {
   max-height: calc(100vh - 56px);
-  overflow-y: auto;
+  max-height: calc(var(--vh, 1vh) * 100 - 56px);
+  overflow-y: hidden;
   overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.container .content {
+  overflow-y: auto;
+  flex-shrink: 1;
 }

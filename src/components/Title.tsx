@@ -13,12 +13,17 @@ const useStyles = makeStyles({
   },
 });
 
-const Title = ({ children }: { children: React.ReactNode }) => {
+interface TitleProps {
+  variant?: 'title' | 'subtitle';
+  children: React.ReactNode;
+}
+
+const Title: React.FC<TitleProps> = ({ children, variant }: TitleProps) => {
   const classes = useStyles();
   return (
     <Typography
-      component="h4"
-      variant="h4"
+      component={ variant && variant === 'subtitle' ? 'h6' : 'h4' }
+      variant={ variant && variant === 'subtitle' ? 'h6' : 'h4' }
       className={classes.title}
       color={'primary'}
     >

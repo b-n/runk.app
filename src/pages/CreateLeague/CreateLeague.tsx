@@ -59,9 +59,9 @@ const CreateLeague: React.FC = () => {
   };
 
   return (
-    <div>
+    <>
       <Title>New League</Title>
-      <Paper className={classes.root}>
+      <Paper className={`${classes.root} content`}>
         <Avatar
           src={newLeague.pictureURL}
           alt={newLeague.displayName.substring(1)}
@@ -108,7 +108,7 @@ const CreateLeague: React.FC = () => {
           </Button>
         </section>
       </Paper>
-    </div>
+    </>
   );
 };
 

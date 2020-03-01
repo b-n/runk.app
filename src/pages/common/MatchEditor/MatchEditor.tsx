@@ -17,6 +17,7 @@ import { League, LeagueUser } from '../../../interfaces/League';
 
 import { useAuth } from '../../../stores';
 import { useMatchService } from '../../../services/match';
+import { useWindowDimensions } from '../../../hooks/window';
 
 import Outcomes from './Outcomes';
 
@@ -57,6 +58,7 @@ interface MatchEditorProps {
 }
 
 const MatchEditor: React.FC<MatchEditorProps> = ({ onClose, open, match, league }) => {
+  const windowHeight = useWindowDimensions()[1];
   const classes = useStyles();
   const { createMatch } = useMatchService();
   const { authenticationHeader } = useAuth();
@@ -177,7 +179,7 @@ const MatchEditor: React.FC<MatchEditorProps> = ({ onClose, open, match, league 
               ]}
             />
             {
-              user1 && user2 &&
+              windowHeight > 568 && user1 && user2 &&
               <Outcomes
                 className={classes.outcomes}
                 elo1={user1.score}
