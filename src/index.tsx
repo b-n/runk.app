@@ -24,6 +24,8 @@ import { Navigation } from './pages/common/Navigation';
 
 import { GlobalProvider, useAuth } from './stores';
 
+import { useWindowDimensions } from './hooks/window';
+
 import * as serviceWorker from './serviceWorker';
 
 const PrivateRoute: React.FC<RouteProps> = ({ children, ...rest }) => {
@@ -40,10 +42,19 @@ const PrivateRoute: React.FC<RouteProps> = ({ children, ...rest }) => {
   );
 };
 
+const WindowDimensions: React.FC = () => {
+  const dimensions = useWindowDimensions();
+  React.useEffect(() => {
+    document.documentElement.style.setProperty('--vh', `${dimensions[1] * 0.01}px`);
+  }, [dimensions]);
+  return null;
+};
+
 ReactDOM.render(
   <GlobalProvider>
     <Router>
       <section className="container">
+        <WindowDimensions />
         <Switch>
           <PrivateRoute exact path="/">
             <Leagues />

@@ -34,12 +34,12 @@ const Profile: React.FC = () => {
     <>
       {
         user &&
-        <div>
+        <>
           <Title>
             <SVGId id={user.id} width={26} height={26} className={classes.icon}/>
             Profile
           </Title>
-          <div className={classes.container}>
+          <div className={`${classes.container} content`}>
             <Avatar alt={user.name} src={user.img} className={classes.large} variant="circle" />
             <TextField
               error={false}
@@ -47,7 +47,7 @@ const Profile: React.FC = () => {
               defaultValue={user.name}
             />
           </div>
-        </div>
+        </>
       }
     </>
   );

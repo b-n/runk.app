@@ -13,6 +13,7 @@ const getUser = async (authenticationHeader: AuthenticationHeader): Promise<User
         name: result.displayName,
         img: result.pictureURL,
         id: result.id,
+        leagues: result.leagues,
       };
     });
 };
