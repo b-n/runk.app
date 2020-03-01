@@ -35,13 +35,13 @@ export const UserProvider: React.FC = ({ children }) => {
       }));
   }, [getUser, authenticationHeader]);
 
-  const loadUser = () => {
+  const loadUser = useCallback(() => {
     setState({
       ...state,
       isLoading: true,
     });
     getUserDetails();
-  };
+  }, [state, getUserDetails]);
 
   useEffect(() => {
     if (!initing) {
