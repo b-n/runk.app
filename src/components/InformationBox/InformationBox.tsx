@@ -43,4 +43,4 @@ const InformationBox: React.FC<InformationBoxProps> = ({ title = 'Info', actions
   );
 };
 
-export { InformationBox };
+export default InformationBox;

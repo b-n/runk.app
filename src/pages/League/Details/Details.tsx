@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Box from '@material-ui/core/Box';
 import Card from '@material-ui/core/Card';
@@ -9,8 +9,6 @@ import Button from '@material-ui/core/Button';
 import Share from '@material-ui/icons/Share';
 import Typography from '@material-ui/core/Typography';
 
-import { useUser } from '../../../stores/user';
-import { useLeagueService } from '../../../services/leagues';
 import { League } from '../../../interfaces/League';
 
 const useStyles = makeStyles({
@@ -38,34 +36,15 @@ const useStyles = makeStyles({
 interface DetailsProps {
   league: League;
   onAction: () => void;
+  isMember: boolean;
 }
 
-const Details: React.FC<DetailsProps> = ({ league, onAction }) => {
-  const { user } = useUser();
-  const LeagueService = useLeagueService();
+const Details: React.FC<DetailsProps> = ({ league, onAction, isMember }) => {
   const classes = useStyles();
   const [shareOpen, setShareOpen] = useState(false);
-  const [ctaType, setCtaType] = useState('');
-
-  useEffect(() => {
-    if (!user || !league.id) {
-      return;
-    }
-    const userLeague = user.leagues[league.id];
-    setCtaType(userLeague ? 'Leave' : 'Join');
-  }, [user, league.id]);
 
   const handleShare = () => {
     setShareOpen(!shareOpen);
-  };
-
-  const handleCTA = () => {
-    const action = ctaType === 'Join'
-      ? LeagueService.join
-      : LeagueService.leave;
-
-    action(league!.id!)
-      .then(() => onAction());
   };
 
   return (
@@ -94,10 +73,10 @@ const Details: React.FC<DetailsProps> = ({ league, onAction }) => {
         <Button
           className={classes.cta}
           variant="contained"
-          color={ctaType === 'Join' ? 'primary' : 'secondary'}
-          onClick={() => handleCTA()}
+          color={!isMember ? 'primary' : 'secondary'}
+          onClick={onAction}
         >
-          {ctaType}
+          {isMember ? 'Leave' : 'Join'}
         </Button>
       }
     </Box>

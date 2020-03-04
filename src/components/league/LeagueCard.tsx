@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
@@ -47,11 +47,11 @@ const useStyles = makeStyles({
 
 interface LeagueCardProps {
   league: League;
-  children?: ReactNode;
+  children?: React.ReactNode;
   onClick: () => void;
 };
 
-const LeagueCard = ({ children, league, onClick }: LeagueCardProps) => {
+const LeagueCard: React.FC<LeagueCardProps> = ({ children, league, onClick }) => {
   const classes = useStyles();
 
   return (
