@@ -20,4 +20,5 @@ body .container {
 .container .content {
   overflow-y: auto;
   flex-shrink: 1;
+  position: relative;
 }
