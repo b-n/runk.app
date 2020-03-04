@@ -19,12 +19,13 @@ import {
   Profile,
   AuthCallback,
 } from './pages';
-
 import { Navigation } from './pages/common/Navigation';
 
 import { GlobalProvider, useAuth } from './stores';
 
 import { useWindowDimensions } from './hooks/window';
+
+import './i18n';
 
 import * as serviceWorker from './serviceWorker';
 

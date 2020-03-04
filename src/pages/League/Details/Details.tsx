@@ -8,6 +8,7 @@ import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
 import Share from '@material-ui/icons/Share';
 import Typography from '@material-ui/core/Typography';
+import { useTranslation } from 'react-i18next';
 
 import { League } from '../../../interfaces/League';
 
@@ -40,6 +41,7 @@ interface DetailsProps {
 }
 
 const Details: React.FC<DetailsProps> = ({ league, onAction, isMember }) => {
+  const { t } = useTranslation();
   const classes = useStyles();
   const [shareOpen, setShareOpen] = useState(false);
 
@@ -64,7 +66,7 @@ const Details: React.FC<DetailsProps> = ({ league, onAction, isMember }) => {
             startIcon={<Share />}
             onClick={(() => handleShare())}
           >
-            Share
+            {t('common:Share')}
           </Button>
         </CardActions>
       </Card>
@@ -76,7 +78,7 @@ const Details: React.FC<DetailsProps> = ({ league, onAction, isMember }) => {
           color={!isMember ? 'primary' : 'secondary'}
           onClick={onAction}
         >
-          {isMember ? 'Leave' : 'Join'}
+          {isMember ? t('common:Leave') : t('common:Join')}
         </Button>
       }
     </Box>

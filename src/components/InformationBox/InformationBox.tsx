@@ -8,7 +8,7 @@ import Typography from '@material-ui/core/Typography';
 
 const useStyles = makeStyles({
   card: {
-    margin: 10,
+    flexShrink: 0,
   },
   title: {},
   icon: {

@@ -76,4 +76,12 @@ module.exports = {
       'omitLastInOneLineBlock': true
     }],
   },
+  overrides: [
+    {
+      files: ['src/translations/*.ts'],
+      rules: {
+        'quote-props': [0],
+      },
+    },
+  ],
 }

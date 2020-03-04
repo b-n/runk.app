@@ -6,6 +6,7 @@ import SupervisedUserCircle from '@material-ui/icons/SupervisedUserCircle';
 import Search from '@material-ui/icons/Search';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import { useLocation, useHistory } from 'react-router';
+import { useTranslation } from 'react-i18next';
 
 // Utils
 
@@ -20,6 +21,7 @@ const useStyles = makeStyles({
 });
 
 const Navigation: React.FC = () => {
+  const { t } = useTranslation();
   const classes = useStyles();
   const [currentTab, setCurrentTab] = useState<string>('leagues');
 
@@ -38,9 +40,9 @@ const Navigation: React.FC = () => {
 
   return (
     <BottomNavigation value={currentTab} onChange={handleChange} className={classes.bottomNavigation}>
-      <BottomNavigationAction label="Leagues" value="leagues" icon={<SupervisedUserCircle />} />
-      <BottomNavigationAction label="Discover" value="discover" icon={<Search />} />
-      <BottomNavigationAction label="Profile" value="profile" icon={<AccountCircle />} />
+      <BottomNavigationAction label={t('common:Leagues')} value="leagues" icon={<SupervisedUserCircle />} />
+      <BottomNavigationAction label={t('common:Discover')} value="discover" icon={<Search />} />
+      <BottomNavigationAction label={t('common:Profile')} value="profile" icon={<AccountCircle />} />
     </BottomNavigation>
   );
 };

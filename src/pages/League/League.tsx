@@ -6,6 +6,7 @@ import Add from '@material-ui/icons/Add';
 import Tab from '@material-ui/core/Tab';
 import Tabs from '@material-ui/core/Tabs';
 import { useParams } from 'react-router-dom';
+import { useTranslation, Trans } from 'react-i18next';
 
 import TabPanel from '../../components/TabPanel';
 import MessageDialog from '../../components/MessageDialog';
@@ -35,6 +36,7 @@ const evaluateIsMember = (league: League, user: User): boolean =>
   league.users![user.id] && league.users![user.id].isActive;
 
 const LeagueComponent: React.FC = () => {
+  const { t } = useTranslation();
   const classes = useStyles();
   const { getById, join, leave } = useLeagueService();
 
@@ -109,14 +111,14 @@ const LeagueComponent: React.FC = () => {
           {
             league
               ? league.displayName
-              : 'League'
+              : t('common:League')
           }
         </Title>
         <AppBar position="static">
           <Tabs value={currentTab} onChange={handleTabChange}>
-            <Tab label="Runking" id="0" key="0" />
-            <Tab label="History" id="1" key="1" />
-            <Tab label="Details" id="2" key="2" />
+            <Tab label={t('league:Runking')} id="0" key="0" />
+            <Tab label={t('league:History')} id="1" key="1" />
+            <Tab label={t('league:Details')} id="2" key="2" />
           </Tabs>
         </AppBar>
       </section>
@@ -151,8 +153,10 @@ const LeagueComponent: React.FC = () => {
           league={league}
         />
       }
-      <MessageDialog title={'You want to runk?'} open={isMessageDialogOpen} onClose={() => setIsMessageDialogOpen(false)}>
-        Well that&apos;s good. Consider joining this league by going to the Details tab, and clicking the &quot;Join&quot; button.
+      <MessageDialog title={t('league:You want to runk?')} open={isMessageDialogOpen} onClose={() => setIsMessageDialogOpen(false)}>
+        <Trans i18nKey="league:promptToJoin">
+          Well that&apos;s good. Consider joining this league by going to the Details tab, and clicking the &quot;Join&quot; button.
+        </Trans>
       </MessageDialog>
     </>
   );
