@@ -12,6 +12,8 @@ const labels = {
     'Outcome': 'Outcome',
     'won': 'won',
     'Tie': 'Tie',
+    'Active players': 'Active players',
+    'Inactive players': 'Inactive players',
   },
   league: {
     'League': 'League',
