@@ -12,6 +12,8 @@ const labels = {
     'Outcome': 'Resultaat',
     'won': 'heeft gewonnen',
     'Tie': 'Gelijk gespeeld',
+    'Active players': 'Actieve spelers',
+    'Inactive players': 'Inactieve spelers',
   },
   league: {
     'League': 'League',
