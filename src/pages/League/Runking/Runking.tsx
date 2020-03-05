@@ -12,7 +12,7 @@ const useStyles = makeStyles({
   subHeader: {
     backgroundColor: '#eee',
   },
-})
+});
 
 interface RunkingProps {
   league: League;
