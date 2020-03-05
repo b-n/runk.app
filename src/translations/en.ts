@@ -7,8 +7,11 @@ const labels = {
     'Player 1': 'Player 1',
     'Player 2': 'Player 2',
     'Draw': 'Draw',
+    'Win': 'Win',
+    'Lose': 'Lose',
     'Outcome': 'Outcome',
     'won': 'won',
+    'Tie': 'Tie',
   },
   league: {
     'League': 'League',

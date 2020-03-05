@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { calculateNewRatings, EloOutcome } from '../../../lib/elo';
 
@@ -29,6 +30,7 @@ const Right = ({ value, highlighted }: ValueProps) => (
 );
 
 const Outcomes: React.FC<OutcomesProps> = ({ className, elo1, elo2, outcome }) => {
+  const { t } = useTranslation();
   const [win, setWin] = useState<Array<number>>([0, 0]);
   const [draw, setDraw] = useState<Array<number>>([0, 0]);
   const [loss, setLoss] = useState<Array<number>>([0, 0]);
@@ -44,17 +46,17 @@ const Outcomes: React.FC<OutcomesProps> = ({ className, elo1, elo2, outcome }) =
       <tbody>
         <tr>
           <Left value={win[0] - elo1} highlighted={outcome === EloOutcome.CHALLENGER}/>
-          <Middle>Win</Middle>
+          <Middle>{t('match:Win')}</Middle>
           <Right value={loss[1] - elo2} highlighted={outcome === EloOutcome.OPPONENT}/>
         </tr>
         <tr>
           <Left value={draw[0] - elo1} highlighted={outcome === EloOutcome.DRAW}/>
-          <Middle>Draw</Middle>
+          <Middle>{t('match:Draw')}</Middle>
           <Right value={draw[1] - elo2} highlighted={outcome === EloOutcome.DRAW}/>
         </tr>
         <tr>
           <Left value={loss[0] - elo1} highlighted={outcome === EloOutcome.OPPONENT}/>
-          <Middle>Loss</Middle>
+          <Middle>{t('match:Lose')}</Middle>
           <Right value={win[1] - elo2} highlighted={outcome === EloOutcome.CHALLENGER}/>
         </tr>
       </tbody>

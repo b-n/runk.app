@@ -103,14 +103,18 @@ const History: React.FC<HistoryProps> = ({ league }) => {
                   />
                 </div>
                 <Typography className={classes.outcome}>
-                  {winnerId === 'DRAW' ? t('match:Draw') : league.users![winnerId].displayName + ` ${t('match:won')}`}
+                  {
+                    winnerId === 'DRAW'
+                      ? t('match:Tie')
+                      : league.users![winnerId].displayName + ` ${t('match:won')}`
+                  }
                 </Typography>
                 <Typography variant="body2" className={classes.when}>
                   {formatDistance(
                     match.date,
                     new Date(),
                     {
-                      locale: i18n.options.resources![i18n.language].dateFnsLocale as Locale,
+                      locale: i18n.options.resources![i18n.language.split('-')[0]].dateFnsLocale as Locale,
                       addSuffix: true,
                     }
                   )}
