@@ -1,4 +1,5 @@
 import React from 'react';
+import { makeStyles } from '@material-ui/core/styles';
 import ListSubheader from '@material-ui/core/ListSubheader';
 import { useTranslation } from 'react-i18next';
 
@@ -7,6 +8,12 @@ import Runkee from './Runkee';
 
 import { League } from '../../../interfaces/League';
 
+const useStyles = makeStyles({
+  subHeader: {
+    backgroundColor: '#eee',
+  },
+})
+
 interface RunkingProps {
   league: League;
   onClick: (id: string) => void;
@@ -14,6 +21,7 @@ interface RunkingProps {
 
 const Runking: React.FC<RunkingProps> = ({ league, onClick }) => {
   const { t } = useTranslation();
+  const classes = useStyles();
   const users = Object.values(league.users!)
     .filter(player => player.isActive);
 
@@ -30,7 +38,9 @@ const Runking: React.FC<RunkingProps> = ({ league, onClick }) => {
           {
             active.length > 0 &&
             <>
-              <ListSubheader>{t('match:Active players')}</ListSubheader>
+              <ListSubheader className={classes.subHeader}>
+                {t('match:Active players')}
+              </ListSubheader>
               {
                 active.map(player => (
                   <Runkee onClick={onClick} key={player.id} {...player} />
@@ -41,7 +51,9 @@ const Runking: React.FC<RunkingProps> = ({ league, onClick }) => {
           {
             inactive.length > 0 &&
             <>
-              <ListSubheader>{t('match:Inactive players')}</ListSubheader>
+              <ListSubheader className={classes.subHeader}>
+                {t('match:Inactive players')}
+              </ListSubheader>
               {
                 inactive.map(player => (
                   <Runkee onClick={onClick} key={player.id} {...player} />
