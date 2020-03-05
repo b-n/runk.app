@@ -6,8 +6,11 @@ import Add from '@material-ui/icons/Add';
 import Tab from '@material-ui/core/Tab';
 import Tabs from '@material-ui/core/Tabs';
 import { useParams } from 'react-router-dom';
+import { useTranslation, Trans } from 'react-i18next';
 
 import TabPanel from '../../components/TabPanel';
+import MessageDialog from '../../components/MessageDialog';
+import InactiveOverlay from '../../components/InactiveOverlay';
 import Title from '../../components/Title';
 import Runking from './Runking';
 import Details from './Details';
@@ -19,7 +22,7 @@ import { Match } from '../../interfaces/Match';
 import { User } from '../../interfaces/User';
 import { useLeagueService } from '../../services/leagues';
 import { useAuth } from '../../stores/auth';
-import { useUser, useUserMutations } from '../../stores/user';
+import { useUser } from '../../stores/user';
 
 const useStyles = makeStyles({
   fab: {
@@ -30,59 +33,54 @@ const useStyles = makeStyles({
 });
 
 const evaluateIsMember = (league: League, user: User): boolean =>
-  !!(user.leagues[league.id!] && league.users![user.id]);
+  league.users![user.id] && league.users![user.id].isActive;
 
 const LeagueComponent: React.FC = () => {
+  const { t } = useTranslation();
   const classes = useStyles();
-  const { getById } = useLeagueService();
+  const { getById, join, leave } = useLeagueService();
 
   const { id } = useParams();
   const { authenticationHeader } = useAuth();
   const { user } = useUser();
-  const { loadUser } = useUserMutations();
 
   const [league, setLeague] = useState<League>();
   const [currentTab, setCurrentTab] = useState(2);
   const [currentMatch, setCurrentMatch] = useState<Match>();
-  const [matchEditorOpen, setMatchEditorOpen] = useState(false);
-  const [isMyLeague, setIsMyLeague] = useState(false);
+  const [isMember, setIsMember] = useState(false);
+  const [isMessageDialogOpen, setIsMessageDialogOpen] = useState(false);
+
+  const getLeagueData = React.useCallback((setTab: boolean) => {
+    return getById(authenticationHeader!, id!)
+      .then(result => {
+        setLeague(result);
+        if (setTab) {
+          const isMember = evaluateIsMember(result, user!);
+          setIsMember(isMember);
+          setCurrentTab(isMember ? 0 : 2);
+        }
+      });
+  }, [getById, authenticationHeader, id, user]);
 
   useEffect(() => {
     if (id && authenticationHeader && user) {
-      getById(authenticationHeader!, id)
-        .then(result => {
-          const isMember = evaluateIsMember(result, user!);
-          setIsMyLeague(isMember);
-          setCurrentTab(isMember ? 0 : 2);
-          setLeague(result);
-        });
+      getLeagueData(true);
     }
-  }, [id, authenticationHeader, getById, user]);
-
-  useEffect(() => {
-    if (!user || !league) {
-      return;
-    }
-    const isMember = evaluateIsMember(league, user);
-    setIsMyLeague(isMember);
-    setCurrentTab(isMember ? 0 : 2);
-  }, [user, league]);
+  }, [id, authenticationHeader, getLeagueData, user]);
 
   const handleTabChange = (event: React.ChangeEvent<{}>, newValue: number) => {
     setCurrentTab(newValue);
   };
 
   const handleAction = async () => {
-    getById(authenticationHeader!, id!)
-      .then(result => setLeague(result))
-      .then(() => loadUser());
+    const action = isMember ? leave : join;
+    action(id!)
+      .then(() => getLeagueData(true));
   };
 
   const handleMatchEditorClose = () => {
     setCurrentMatch(undefined);
-    setMatchEditorOpen(false);
-    getById(authenticationHeader!, id!)
-      .then(result => setLeague(result));
+    getLeagueData(false);
   };
 
   const handleNewMatch = (id: string) => {
@@ -104,7 +102,6 @@ const LeagueComponent: React.FC = () => {
 
   const openMatchEditor = (match: Match) => {
     setCurrentMatch(match);
-    setMatchEditorOpen(true);
   };
 
   return (
@@ -114,30 +111,31 @@ const LeagueComponent: React.FC = () => {
           {
             league
               ? league.displayName
-              : 'League'
+              : t('common:League')
           }
         </Title>
         <AppBar position="static">
           <Tabs value={currentTab} onChange={handleTabChange}>
-            <Tab label="Runking" id="0" key="0" disabled={!isMyLeague}/>
-            <Tab label="History" id="1" key="1" disabled={!isMyLeague}/>
-            <Tab label="Details" id="2" key="2"/>
+            <Tab label={t('league:Runking')} id="0" key="0" />
+            <Tab label={t('league:History')} id="1" key="1" />
+            <Tab label={t('league:Details')} id="2" key="2" />
           </Tabs>
         </AppBar>
       </section>
       <section className="content">
         <TabPanel currentTab={currentTab} index={0}>
           {league && <Runking league={league} onClick={handleNewMatch}/>}
+          <InactiveOverlay show={!isMember} onClick={() => setIsMessageDialogOpen(true)}/>
         </TabPanel>
         <TabPanel currentTab={currentTab} index={1}>
           {league && <History league={league} />}
         </TabPanel>
         <TabPanel currentTab={currentTab} index={2}>
-          {league && <Details league={league} onAction={handleAction}/>}
+          {league && <Details league={league} isMember={isMember} onAction={handleAction}/>}
         </TabPanel>
       </section>
       {
-        currentTab !== 2 &&
+        isMember && currentTab !== 2 &&
         <Fab
           color="primary"
           className={classes.fab}
@@ -149,12 +147,17 @@ const LeagueComponent: React.FC = () => {
       {
         currentMatch && league &&
         <MatchEditor
-          open={matchEditorOpen}
+          open={currentMatch !== undefined}
           onClose={handleMatchEditorClose}
           match={currentMatch}
           league={league}
         />
       }
+      <MessageDialog title={t('league:You want to runk?')} open={isMessageDialogOpen} onClose={() => setIsMessageDialogOpen(false)}>
+        <Trans i18nKey="league:promptToJoin">
+          Well that&apos;s good. Consider joining this league by going to the Details tab, and clicking the &quot;Join&quot; button.
+        </Trans>
+      </MessageDialog>
     </>
   );
 };

@@ -5,6 +5,7 @@ import Fab from '@material-ui/core/Fab';
 import Button from '@material-ui/core/Button';
 import Add from '@material-ui/icons/Add';
 import { useHistory } from 'react-router-dom';
+import { useTranslation, Trans } from 'react-i18next';
 
 // Utils
 import { useLeagues, useLeaguesMutations } from '../../stores';
@@ -37,6 +38,7 @@ const useStyles = makeStyles({
 });
 
 const Leagues: React.FC = () => {
+  const { t } = useTranslation();
   const classes = useStyles();
   const { leagues, isLoading } = useLeagues();
   const { loadUserLeagues } = useLeaguesMutations();
@@ -50,25 +52,29 @@ const Leagues: React.FC = () => {
     <>
       <Title>
         <Logo width={26} height={26} className={classes.logo}/>
-        Your leagues
+        {t('league:Your Leagues')}
       </Title>
       <section className={`${classes.cards} content`}>
         {
-          !isLoading && leagues.length === 0 &&
-          <InformationBox title="No Leagues"
+          !isLoading &&
+          leagues.length === 0 &&
+          <InformationBox
+            title={t('league:No Leagues')}
             actions={(
               <>
                 <Button onClick={() => history.push('/discover')}>
-                  Discover
+                  {t('common:Discover')}
                 </Button>
                 <Button onClick={() => history.push('/leagues/create')}>
-                  Create
+                  {t('common:Create')}
                 </Button>
               </>
             )}>
             <Typography variant="body2">
-              You don&apos;t belong any leagues.<br/>
-              Try to discover new leagues, or create your own
+              <Trans i18nKey="league:noLeaguesMessage">
+                You don&apos;t belong any leagues.<br />
+                Try to discover new leagues, or create your own
+              </Trans>
             </Typography>
           </InformationBox>
         }

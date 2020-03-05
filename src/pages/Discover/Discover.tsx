@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { Typography, Button } from '@material-ui/core';
 import { useHistory } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 // Utils
 import { League } from '../../interfaces/League';
@@ -22,6 +23,7 @@ const useStyles = makeStyles({
 });
 
 const Discover: React.FC = () => {
+  const { t } = useTranslation();
   const classes = useStyles();
   const history = useHistory();
   const { user } = useUser();
@@ -45,7 +47,7 @@ const Discover: React.FC = () => {
 
   return (
     <>
-      <Title>Discover</Title>
+      <Title>{t('common:Discover')}</Title>
       <section className={`${classes.cards} content`}>
         {
           leagues
@@ -53,9 +55,11 @@ const Discover: React.FC = () => {
             .map(league => (
               <LeagueCard league={league} key={league.id} onClick={() => history.push(`/league/${league.id}`)}>
                 <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
-                  <Button variant="contained" color="primary" style={{ margin: 8 }} onClick={() => handleJoinClick(league.id!)}>Join</Button>
+                  <Button variant="contained" color="primary" style={{ margin: 8 }} onClick={() => handleJoinClick(league.id!)}>
+                    {t('common:Join')}
+                  </Button>
                   <Typography component="h6" variant="subtitle2">
-                    {league.userCount} Player{league.userCount! > 1 ? 's' : ''}
+                    {league.userCount} {t('common:Player', { count: league.userCount! })}
                   </Typography>
                 </div>
               </LeagueCard>

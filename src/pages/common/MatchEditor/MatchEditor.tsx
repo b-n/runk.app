@@ -11,6 +11,7 @@ import Typography from '@material-ui/core/Typography';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import TextField from '@material-ui/core/TextField';
 import Slider from '@material-ui/core/Slider';
+import { useTranslation } from 'react-i18next';
 
 import { Match } from '../../../interfaces/Match';
 import { League, LeagueUser } from '../../../interfaces/League';
@@ -58,6 +59,7 @@ interface MatchEditorProps {
 }
 
 const MatchEditor: React.FC<MatchEditorProps> = ({ onClose, open, match, league }) => {
+  const { t } = useTranslation();
   const windowHeight = useWindowDimensions()[1];
   const classes = useStyles();
   const { createMatch } = useMatchService();
@@ -141,7 +143,7 @@ const MatchEditor: React.FC<MatchEditorProps> = ({ onClose, open, match, league 
       {
         match && league &&
         <>
-          <DialogTitle>{match.id ? 'Edit Match' : 'Submit a match'}</DialogTitle>
+          <DialogTitle>{match.id ? t('match:Edit Match') : t('match:Submit a match')}</DialogTitle>
           <DialogContent className={classes.content}>
             <Autocomplete
               className={classes.user}
@@ -151,7 +153,7 @@ const MatchEditor: React.FC<MatchEditorProps> = ({ onClose, open, match, league 
               value={user1}
               onChange={handleChange(setUser1)}
               renderOption={renderOption}
-              renderInput={renderInput('Player 1')}
+              renderInput={renderInput(t('match:Player 1'))}
             />
             <Autocomplete
               className={classes.user}
@@ -161,9 +163,9 @@ const MatchEditor: React.FC<MatchEditorProps> = ({ onClose, open, match, league 
               value={user2}
               onChange={handleChange(setUser2)}
               renderOption={renderOption}
-              renderInput={renderInput('Player 2')}
+              renderInput={renderInput(t('match:Player 2'))}
             />
-            <Typography>Outcome</Typography>
+            <Typography>{t('match:Outcome')}</Typography>
             <Slider
               className={classes.slider}
               value={winner}
@@ -173,9 +175,9 @@ const MatchEditor: React.FC<MatchEditorProps> = ({ onClose, open, match, league 
               max={2}
               track={false}
               marks={[
-                { value: 0, label: user1 ? user1.displayName : 'Player 1' },
-                { value: 1, label: 'Draw' },
-                { value: 2, label: user2 ? user2.displayName : 'Player 2' },
+                { value: 0, label: user1 ? user1.displayName : t('match:Player 1') },
+                { value: 1, label: t('match:Draw') },
+                { value: 2, label: user2 ? user2.displayName : t('match:Player 2') },
               ]}
             />
             {
@@ -189,14 +191,14 @@ const MatchEditor: React.FC<MatchEditorProps> = ({ onClose, open, match, league 
             }
           </DialogContent>
           <DialogActions>
-            <Button onClick={handleClose}>Cancel</Button>
+            <Button onClick={handleClose}>{t('common:Cancel')}</Button>
             <Button
               variant="contained"
               onClick={handleSave}
               disabled={isLoading || !user1 || !user2 || user1.id === user2.id}
               color="primary"
             >
-              Save
+              {t('common:Save')}
             </Button>
           </DialogActions>
         </>

@@ -1,2 +1,2 @@
-import { InformationBox } from './InformationBox';
+import InformationBox from './InformationBox';
 export { InformationBox };

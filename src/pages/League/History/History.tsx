@@ -5,6 +5,7 @@ import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import formatDistance from 'date-fns/formatDistance';
+import { useTranslation } from 'react-i18next';
 
 import { useMatchService } from '../../../services/match';
 import { League } from '../../../interfaces/League';
@@ -58,6 +59,7 @@ interface HistoryProps {
 }
 
 const History: React.FC<HistoryProps> = ({ league }) => {
+  const { t, i18n } = useTranslation();
   const classes = useStyles();
   const { authenticationHeader } = useAuth();
   const { getMatchesByLeague } = useMatchService();
@@ -101,10 +103,21 @@ const History: React.FC<HistoryProps> = ({ league }) => {
                   />
                 </div>
                 <Typography className={classes.outcome}>
-                  {winnerId === 'DRAW' ? 'Draw' : league.users![winnerId].displayName + ' wins'}
+                  {
+                    winnerId === 'DRAW'
+                      ? t('match:Tie')
+                      : league.users![winnerId].displayName + ` ${t('match:won')}`
+                  }
                 </Typography>
                 <Typography variant="body2" className={classes.when}>
-                  {formatDistance(match.date, new Date())} ago
+                  {formatDistance(
+                    match.date,
+                    new Date(),
+                    {
+                      locale: i18n.options.resources![i18n.language.split('-')[0]].dateFnsLocale as Locale,
+                      addSuffix: true,
+                    }
+                  )}
                 </Typography>
               </CardContent>
             </Card>

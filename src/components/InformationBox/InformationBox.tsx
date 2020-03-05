@@ -8,7 +8,7 @@ import Typography from '@material-ui/core/Typography';
 
 const useStyles = makeStyles({
   card: {
-    margin: 10,
+    flexShrink: 0,
   },
   title: {},
   icon: {
@@ -43,4 +43,4 @@ const InformationBox: React.FC<InformationBoxProps> = ({ title = 'Info', actions
   );
 };
 
-export { InformationBox };
+export default InformationBox;

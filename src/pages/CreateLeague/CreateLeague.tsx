@@ -5,6 +5,7 @@ import Button from '@material-ui/core/Button';
 import Avatar from '@material-ui/core/Avatar';
 import TextField from '@material-ui/core/TextField';
 import { useHistory } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 // Utils
 import { NewLeague } from '../../interfaces/League';
@@ -35,6 +36,7 @@ const useStyles = makeStyles({
 });
 
 const CreateLeague: React.FC = () => {
+  const { t } = useTranslation();
   const classes = useStyles();
   const LeagueService = useLeagueService();
   const history = useHistory();
@@ -60,7 +62,7 @@ const CreateLeague: React.FC = () => {
 
   return (
     <>
-      <Title>New League</Title>
+      <Title>{t('league:New League')}</Title>
       <Paper className={`${classes.root} content`}>
         <Avatar
           src={newLeague.pictureURL}
@@ -70,21 +72,21 @@ const CreateLeague: React.FC = () => {
         />
         <TextField
           error={false}
-          label={'Avatar URL'}
+          label={t('league:Avatar URL')}
           value={newLeague.pictureURL}
           margin="normal"
           onChange={handleChange('pictureURL')}
         />
         <TextField
           error={false}
-          label={'League Name'}
+          label={t('league:Name')}
           margin="normal"
           value={newLeague.displayName}
           onChange={handleChange('displayName')}
         />
         <TextField
           error={false}
-          label={'Description'}
+          label={t('league:Description')}
           margin="normal"
           value={newLeague.description}
           onChange={handleChange('description')}
@@ -95,7 +97,7 @@ const CreateLeague: React.FC = () => {
             color="default"
             onClick={() => history.push('/leagues')}
           >
-            Cancel
+            {t('common:Cancel')}
           </Button>
           <Button
             variant="contained"
@@ -104,7 +106,7 @@ const CreateLeague: React.FC = () => {
             disableElevation
             onClick={() => saveLeague()}
           >
-            Create
+            {t('common:Create')}
           </Button>
         </section>
       </Paper>
